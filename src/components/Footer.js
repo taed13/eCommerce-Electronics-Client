@@ -55,16 +55,16 @@ const Footer = () => {
                 </a>
               </div>
               <div className="social_icons d-flex align-items-center gap-30 mt-4">
-                <a className="text-white" href="">
+                <a className="text-white" href="#">
                   <BsFacebook className="fs-4" />
                 </a>
-                <a className="text-white" href="">
+                <a className="text-white" href="#">
                   <BsGithub className="fs-4" />
                 </a>
-                <a className="text-white" href="">
+                <a className="text-white" href="#">
                   <BsTwitterX className="fs-4" />
                 </a>
-                <a className="text-white" href="">
+                <a className="text-white" href="#">
                   <BsInstagram className="fs-4" />
                 </a>
               </div>
