@@ -307,3 +307,126 @@ footer .input-group-text {
   right: 12px;
 }
 /* Product card part ends here */
+
+/* Special products */
+
+.special-product-card {
+  padding: 20px 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+.special-product-card .special-product-content h5 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-1c1c1b);
+}
+.special-product-card .special-product-content h6 {
+  font-size: 17px;
+  font-weight: 700;
+}
+/* Special products ends here */
+
+/* famous card */
+
+.famous-card .famous-content {
+  top: 10%;
+  left: 10%;
+}
+.famous-card img {
+  border-radius: 10px;
+
+}
+.famous-content h5 {
+  font-size: 12px;
+  line-height: 10px;
+  font-weight: 400;
+  color: white;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+.famous-content h6 {
+  font-size: 22px;
+  line-height: 38px;
+  font-weight: 700;
+  color: white;
+}
+.famous-content p {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: thin;
+  color: white;
+}
+
+/* famous card ends here */
+
+/* Our Store */
+
+.filter-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 15px 25px;
+}
+.filter-title {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--color-1c1c1b);
+  margin-bottom: 20px;
+}
+.filter-card ul,
+.filter-card .form-check-label {
+  list-style-type: none;
+  font-size: 13px;
+  line-height: 30px;
+  color: var(--color-777777);
+  cursor: pointer;
+}
+.filter-card .form-check-input:focus {
+  box-shadow: none;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+.filter-card .form-check-input:checked {
+  background-color: var(--color-febd69);
+  border-color: var(--color-febd69);
+}
+.sub-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-1c1c1b);
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+.colors {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.colors li {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+}
+.random-products h5 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.random-products:first-child {
+  border-bottom: 1px solid var(--color-ededed);
+}
+.filter-sort-grid {
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+}
+.grid img {
+  width: 34px;
+  height: 34px;
+  background-color: var(--color-ededed);
+  padding: 8px;
+  border-radius: 5px;
+}
+
+/* Our Store ends here */
