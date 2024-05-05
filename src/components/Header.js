@@ -34,7 +34,9 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-2">
               <h2>
-                <Link className="text-white">Electroholic</Link>
+                <Link to="/" className="text-white">
+                  Electroholic
+                </Link>
               </h2>
             </div>
             <div className="col-5">
@@ -54,7 +56,10 @@ const Header = () => {
             <div className="col-5">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
                 <div>
-                  <Link to='/compare-product' className="d-flex align-items-center gap-10 text-white">
+                  <Link
+                    to="/compare-product"
+                    className="d-flex align-items-center gap-10 text-white"
+                  >
                     <img src={compare} alt="compare" />
                     <p className="mb-0">
                       Compare <br /> Products
@@ -62,7 +67,10 @@ const Header = () => {
                   </Link>
                 </div>
                 <div>
-                  <Link to='/wishlist' className="d-flex align-items-center gap-10 text-white">
+                  <Link
+                    to="/wishlist"
+                    className="d-flex align-items-center gap-10 text-white"
+                  >
                     <img src={wishlist} alt="wishlist" />
                     <p className="mb-0">
                       Favourite <br /> Wishlist
@@ -70,7 +78,10 @@ const Header = () => {
                   </Link>
                 </div>
                 <div>
-                  <Link to='/login' className="d-flex align-items-center gap-10 text-white">
+                  <Link
+                    to="/login"
+                    className="d-flex align-items-center gap-10 text-white"
+                  >
                     <img src={user} alt="user" />
                     <p className="mb-0">
                       Login <br /> Account
@@ -78,7 +89,10 @@ const Header = () => {
                   </Link>
                 </div>
                 <div>
-                  <Link to='/cart' className="d-flex align-items-center gap-10 text-white">
+                  <Link
+                    to="/cart"
+                    className="d-flex align-items-center gap-10 text-white"
+                  >
                     <img src={cart} alt="cart" />
                     <div className="d-flex flex-column">
                       <span className="badge bg-white text-dark">0</span>
