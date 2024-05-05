@@ -22,19 +22,19 @@ const SpecialProduct = () => {
                             edit={false}
                             activeColor="#ffd700"
                         />
-                        <p className="price"><span className="red-p">$100</span> &nbsp; <strike>$200</strike></p>
+                        <p className="price"><span className="red-p">$ 100.00</span> &nbsp; <strike>$ 200.00</strike></p>
                         <div className="discount-till d-flex align-items-center gap-10">
                             <p className='mb-0'>
-                                <b>5 </b>days
+                                <b>5</b> days
                             </p>
                             <div className="d-flex gap-10 align-items-center">
-                                <span className='badge rounded-circle p-3 bg-danger'>1</span>:
-                                <span className='badge rounded-circle p-3 bg-danger'>1</span>:
-                                <span className='badge rounded-circle p-3 bg-danger'>1</span>
+                                <span className='time-stamp badge rounded-circle bg-danger'>1</span>:
+                                <span className='time-stamp badge rounded-circle bg-danger'>1</span>:
+                                <span className='time-stamp badge rounded-circle bg-danger'>1</span>
                             </div>
                         </div>
                         <div className="prod-count my-3">
-                            <p>Products: 5</p>
+                            <p>Number of products left: <b>5</b></p>
                             <div className="progress">
                                 <div
                                     className="progress-bar"
