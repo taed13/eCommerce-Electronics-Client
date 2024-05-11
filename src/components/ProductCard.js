@@ -6,8 +6,8 @@ import prodcompare from "../images/prodcompare.svg";
 import watch from "../images/watch.jpg";
 import watch2 from "../images/watch-2.jpg";
 import addcart from "../images/add-cart.svg";
-import { useDispatch, useSelector } from "react-redux";
 import view from "../images/view.svg";
+import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../features/products/productSlice";
 
 const ProductCard = (props) => {

@@ -17,6 +17,11 @@
   --color-f7f7f7: #f7f7f7;
 }
 
+.errors {
+  color: red !important;
+  font-size: 12px !important;
+}
+
 .section-heading {
   font-size: 26px;
   line-height: 32px;
@@ -224,31 +229,31 @@ footer .input-group-text {
   padding: 15px;
 }
 
-.categories>div {
+.categories > div {
   width: 25%;
   padding: 10px 10px 10px 20px;
 }
 
-.categories>div>div {
+.categories > div > div {
   width: 60%;
 }
 
-.categories>div:nth-child(1),
-.categories>div:nth-child(2),
-.categories>div:nth-child(3),
-.categories>div:nth-child(4) {
+.categories > div:nth-child(1),
+.categories > div:nth-child(2),
+.categories > div:nth-child(3),
+.categories > div:nth-child(4) {
   border-bottom: 1px solid var(--color-ededed);
 }
 
-.categories>div:nth-child(1),
-.categories>div:nth-child(2),
-.categories>div:nth-child(3) {
+.categories > div:nth-child(1),
+.categories > div:nth-child(2),
+.categories > div:nth-child(3) {
   border-right: 1px solid var(--color-ededed);
 }
 
-.categories>div:nth-child(5),
-.categories>div:nth-child(6),
-.categories>div:nth-child(7) {
+.categories > div:nth-child(5),
+.categories > div:nth-child(6),
+.categories > div:nth-child(7) {
   border-right: 1px solid var(--color-ededed);
 }
 
@@ -336,15 +341,15 @@ footer .input-group-text {
   object-fit: contain;
 }
 
-.product-card .product-image>img:last-child {
+.product-card .product-image > img:last-child {
   display: none;
 }
 
-.product-card:hover .product-image>img:nth-child(1) {
+.product-card:hover .product-image > img:nth-child(1) {
   display: none;
 }
 
-.product-card:hover .product-image>img:last-child {
+.product-card:hover .product-image > img:last-child {
   display: block;
 }
 
@@ -414,7 +419,6 @@ footer .input-group-text {
   align-items: center;
   justify-content: center;
 }
-
 
 /* Special products ends here */
 
@@ -591,7 +595,7 @@ footer .input-group-text {
   gap: 15px;
 }
 
-.contact-inner-wrapper>div {
+.contact-inner-wrapper > div {
   width: 48%;
 }
 
@@ -794,7 +798,7 @@ footer .input-group-text {
   border-radius: 10px;
 }
 
-.main-product-image>div {
+.main-product-image > div {
   border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
@@ -817,7 +821,7 @@ footer .input-group-text {
   padding: 20px;
 }
 
-.other-product-images>div {
+.other-product-images > div {
   padding: 20px;
   border: 1px solid rgba(0, 0, 0, 0.25);
   width: 48%;
