@@ -13,7 +13,7 @@ import { addToWishlist } from "../features/products/productSlice";
 const ProductCard = (props) => {
   const { grid, data } = props;
   const dispatch = useDispatch();
-  console.log(data);
+  console.log("ProductCard data: ", data);
   let location = useLocation();
   const addToWish = (prodId) => {
     dispatch(addToWishlist(prodId));
@@ -28,14 +28,7 @@ const ProductCard = (props) => {
               location.pathname === "/product" ? `gr-${grid}` : "col-3"
             }`}
           >
-            <Link
-              to={`${
-                location.pathname === "/"
-                  ? "/product/:id"
-                  : location.pathname === "/product/:id"
-                  ? "/product/:id"
-                  : ":id"
-              }`}
+            <div
               className="product-card position-relative"
             >
               <div className="wishlist-icon position-absolute">
@@ -48,13 +41,13 @@ const ProductCard = (props) => {
               </div>
               <div className="product-image">
                 <img
-                  src={item?.images[0]}
+                  src={item?.images[0]?.url}
                   className="img-fluid mx-auto"
                   alt="product image"
                   width={160}
                 />
                 <img
-                  src={item?.images[0]}
+                  src={item?.images[0]?.url}
                   className="img-fluid mx-auto"
                   alt="product image"
                   width={160}
@@ -83,15 +76,15 @@ const ProductCard = (props) => {
                   <button className="border-0 bg-transparent">
                     <img src={prodcompare} alt="prodcompare" />
                   </button>
-                  <button className="border-0 bg-transparent">
+                  <Link to={'/product/'+item?._id} className="border-0 bg-transparent">
                     <img src={view} alt="view" />
-                  </button>
+                  </Link>
                   <button className="border-0 bg-transparent">
                     <img src={addcart} alt="addcart" />
                   </button>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         );
       })}

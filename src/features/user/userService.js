@@ -18,7 +18,20 @@ const login = async (userData) => {
 
 const getUserWishList = async () => {
   const response = await axios.get(`${base_url}user/wishlist`, authMiddleware);
-  console.log(response);
+  if (response.data) {
+    return response.data;
+  }
+};
+
+const addToCart = async (cartData) => {
+  const response = await axios.post(`${base_url}user/cart`,cartData, authMiddleware);
+  if (response.data) {
+    return response.data;
+  }
+};
+
+const getCart = async () => {
+  const response = await axios.get(`${base_url}user/cart`, authMiddleware);
   if (response.data) {
     return response.data;
   }
@@ -27,4 +40,6 @@ export const authService = {
   register,
   login,
   getUserWishList,
+  addToCart,
+  getCart,
 };

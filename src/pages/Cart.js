@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Meta from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
 import watch from '../images/watch.jpg'
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
+import { useDispatch } from 'react-redux';
+import { getUserCart } from '../features/user/userSlice';
 
 const Cart = () => {
+    const dispatch = useDispatch();
+    useEffect(()=> {
+        dispatch(getUserCart())
+    }, [])
     return (
         <>
             <Meta title={"Cart"} />
