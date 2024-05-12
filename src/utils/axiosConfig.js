@@ -18,8 +18,6 @@ export const authMiddleware = {
 
 export const config = {
   headers: {
-    Authorization: `Bearer ${
-      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
-    }`,
+    Authorization: `Bearer ${token}`,
   },
 };
