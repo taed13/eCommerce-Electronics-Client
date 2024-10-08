@@ -3,10 +3,9 @@ import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
 import wish from "../images/wish.svg";
 import prodcompare from "../images/prodcompare.svg";
-import watch from "../images/watch.jpg";
-import watch2 from "../images/watch-2.jpg";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
+import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../features/products/productSlice";
 
@@ -24,9 +23,8 @@ const ProductCard = (props) => {
         return (
           <div
             key={index}
-            className={`${
-              location.pathname === "/product" ? `gr-${grid}` : "col-3"
-            }`}
+            className={`${location.pathname === "/product" ? `gr-${grid}` : "col-3"
+              }`}
           >
             <div
               className="product-card position-relative"
@@ -64,9 +62,8 @@ const ProductCard = (props) => {
                   activeColor="#ffd700"
                 />
                 <p
-                  className={`description ${
-                    grid === 12 ? "d-block" : "d-none"
-                  }`}
+                  className={`description ${grid === 12 ? "d-block" : "d-none"
+                    }`}
                   dangerouslySetInnerHTML={{ __html: item?.description }}
                 ></p>
                 <p className="price">$ {item?.price}</p>
@@ -76,11 +73,11 @@ const ProductCard = (props) => {
                   <button className="border-0 bg-transparent">
                     <img src={prodcompare} alt="prodcompare" />
                   </button>
-                  <Link to={'/product/'+item?._id} className="border-0 bg-transparent">
-                    <img src={view} alt="view" />
+                  <Link to={'/product/' + item?._id} className="border-0 bg-transparent">
+                    <IoEyeOutline className="product-card-icons" />
                   </Link>
                   <button className="border-0 bg-transparent">
-                    <img src={addcart} alt="addcart" />
+                    <IoCartOutline className="product-card-icons" />
                   </button>
                 </div>
               </div>

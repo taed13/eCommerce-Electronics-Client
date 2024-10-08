@@ -13,11 +13,10 @@ import ReactStars from "react-rating-stars-component";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import wish from "../images/wish.svg";
 import prodcompare from "../images/prodcompare.svg";
-import watch from "../images/watch.jpg";
-import watch2 from "../images/watch-2.jpg";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 import { addToWishlist } from "../features/products/productSlice";
+import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
 
 const Home = () => {
   const blogState = useSelector((state) => state?.blog?.blog);
@@ -142,7 +141,7 @@ const Home = () => {
           </div>
         </div>
       </Container>
-      <Container class1="home-wrapper-2 py-5">
+      <Container class1="home-wrapper-2 py-3">
         <div className="row">
           <div className="col-12">
             <div className="categories d-flex flex-wrap justify-content-between align-items-center">
@@ -231,13 +230,13 @@ const Home = () => {
                         <img
                           src={item?.images[0]}
                           className="img-fluid mx-auto"
-                          alt="product image"
+                          alt="product"
                           width={160}
                         />
                         <img
                           src={item?.images[0]}
                           className="img-fluid mx-auto"
-                          alt="product image"
+                          alt="product"
                           width={160}
                         />
                       </div>
@@ -260,10 +259,10 @@ const Home = () => {
                             <img src={prodcompare} alt="prodcompare" />
                           </button>
                           <button className="border-0 bg-transparent">
-                            <img onClick={()=>navigate("/product/"+item?._id)} src={view} alt="view" />
+                            <IoEyeOutline onClick={() => navigate("/product/" + item?._id)} className="product-card-icons" />
                           </button>
                           <button className="border-0 bg-transparent">
-                            <img src={addcart} alt="addcart" />
+                            <IoCartOutline className="product-card-icons" />
                           </button>
                         </div>
                       </div>
@@ -271,6 +270,7 @@ const Home = () => {
                   </div>
                 );
               }
+              return null;
             })}
         </div>
       </Container>
@@ -337,7 +337,7 @@ const Home = () => {
           </div>
         </div>
       </Container>
-      <Container class1="special-wrapper py-5 home-wrapper-2">
+      <Container class1="special-wrapper py-4 home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Special Products</h3>
@@ -360,6 +360,7 @@ const Home = () => {
                   />
                 );
               }
+              return null;
             })}
         </div>
       </Container>
@@ -390,13 +391,13 @@ const Home = () => {
                         <img
                           src={item?.images[0]}
                           className="img-fluid mx-auto"
-                          alt="product image"
+                          alt="product"
                           width={160}
                         />
                         <img
                           src={item?.images[0]}
                           className="img-fluid mx-auto"
-                          alt="product image"
+                          alt="product"
                           width={160}
                         />
                       </div>
@@ -419,10 +420,10 @@ const Home = () => {
                             <img src={prodcompare} alt="prodcompare" />
                           </button>
                           <button className="border-0 bg-transparent">
-                            <img onClick={()=>navigate("/product/"+item?._id)} src={view} alt="view" />
+                            <IoEyeOutline onClick={() => navigate("/product/" + item?._id)} className="product-card-icons" />
                           </button>
                           <button className="border-0 bg-transparent">
-                            <img src={addcart} alt="addcart" />
+                            <IoCartOutline className="product-card-icons" />
                           </button>
                         </div>
                       </div>
@@ -430,6 +431,7 @@ const Home = () => {
                   </div>
                 );
               }
+              return null;
             })}
         </div>
       </Container>
@@ -490,6 +492,7 @@ const Home = () => {
                     </div>
                   );
                 }
+                return null;
               })}
           </div>
         </div>
