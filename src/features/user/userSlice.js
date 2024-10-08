@@ -61,7 +61,6 @@ export const getUserCart = createAsyncThunk(
   }
 );
 
-
 const initialState = {
   user: getCustomerFromLocalStorage,
   isError: false,
@@ -146,8 +145,8 @@ export const authSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.cartProduct = action.payload;
-        if(state.isSuccess) {
-          toast.success("Product added to cart")
+        if (state.isSuccess) {
+          toast.success("Product added to cart");
         }
       })
       .addCase(addProdToCart.rejected, (state, action) => {
