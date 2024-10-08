@@ -31,13 +31,13 @@ const Wishlist = () => {
     <>
       <Meta title={"Wishlist"} />
       <BreadCrumb title="Wishlist" />
-      <Container className="wishlist-wrapper home-wrapper-2 py-5">
+      <Container class1="wishlist-wrapper home-wrapper-2 py-5">
         <div className="row">
           {wishlistState && wishlistState?.length === 0 && <NoRecordFound />}
           {wishlistState &&
             wishlistState?.map((item, index) => {
               return (
-                <div className="col-3" key={index}>
+                <div className="wishlist-card-cover col-3" key={index}>
                   <div className="wishlist-card position-relative">
                     <img
                       onClick={() => removeFromWislist(item?._id)}
@@ -59,6 +59,7 @@ const Wishlist = () => {
                       />
                     </div>
                     <div className="px-3 py-3">
+                      <h6 className="brand">{item?.brand}</h6>
                       <h5 className="title">{item?.title}</h5>
                       <h6 className="price">$ {item?.price}</h6>
                     </div>

@@ -12,7 +12,7 @@ const Footer = () => {
             <div className="col-5">
               <div className="footer-top-data d-flex gap-30 align-items-center">
                 <img src={newsletter} alt="newsletter" />
-                <h2 className="mb-0 text-white">Sign up for Newsletter</h2>
+                <h3 className="mb-0 text-white">Sign up for Newsletter</h3>
               </div>
             </div>
             <div className="col-7">

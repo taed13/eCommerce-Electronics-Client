@@ -139,7 +139,7 @@ const Header = () => {
                 <div className="">
                   <div className="dropdown">
                     <button
-                      className="btn btn-secondary dropdown-toggle bg-transparent border-0 d-flex align-items-center gap-15"
+                      className="btn btn-secondary dropdown-toggle bg-transparent border-0 d-flex align-items-center gap-15 header-dropdownmenu-button"
                       type="button"
                       id="dropdownMenuButton1"
                       data-bs-toggle="dropdown"
@@ -174,10 +174,10 @@ const Header = () => {
                 </div>
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
-                    <NavLink to="/">Home</NavLink>
-                    <NavLink to="/product">Our Store</NavLink>
-                    <NavLink to="/blogs">Blogs</NavLink>
-                    <NavLink to="/contact">Contact</NavLink>
+                    <NavLink className="header-navlinks" to="/">Home</NavLink>
+                    <NavLink className="header-navlinks" to="/product">Our Store</NavLink>
+                    <NavLink className="header-navlinks" to="/blogs">Blogs</NavLink>
+                    <NavLink className="header-navlinks" to="/contact">Contact</NavLink>
                   </div>
                 </div>
               </div>
