@@ -13,8 +13,6 @@ const Header = () => {
   const cartState = useSelector((state) => state?.auth?.cartProducts);
   const authState = useSelector((state) => state.auth);
 
-  console.log("---->");
-  console.log(authState);
   const [total, setTotal] = useState(null);
   useEffect(() => {
     let sum = 0;
@@ -121,8 +119,8 @@ const Header = () => {
                   >
                     <img src={cart} alt="cart" />
                     <div className="d-flex flex-column">
-                      <span className="badge bg-white text-dark">0</span>
-                      <p className="mb-0">$500</p>
+                      <span className="badge bg-white text-dark">{ cartState?.length ? cartState?.length : 0 }</span>
+                      <p className="mb-0">$ {total == null ? 0 : total}</p>
                     </div>
                   </Link>
                 </div>
