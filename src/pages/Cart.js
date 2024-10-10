@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Meta from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
 import watch from '../images/watch.jpg'
@@ -6,14 +6,43 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserCart } from '../features/user/userSlice';
+import { deleteCartProduct, getUserCart, updateCartProduct } from '../features/user/userSlice';
 
 const Cart = () => {
     const dispatch = useDispatch();
+    const [productUpdateDetails, setProductUpdateDetails] = useState(null);
+    const [total, setTotal] = useState(null);
+
     const userCartState = useSelector(state => state.auth?.cartProducts);
+
     useEffect(() => {
         dispatch(getUserCart())
-    }, [])
+    }, [userCartState])
+
+    useEffect(() => {
+        if (productUpdateDetails) {
+            dispatch(updateCartProduct(productUpdateDetails));
+            setTimeout(() => {
+                dispatch(getUserCart())
+            }, 200)
+        }
+    }, [productUpdateDetails])
+
+    const deleteACartProduct = (id) => {
+        dispatch(deleteCartProduct(id));
+        setTimeout(() => {
+            dispatch(getUserCart())
+        }, 200)
+    }
+
+    useEffect(() => {
+        let sum = 0;
+        for (let index = 0; index < userCartState?.length; index++) {
+            sum = sum + (Number(userCartState[index]?.price) * Number(userCartState[index]?.quantity));
+            setTotal(sum);
+        }
+    }, [userCartState])
+
     return (
         <>
             <Meta title={"Cart"} />
@@ -35,13 +64,13 @@ const Cart = () => {
                                             <img src={watch} className='img-fluid' alt="product" />
                                         </div>
                                         <div className="w-75">
-                                            <p>{item?.productId.title}</p>
-                                            <p className='d-flex align-items-center gap-3'>
-                                                Color:
+                                            <p>{item?.productId?.title}</p>
+                                            <div className='d-flex align-items-start gap-3'>
+                                                <p>Color:</p>
                                                 <ul className='colors ps-0'>
-                                                    <li style={{ backgroundColor: item?.color.title }}></li>
+                                                    <li style={{ backgroundColor: item?.color?.title }}></li>
                                                 </ul>
-                                            </p>
+                                            </div>
                                             <p>Size: XXL</p>
                                         </div>
                                     </div>
@@ -57,10 +86,11 @@ const Cart = () => {
                                                 id=""
                                                 min={1}
                                                 max={10}
-                                                value={item?.quantity}
+                                                value={productUpdateDetails?.quantity ? productUpdateDetails?.quantity : item?.quantity}
+                                                onChange={(e) => { setProductUpdateDetails({ cartItemId: item?._id, quantity: e.target.value }) }}
                                             />
                                         </div>
-                                        <div className='reset-quantity-button'>
+                                        <div className='reset-quantity-button' onClick={() => { deleteACartProduct(item?._id) }}>
                                             <FaRegTrashCan className='reset-quantity-icon' />
                                         </div>
                                     </div>
@@ -73,12 +103,15 @@ const Cart = () => {
                     </div>
                     <div className="col-12 py-2 mt-4">
                         <div className="d-flex justify-content-between align-items-baseline">
-                            <Link to='/product' className='button'>Continue Shopping</Link>
-                            <div className="cart-checkout-info d-flex flex-column align-items-end">
-                                <h4>Subtotal: $ 1000.00</h4>
-                                <p>(Taxes and shipping calculated at checkout)</p>
-                                <Link to='/checkout' className='button'>Checkout</Link>
-                            </div>
+                            <Link to='/product' className='button'>Continue shopping</Link>
+                            {
+                                (total === null || total === 0) ? <></> :
+                                <div className="cart-checkout-info d-flex flex-column align-items-end">
+                                    <h4>Subtotal: $ {total}</h4>
+                                    <p>(Taxes and shipping calculated at checkout)</p>
+                                    <Link to='/checkout' className='button'>Checkout</Link>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
