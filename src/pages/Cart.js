@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Meta from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
-import watch from '../images/watch.jpg'
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
@@ -10,23 +9,34 @@ import { deleteCartProduct, getUserCart, updateCartProduct } from '../features/u
 
 const Cart = () => {
     const dispatch = useDispatch();
-    const [productUpdateDetails, setProductUpdateDetails] = useState(null);
-    const [total, setTotal] = useState(null);
+    const [productUpdateDetails, setProductUpdateDetails] = useState({});
+    const [subTotal, setSubTotal] = useState(0);
 
     const userCartState = useSelector(state => state.auth?.cartProducts);
+    // console.log(userCartState);
 
     useEffect(() => {
         dispatch(getUserCart())
-    }, [userCartState])
+    }, [])
 
     useEffect(() => {
-        if (productUpdateDetails) {
-            dispatch(updateCartProduct(productUpdateDetails));
+        if (Object.keys(productUpdateDetails).length > 0) {
+            const productDetails = Object.values(productUpdateDetails)[0];
+            dispatch(updateCartProduct(productDetails));
             setTimeout(() => {
-                dispatch(getUserCart())
-            }, 200)
+                dispatch(getUserCart());
+            }, 200);
         }
-    }, [productUpdateDetails])
+    }, [productUpdateDetails]);
+
+    const handleQuantityChange = (cartItemId, quantity) => {
+        setProductUpdateDetails({
+            [cartItemId]: {
+                cartItemId,
+                quantity
+            }
+        });
+    };
 
     const deleteACartProduct = (id) => {
         dispatch(deleteCartProduct(id));
@@ -37,11 +47,12 @@ const Cart = () => {
 
     useEffect(() => {
         let sum = 0;
-        for (let index = 0; index < userCartState?.length; index++) {
-            sum = sum + (Number(userCartState[index]?.price) * Number(userCartState[index]?.quantity));
-            setTotal(sum);
-        }
-    }, [userCartState])
+        userCartState?.forEach(item => {
+            console.log(item);
+            sum += Number(item?.price) * Number(item?.quantity);
+        });
+        setSubTotal(sum);
+    }, [userCartState]);
 
     return (
         <>
@@ -61,7 +72,7 @@ const Cart = () => {
                                 <div key={index} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
                                     <div className="cart-col-1 gap-15 d-flex align-items-center">
                                         <div className="w-25">
-                                            <img src={watch} className='img-fluid' alt="product" />
+                                            <img src={item?.productId?.images[0]?.url} className='img-fluid' alt="product" />
                                         </div>
                                         <div className="w-75">
                                             <p>{item?.productId?.title}</p>
@@ -82,12 +93,12 @@ const Cart = () => {
                                             <input
                                                 className='form-control'
                                                 type="number"
-                                                name=""
-                                                id=""
+                                                name="quantity"
+                                                id="quantity"
                                                 min={1}
                                                 max={10}
-                                                value={productUpdateDetails?.quantity ? productUpdateDetails?.quantity : item?.quantity}
-                                                onChange={(e) => { setProductUpdateDetails({ cartItemId: item?._id, quantity: e.target.value }) }}
+                                                value={productUpdateDetails[item?._id]?.quantity || item?.quantity}
+                                                onChange={(e) => handleQuantityChange(item?._id, e.target.value)}
                                             />
                                         </div>
                                         <div className='reset-quantity-button' onClick={() => { deleteACartProduct(item?._id) }}>
@@ -105,12 +116,12 @@ const Cart = () => {
                         <div className="d-flex justify-content-between align-items-baseline">
                             <Link to='/product' className='button'>Continue shopping</Link>
                             {
-                                (total === null || total === 0) ? <></> :
-                                <div className="cart-checkout-info d-flex flex-column align-items-end">
-                                    <h4>Subtotal: $ {total}</h4>
-                                    <p>(Taxes and shipping calculated at checkout)</p>
-                                    <Link to='/checkout' className='button'>Checkout</Link>
-                                </div>
+                                (subTotal === null || subTotal === 0) ? <></> :
+                                    <div className="cart-checkout-info d-flex flex-column align-items-end">
+                                        <h4>Subtotal: $ {subTotal}</h4>
+                                        <p>(Taxes and shipping calculated at checkout)</p>
+                                        <Link to='/checkout' className='button'>Checkout</Link>
+                                    </div>
                             }
                         </div>
                     </div>

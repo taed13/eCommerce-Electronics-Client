@@ -200,7 +200,7 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.deletedCartProduct = action.payload;
-                if(state.isSuccess) {
+                if (state.isSuccess) {
                     toast.success("Product removed from cart!");
                 }
             })
@@ -209,7 +209,7 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                if(state.isSuccess === false) {
+                if (state.isSuccess === false) {
                     toast.error('Product not removed from cart!')
                 }
             })
@@ -221,7 +221,7 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.updatedCartProduct = action.payload;
-                if(state.isSuccess) {
+                if (state.isSuccess) {
                     toast.success("Product updated!");
                 }
             })
@@ -230,7 +230,7 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                if(state.isSuccess === false) {
+                if (state.isSuccess === false) {
                     toast.error('Product not updated!')
                 }
             })
