@@ -10,93 +10,93 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/user/userSlice";
 
 const loginSchema = yup.object({
-  email: yup
-    .string()
-    .email("Email should be valid")
-    .required("Email is required"),
-  password: yup.string().required("Password is required"),
+    email: yup
+        .string()
+        .email("Email should be valid")
+        .required("Email is required"),
+    password: yup.string().required("Password is required"),
 });
 
 const Login = () => {
-  const authState = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-  console.log(authState);
-  const dispatch = useDispatch();
+    const authState = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    console.log(authState);
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (authState?.isSuccess) {
-      navigate("/");
-      window.location.reload();
-    }
-  }, [authState, navigate]);
+    useEffect(() => {
+        if (authState?.isSuccess) {
+            navigate("/");
+            window.location.reload();
+        }
+    }, [authState, navigate]);
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: loginSchema,
-    onSubmit: (values) => {
-      dispatch(loginUser(values));
-      // navigate("/");
-    },
-  });
-  return (
-    <>
-      <Meta title={"Login"} />
-      <BreadCrumb title="Login" />
-      <Container class1="login-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-12">
-            <div className="auth-card shadow-lg">
-              <h3 className="text-center mb-3">Login</h3>
-              <form
-                action=""
-                onSubmit={formik.handleSubmit}
-                className="d-flex flex-column gap-15"
-              >
-                <CustomInput
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange("email")}
-                  onBlur={formik.handleBlur("email")}
-                />
-                <div className="error text-danger">
-                  {formik.touched.email && formik.errors.email}
-                </div>
+    const formik = useFormik({
+        initialValues: {
+            email: "",
+            password: "",
+        },
+        validationSchema: loginSchema,
+        onSubmit: (values) => {
+            dispatch(loginUser(values));
+            // navigate("/");
+        },
+    });
+    return (
+        <>
+            <Meta title={"Login"} />
+            <BreadCrumb title="Login" />
+            <Container class1="login-wrapper py-5 home-wrapper-2">
+                <div className="row">
+                    <div className="col-12">
+                        <div className="auth-card shadow-lg">
+                            <h3 className="text-center mb-3">Login</h3>
+                            <form
+                                action=""
+                                onSubmit={formik.handleSubmit}
+                                className="d-flex flex-column gap-15"
+                            >
+                                <CustomInput
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange("email")}
+                                    onBlur={formik.handleBlur("email")}
+                                />
+                                <div className="error text-danger">
+                                    {formik.touched.email && formik.errors.email}
+                                </div>
 
-                <CustomInput
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange("password")}
-                  onBlur={formik.handleBlur("password")}
-                />
-                <div className="error text-danger">
-                  {formik.touched.password && formik.errors.password}
-                </div>
+                                <CustomInput
+                                    type="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    value={formik.values.password}
+                                    onChange={formik.handleChange("password")}
+                                    onBlur={formik.handleBlur("password")}
+                                />
+                                <div className="error text-danger">
+                                    {formik.touched.password && formik.errors.password}
+                                </div>
 
-                <div>
-                  <Link to="/forgot-password">Forgot password?</Link>
+                                <div>
+                                    <Link to="/forgot-password">Forgot password?</Link>
+                                </div>
+                                <div className="mt-3 d-flex justify-content-center align-items-center gap-15">
+                                    <button type="submit" className="button border-0">
+                                        Login
+                                    </button>
+                                    <Link to="/signup" className="button signup">
+                                        Signup
+                                    </Link>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="mt-3 d-flex justify-content-center align-items-center gap-15">
-                  <button type="submit" className="button border-0">
-                    Login
-                  </button>
-                  <Link to="/signup" className="button signup">
-                    Signup
-                  </Link>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </>
-  );
+            </Container>
+        </>
+    );
 };
 
 export default Login;
