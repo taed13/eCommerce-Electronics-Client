@@ -2,6 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authService } from "./userService";
 import { toast } from "react-toastify";
 
+const getCustomerFromLocalStorage = localStorage.getItem("customer")
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
+
 export const registerUser = createAsyncThunk(
     "auth/register",
     async (userData, thunkAPI) => {
@@ -34,10 +38,6 @@ export const getUserProductWishList = createAsyncThunk(
         }
     }
 );
-
-const getCustomerFromLocalStorage = localStorage.getItem("customer")
-    ? JSON.parse(localStorage.getItem("customer"))
-    : null;
 
 export const addProdToCart = createAsyncThunk(
     "user/cart/add",
@@ -77,6 +77,39 @@ export const updateCartProduct = createAsyncThunk(
     async (cartDetails, thunkAPI) => {
         try {
             return await authService.updateProductFromCart(cartDetails);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const updateProfile = createAsyncThunk(
+    "user/profile/update",
+    async (userData, thunkAPI) => {
+        try {
+            return await authService.updateUser(userData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const forgotPasswordToken = createAsyncThunk(
+    "user/password/token",
+    async (email, thunkAPI) => {
+        try {
+            return await authService.forgotPassToken(email);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const resetPassword = createAsyncThunk(
+    "user/password/reset",
+    async (data, thunkAPI) => {
+        try {
+            return await authService.resetPass(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);
         }
@@ -221,7 +254,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error('Product not removed from cart!')
+                    toast.error("Product not removed from cart!");
                 }
             })
             .addCase(updateCartProduct.pending, (state) => {
@@ -242,7 +275,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error('Product not updated!')
+                    toast.error("Product not updated!");
                 }
             })
             .addCase(getOrders.pending, (state) => {
@@ -259,6 +292,69 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
+            })
+            .addCase(updateProfile.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateProfile.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.updatedUser = action.payload;
+                if (state.isSuccess) {
+                    toast.success("Profile updated successfully!");
+                }
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isSuccess === false) {
+                    toast.error("Profile not updated!");
+                }
+            })
+            .addCase(forgotPasswordToken.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(forgotPasswordToken.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.token = action.payload;
+                if (state.isSuccess) {
+                    toast.success("Password reset link sent to your email!");
+                }
+            })
+            .addCase(forgotPasswordToken.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isSuccess === false) {
+                    toast.error("Password reset link not sent to your email!");
+                }
+            })
+            .addCase(resetPassword.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(resetPassword.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.pass = action.payload;
+                if (state.isSuccess) {
+                    toast.success("Password updated successfully!");
+                }
+            })
+            .addCase(resetPassword.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isSuccess === false) {
+                    toast.error("Something went wrong!");
+                }
             });
     },
 });

@@ -7,12 +7,14 @@ import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
 import { useSelector } from "react-redux";
+import { Typeahead } from "react-bootstrap-typeahead";
+import "react-bootstrap-typeahead/css/Typeahead.css";
 
 const Header = () => {
     const cartState = useSelector((state) => state?.auth?.cartProducts);
-    const authState = useSelector((state) => state.auth);
-
+    const authState = useSelector((state) => state?.auth);
     const [total, setTotal] = useState(null);
+
     useEffect(() => {
         let sum = 0;
         for (let i = 0; i < cartState?.length; i++) {
@@ -22,6 +24,12 @@ const Header = () => {
     }, [cartState]);
 
     useEffect(() => { }, [authState]);
+
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.reload();
+    };
+
     return (
         <>
             <header className="header-top-strip py-3">
@@ -118,7 +126,9 @@ const Header = () => {
                                     >
                                         <img src={cart} alt="cart" />
                                         <div className="d-flex flex-column">
-                                            <span className="badge bg-white text-dark">{cartState?.length ? cartState?.length : 0}</span>
+                                            <span className="badge bg-white text-dark">
+                                                {cartState?.length ? cartState?.length : 0}
+                                            </span>
                                             <p className="mb-0">$ {total == null ? 0 : total}</p>
                                         </div>
                                     </Link>
@@ -171,11 +181,28 @@ const Header = () => {
                                 </div>
                                 <div className="menu-links">
                                     <div className="d-flex align-items-center gap-15">
-                                        <NavLink className="header-navlinks" to="/">Home</NavLink>
-                                        <NavLink className="header-navlinks" to="/product">Our Store</NavLink>
-                                        <NavLink className="header-navlinks" to="/my-orders">My Orders</NavLink>
-                                        <NavLink className="header-navlinks" to="/blogs">Blogs</NavLink>
-                                        <NavLink className="header-navlinks" to="/contact">Contact</NavLink>
+                                        <NavLink className="header-navlinks" to="/">
+                                            Home
+                                        </NavLink>
+                                        <NavLink className="header-navlinks" to="/product">
+                                            Our Store
+                                        </NavLink>
+                                        <NavLink className="header-navlinks" to="/my-orders">
+                                            My Orders
+                                        </NavLink>
+                                        <NavLink className="header-navlinks" to="/blogs">
+                                            Blogs
+                                        </NavLink>
+                                        <NavLink className="header-navlinks" to="/contact">
+                                            Contact
+                                        </NavLink>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="border border-0 bg-transparent text-white text-uppercase"
+                                            type="button"
+                                        >
+                                            Logout
+                                        </button>
                                     </div>
                                 </div>
                             </div>

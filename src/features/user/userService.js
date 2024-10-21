@@ -45,33 +45,73 @@ const getCart = async () => {
 };
 
 const removeProductFromCart = async (cartItemId) => {
-    const response = await axios.delete(`${base_url}user/delete-product-cart/${cartItemId}`, config);
+    const response = await axios.delete(
+        `${base_url}user/delete-product-cart/${cartItemId}`,
+        config
+    );
     if (response.data) {
         return response.data;
     }
 };
 
 const updateProductFromCart = async (cartDetails) => {
-    const response = await axios.delete(`${base_url}user/update-product-cart/${cartDetails.cartItemId}/${cartDetails.quantity}`, config);
+    const response = await axios.delete(
+        `${base_url}user/update-product-cart/${cartDetails.cartItemId}/${cartDetails.quantity}`,
+        config
+    );
     if (response.data) {
         return response.data;
     }
 };
 
 const createOrder = async (orderDetail) => {
-    const response = await axios.post(`${base_url}user/cart/create-order`, orderDetail, config);
+    const response = await axios.post(
+        `${base_url}user/cart/create-order`,
+        orderDetail,
+        config
+    );
     if (response.data) {
         return response.data;
     }
-}
+};
 
 const getUserOrders = async () => {
     const response = await axios.get(`${base_url}user/getmyorders`, config);
     if (response.data) {
         return response.data;
     }
-}
+};
 
+const updateUser = async (userData) => {
+    const response = await axios.put(
+        `${base_url}user/edit-user`,
+        userData,
+        config
+    );
+    if (response.data) {
+        return response.data;
+    }
+};
+
+const forgotPassToken = async (email) => {
+    const response = await axios.post(
+        `${base_url}user/forgot-password-token`,
+        email
+    );
+    if (response.data) {
+        return response.data;
+    }
+};
+
+const resetPass = async (data) => {
+    const response = await axios.put(
+        `${base_url}user/reset-password/${data.token}`,
+        { password: data?.password }
+    );
+    if (response.data) {
+        return response.data;
+    }
+};
 
 export const authService = {
     register,
@@ -82,5 +122,8 @@ export const authService = {
     removeProductFromCart,
     updateProductFromCart,
     createOrder,
-    getUserOrders
+    getUserOrders,
+    updateUser,
+    forgotPassToken,
+    resetPass,
 };
