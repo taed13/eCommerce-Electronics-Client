@@ -250,18 +250,18 @@ const Home = () => {
                                             </div>
                                             <div className="action-bar position-absolute">
                                                 <div className="d-flex flex-column gap-15">
-                                                    <button className="border-0 bg-transparent">
+                                                    {/* <button className="border-0 bg-transparent">
                                                         <img src={prodcompare} alt="prodcompare" />
-                                                    </button>
+                                                    </button> */}
                                                     <button className="border-0 bg-transparent">
                                                         <IoEyeOutline
                                                             onClick={() => navigate("/product/" + item?._id)}
                                                             className="product-card-icons"
                                                         />
                                                     </button>
-                                                    <button className="border-0 bg-transparent">
+                                                    {/* <button className="border-0 bg-transparent">
                                                         <IoCartOutline className="product-card-icons" />
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </div>
                                         </div>

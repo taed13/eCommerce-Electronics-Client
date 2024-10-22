@@ -5,7 +5,8 @@ const getTokenFromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))
     : null;
 
-const token = getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : "";
+const token =
+    getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : "";
 
 export const authMiddleware = {
     headers: {

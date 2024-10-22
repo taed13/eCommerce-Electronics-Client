@@ -43,14 +43,18 @@ const ResetPassword = () => {
                     <div className="col-12">
                         <div className="auth-card">
                             <h3 className="text-center mb-3">Reset Password</h3>
-                            <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15">
+                            <form
+                                action=""
+                                onSubmit={formik.handleSubmit}
+                                className="d-flex flex-column gap-15"
+                            >
                                 <CustomInput
                                     type="password"
                                     name="password"
                                     placeholder="Password"
                                     value={formik.values.password}
-                                    onChange={formik.handleChange('password')}
-                                    onBlur={formik.handleBlur('password')}
+                                    onChange={formik.handleChange("password")}
+                                    onBlur={formik.handleBlur("password")}
                                 />
                                 <div className="errors">
                                     {formik.touched.password && formik.errors.password}
@@ -61,8 +65,8 @@ const ResetPassword = () => {
                                     name="confpassword"
                                     placeholder="Confirm password"
                                     value={formik.values.confpassword}
-                                    onChange={formik.handleChange('confpassword')}
-                                    onBlur={formik.handleBlur('confpassword')}
+                                    onChange={formik.handleChange("confpassword")}
+                                    onBlur={formik.handleBlur("confpassword")}
                                 />
                                 <div className="errors">
                                     {formik.touched.confpassword && formik.errors.confpassword}

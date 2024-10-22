@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
-import watch from "../images/watch.jpg";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
@@ -22,7 +21,7 @@ const shippingSchema = yup.object({
 
 const Checkout = () => {
     const dispatch = useDispatch();
-    const userCartState = useSelector(state => state.auth?.cartProducts);
+    const userCartState = useSelector((state) => state.auth?.cartProducts);
     const [subTotal, setSubTotal] = useState(0);
     const [countryList, setCountryList] = useState([]);
     const [shippingInfo, setShippingInfo] = useState({});
@@ -40,13 +39,12 @@ const Checkout = () => {
         fetchCountries();
     }, []);
 
-
-    console.log('CART STATE');
+    console.log("CART STATE");
     console.log(userCartState);
 
     useEffect(() => {
         let sum = 0;
-        userCartState?.forEach(item => {
+        userCartState?.forEach((item) => {
             sum += Number(item?.price) * Number(item?.quantity);
         });
         setSubTotal(sum);
@@ -71,13 +69,16 @@ const Checkout = () => {
         },
     });
 
-
     const checkOutHandler = async (values) => {
         try {
-            const response = await axios.post("http://127.0.0.1:5001/api/user/order/purchase", {
-                items: userCartState, // Send cart items
-                shippingInfo: values, // Include shipping information
-            }, config); // Include any necessary config if required
+            const response = await axios.post(
+                "http://127.0.0.1:5001/api/user/order/purchase",
+                {
+                    items: userCartState, // Send cart items
+                    shippingInfo: values, // Include shipping information
+                },
+                config
+            ); // Include any necessary config if required
 
             // Redirect to the checkout URL returned from your server
             window.location = response.data.url;
@@ -85,7 +86,7 @@ const Checkout = () => {
             console.error("Error during checkout:", error);
             alert("An error occurred during checkout. Please try again."); // User-friendly error message
         }
-    }
+    };
     return (
         <>
             <Container class1="checkout-wrapper py-5 home-wrapper-2">
@@ -267,10 +268,9 @@ const Checkout = () => {
                                         <Link to="/cart" className="button">
                                             Continue to shipping
                                         </Link>
-                                        <button
-                                            className="button"
-                                            type="submit"
-                                        >Place Order</button>
+                                        <button className="button" type="submit">
+                                            Place Order
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -278,36 +278,49 @@ const Checkout = () => {
                     </div>
                     <div className="col-5">
                         <div className="border-bottom py-4 d-flex flex-column gap-30">
-
-                            {userCartState && userCartState?.map((item, index) => {
-                                return (
-                                    <div key={index} className="d-flex justify-content-between gap-10 align-items-center">
-                                        <div className="w-75 d-flex gap-15">
-                                            <div className="w-25 position-relative">
-                                                <span className="checkout-product-number-badge badge">
-                                                    {item?.quantity}
-                                                </span>
-                                                <img src={item?.productId?.images[0]?.url} className="img-fluid" alt="product" />
+                            {userCartState &&
+                                userCartState?.map((item, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="d-flex justify-content-between gap-10 align-items-center"
+                                        >
+                                            <div className="w-75 d-flex gap-15">
+                                                <div className="w-25 position-relative">
+                                                    <span className="checkout-product-number-badge badge">
+                                                        {item?.quantity}
+                                                    </span>
+                                                    <img
+                                                        src={item?.productId?.images[0]?.url}
+                                                        className="img-fluid"
+                                                        alt="product"
+                                                    />
+                                                </div>
+                                                <div className="d-flex flex-column justify-content-center">
+                                                    <h5 className="total">{item?.productId?.title}</h5>
+                                                    {/* TODO: size??? */}
+                                                    <p className="partial mb-0">
+                                                        S | {item?.color.title}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="d-flex flex-column justify-content-center">
-                                                <h5 className="total">
-                                                    {item?.productId?.title}
-                                                </h5>
-                                                {/* TODO: size??? */}
-                                                <p className="partial mb-0">S | {item?.color.title}</p>
+                                            <div className="w-25 flex-grow-1 d-flex align-items-center justify-content-end">
+                                                <h5 className="partial-price mb-0">$ {item?.price}</h5>
                                             </div>
                                         </div>
-                                        <div className="w-25 flex-grow-1 d-flex align-items-center justify-content-end">
-                                            <h5 className="partial-price mb-0">$ {item?.price}</h5>
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                                    );
+                                })}
                         </div>
                         <div className="border-bottom py-4">
                             <div className="d-flex justify-content-between align-items-center">
                                 <p className="partial">Subtotal</p>
-                                <p className="partial-price">$ {userCartState?.reduce((acc, item) => acc + item.price * item.quantity, 0)}</p>
+                                <p className="partial-price">
+                                    ${" "}
+                                    {userCartState?.reduce(
+                                        (acc, item) => acc + item.price * item.quantity,
+                                        0
+                                    )}
+                                </p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <p className="mb-0 partial">Shipping</p>
@@ -316,7 +329,13 @@ const Checkout = () => {
                         </div>
                         <div className="d-flex justify-content-between align-items-center border-bottom py-4">
                             <h4 className="total">Total</h4>
-                            <h5 className="total-price">$ {userCartState?.reduce((acc, item) => acc + item.price * item.quantity, 0) + 34}</h5>
+                            <h5 className="total-price">
+                                ${" "}
+                                {userCartState?.reduce(
+                                    (acc, item) => acc + item.price * item.quantity,
+                                    0
+                                ) + 34}
+                            </h5>
                         </div>
                     </div>
                 </div>

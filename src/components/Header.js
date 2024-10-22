@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
-import compare from "../images/compare.svg";
 import wishlist from "../images/wishlist.svg";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import { getAProduct } from "../features/products/productSlice";
 
 const Header = () => {
     const cartState = useSelector((state) => state?.auth?.cartProducts);
     const authState = useSelector((state) => state?.auth);
+    const productState = useSelector((state) => state?.product?.product);
+    const [productOtp, setProductOtp] = useState([]);
     const [total, setTotal] = useState(null);
+    const [paginate, setPaginate] = useState(true);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let sum = 0;
@@ -24,6 +30,16 @@ const Header = () => {
     }, [cartState]);
 
     useEffect(() => { }, [authState]);
+
+    useEffect(() => {
+        let data = [];
+        for (let i = 0; i < productState?.length; i++) {
+            const element = productState[i];
+            data.push({ id: i, prod: element?._id, name: element?.title });
+        }
+
+        setProductOtp(data);
+    }, [productState]);
 
     const handleLogout = () => {
         localStorage.clear();
@@ -63,12 +79,20 @@ const Header = () => {
                         </div>
                         <div className="col-5">
                             <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="form-control py-2"
-                                    placeholder="Search products here..."
-                                    aria-label="Search products here..."
-                                    aria-describedby="basic-addon2"
+                                <Typeahead
+                                    id="pagination-typeahead"
+                                    onPaginate={() => setPaginate(true)}
+                                    onChange={(selected) => {
+                                        if (selected.length) {
+                                            navigate(`/product/${selected[0]?.prod}`);
+                                            dispatch(getAProduct(selected[0]?.prod));
+                                        }
+                                    }}
+                                    options={productOtp}
+                                    paginate={paginate}
+                                    labelKey={(option) => `${option.name}`}
+                                    minLength={1}
+                                    placeholder="Search Product..."
                                 />
                                 <span className="input-group-text p-3" id="basic-addon2">
                                     <BsSearch className="fs-6" />
@@ -78,7 +102,7 @@ const Header = () => {
                         <div className="col-5">
                             <div className="header-upper-links d-flex align-items-center justify-content-between">
                                 <div>
-                                    <Link
+                                    {/* <Link
                                         to="/compare-product"
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
@@ -86,7 +110,7 @@ const Header = () => {
                                         <p className="mb-0">
                                             Compare <br /> Products
                                         </p>
-                                    </Link>
+                                    </Link> */}
                                 </div>
                                 <div>
                                     <Link

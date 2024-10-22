@@ -42,7 +42,11 @@ const Profile = () => {
                     <div className="col-12">
                         <div className="d-flex justify-content-between align-items-center">
                             <h3 className="my-3">Update Profile</h3>
-                            <FiEdit className="fs-3" size={20} onClick={() => setEdit(false)} />
+                            <FiEdit
+                                className="fs-3"
+                                size={20}
+                                onClick={() => setEdit(false)}
+                            />
                         </div>
                     </div>
                     <div className="col-12">
@@ -119,9 +123,7 @@ const Profile = () => {
                                     {formik.touched.mobile && formik.errors.mobile}
                                 </div>
                             </div>
-                            {
-                                edit
-                                ||
+                            {edit || (
                                 <div className="d-flex gap-2">
                                     <button type="submit" className="btn btn-primary">
                                         Update
@@ -134,7 +136,7 @@ const Profile = () => {
                                         Cancel
                                     </button>
                                 </div>
-                            }
+                            )}
                         </form>
                     </div>
                 </div>

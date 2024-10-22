@@ -9,15 +9,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
 
 const Store = () => {
-    const [grid, setGrid] = useState(4);
-    const productState = useSelector((state) => state?.product?.product);
     const dispatch = useDispatch();
+
+    const [grid, setGrid] = useState(4);
+    const [brands, setBrands] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [colors, setColors] = useState([]);
+
+    // Filter State
+    const [brand, setBrand] = useState([]);
+    const [category, setCategory] = useState([]);
+    const [tag, setTag] = useState([]);
+    const [color, setColor] = useState([]);
+    const [maxPrice, setMaxPrice] = useState(null);
+    const [minPrice, setMinPrice] = useState(null);
+    const [sort, setSort] = useState("manual");
+
+    const productState = useSelector((state) => state?.product?.product);
+
     useEffect(() => {
         getProducts();
-    }, []);
+    }, [brand, category, tag, color, minPrice, maxPrice, sort]);
+
     const getProducts = () => {
-        dispatch(getAllProducts());
+        dispatch(
+            getAllProducts({ sort, brand, category, tag, minPrice, maxPrice })
+        );
     };
+
+    useEffect(() => {
+        let newBrands = [];
+        let categories = [];
+        let newTags = [];
+        let newColors = [];
+        for (let i = 0; i < productState?.length; i++) {
+            const element = productState[i];
+            newBrands.push(element.brand);
+            categories.push(element.category);
+            newColors.push(element.color);
+
+            const splitTags = element.tags.split(",").map((tag) => tag.trim());
+            newTags = [...newTags, ...splitTags];
+        }
+        setBrands(newBrands);
+        setCategories(categories);
+        setTags(newTags);
+        setColors(newColors);
+    }, [productState]);
+
     return (
         <>
             <Meta title={"Our Store"} />
@@ -29,17 +69,26 @@ const Store = () => {
                             <h3 className="filter-title">Shop By Categories</h3>
                             <div>
                                 <ul className="ps-0">
-                                    <li>Watch</li>
-                                    <li>TV</li>
-                                    <li>Camera</li>
-                                    <li>Laptop</li>
+                                    {categories &&
+                                        [...new Set(categories)].map((category, index) => {
+                                            return (
+                                                <li
+                                                    key={index}
+                                                    onClick={() => {
+                                                        setCategory(category);
+                                                    }}
+                                                >
+                                                    {category}
+                                                </li>
+                                            );
+                                        })}
                                 </ul>
                             </div>
                         </div>
                         <div className="filter-card mb-3">
                             <h3 className="filter-title">Filter By</h3>
                             <div>
-                                <h5 className="sub-title">Availability</h5>
+                                {/* <h5 className="sub-title">Availability</h5>
                                 <div>
                                     <div className="form-check">
                                         <input
@@ -63,34 +112,40 @@ const Store = () => {
                                             Out of stock (0)
                                         </label>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <h5 className="sub-title">Price</h5>
                             <div className="d-flex align-items-center gap-10">
                                 <div className="form-floating">
                                     <input
-                                        type="email"
+                                        type="number"
                                         className="form-control"
                                         id="floatingInput1"
                                         placeholder="From"
+                                        onChange={(e) => {
+                                            setMinPrice(e.target.value);
+                                        }}
                                     />
                                     <label htmlFor="floatingInput1">From</label>
                                 </div>
                                 <div className="form-floating">
                                     <input
-                                        type="email"
+                                        type="number"
                                         className="form-control"
                                         id="floatingInput2"
                                         placeholder="To"
+                                        onChange={(e) => {
+                                            setMaxPrice(e.target.value);
+                                        }}
                                     />
                                     <label htmlFor="floatingInput2">To</label>
                                 </div>
                             </div>
-                            <h5 className="sub-title">Color</h5>
+                            {/* <h5 className="sub-title">Color</h5>
                             <div>
                                 <Color />
-                            </div>
-                            <h5 className="sub-title">Size</h5>
+                            </div> */}
+                            {/* <h5 className="sub-title">Size</h5>
                             <div>
                                 <div className="form-check">
                                     <input
@@ -125,72 +180,46 @@ const Store = () => {
                                         L (2)
                                     </label>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="filter-card mb-3">
-                            <h3 className="filter-title">Product Tags</h3>
-                            <div>
-                                <div className="product-tags d-flex flex-wrap align-items-center gap-10">
-                                    <span className="ladge bg-light text-secondary rounded-3 py-2 px-3">
-                                        Headphone
-                                    </span>
-                                    <span className="ladge bg-light text-secondary rounded-3 py-2 px-3">
-                                        Laptop
-                                    </span>
-                                    <span className="ladge bg-light text-secondary rounded-3 py-2 px-3">
-                                        Mobile
-                                    </span>
-                                    <span className="ladge bg-light text-secondary rounded-3 py-2 px-3">
-                                        Watch
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="filter-card mb-3">
-                            <h3 className="filter-title">Random Products</h3>
-                            <div>
-                                <div className="random-products mb-3 d-flex">
-                                    <div className="w-50">
-                                        <img
-                                            src="images/watch.jpg"
-                                            className="img-fluid"
-                                            alt="watch"
-                                        />
-                                    </div>
-                                    <div className="w-50">
-                                        <h5>
-                                            Kids headphone bulk 10 pack multi colored for students
-                                        </h5>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={3}
-                                            edit={false}
-                                            activeColor="#ffd700"
-                                        />
-                                        <b>$ 300.00</b>
+                            </div> */}
+                            <div className="mb-3 mt-4">
+                                <h3 className="sub-title">Product Tags</h3>
+                                <div>
+                                    <div className="product-tags d-flex flex-wrap align-items-center gap-10">
+                                        {tags &&
+                                            [...new Set(tags)].map((tag, index) => {
+                                                return (
+                                                    <span
+                                                        key={index}
+                                                        onClick={() => {
+                                                            setTag(tag);
+                                                        }}
+                                                        className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                );
+                                            })}
                                     </div>
                                 </div>
-                                <div className="random-products d-flex">
-                                    <div className="w-50">
-                                        <img
-                                            src="images/watch.jpg"
-                                            className="img-fluid"
-                                            alt="watch"
-                                        />
-                                    </div>
-                                    <div className="w-50">
-                                        <h5>
-                                            Kids headphone bulk 10 pack multi colored for students
-                                        </h5>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={3}
-                                            edit={false}
-                                            activeColor="#ffd700"
-                                        />
-                                        <b>$ 300</b>
+                            </div>
+                            <div className="mb-3 mt-4">
+                                <h3 className="sub-title">Product Brands</h3>
+                                <div>
+                                    <div className="product-tags d-flex flex-wrap align-items-center gap-10">
+                                        {brands &&
+                                            [...new Set(brands)].map((brand, index) => {
+                                                return (
+                                                    <span
+                                                        key={index}
+                                                        onClick={() => {
+                                                            setBrand(brand);
+                                                        }}
+                                                        className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
+                                                    >
+                                                        {brand}
+                                                    </span>
+                                                );
+                                            })}
                                     </div>
                                 </div>
                             </div>
@@ -205,20 +234,21 @@ const Store = () => {
                                     </p>
                                     <select
                                         defaultValue={"manual"}
-                                        name=""
+                                        name="sort-by"
                                         className="form-control form-select"
-                                        id=""
+                                        id="sort-by"
+                                        onChange={(e) => {
+                                            setSort(e.target.value);
+                                        }}
                                     >
-                                        <option value="manual">Featured</option>
-                                        <option value="best-selling">Best selling</option>
-                                        <option value="title-ascending">Alphabetically, A-Z</option>
-                                        <option value="title-descending">
-                                            Alphabetically, Z-A
-                                        </option>
-                                        <option value="price-ascending">Price, low to high</option>
-                                        <option value="price-descending">Price, high to low</option>
-                                        <option value="option-ascending">Date, old to new</option>
-                                        <option value="option-descending">Date, new to old</option>
+                                        {/* <option value="manual">Featured</option>
+                                        <option value="best-selling">Best selling</option> */}
+                                        <option value="title">Alphabetically, A-Z</option>
+                                        <option value="-title">Alphabetically, Z-A</option>
+                                        <option value="price">Price, low to high</option>
+                                        <option value="-price">Price, high to low</option>
+                                        <option value="option">Date, old to new</option>
+                                        <option value="-option">Date, new to old</option>
                                     </select>
                                 </div>
                                 <div>
