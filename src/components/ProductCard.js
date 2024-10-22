@@ -10,7 +10,6 @@ import { addToWishlist } from "../features/products/productSlice";
 const ProductCard = (props) => {
     const { grid, data } = props;
     const dispatch = useDispatch();
-    console.log("ProductCard data: ", data);
     let location = useLocation();
     const addToWish = (prodId) => {
         dispatch(addToWishlist(prodId));
@@ -68,15 +67,15 @@ const ProductCard = (props) => {
                             </div>
                             <div className="action-bar position-absolute">
                                 <div className="d-flex flex-column gap-15">
-                                    <button className="border-0 bg-transparent">
+                                    {/* <button className="border-0 bg-transparent">
                                         <img src={prodcompare} alt="prodcompare" />
-                                    </button>
+                                    </button> */}
                                     <Link to={'/product/' + item?._id} className="border-0 bg-transparent">
                                         <IoEyeOutline className="product-card-icons" />
                                     </Link>
-                                    <button className="border-0 bg-transparent">
+                                    {/* <button className="border-0 bg-transparent">
                                         <IoCartOutline className="product-card-icons" />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         </div>

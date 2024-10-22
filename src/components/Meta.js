@@ -10,4 +10,4 @@ const Meta = (props) => {
     )
 }
 
-export default Meta
+export default Meta;

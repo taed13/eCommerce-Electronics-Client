@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Container = (props) => {
     return <section className={props.class1}>
@@ -8,4 +8,4 @@ const Container = (props) => {
     </section>
 }
 
-export default Container
+export default Container;

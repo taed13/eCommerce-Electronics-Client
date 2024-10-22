@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Color = (props) => {
     const { colorData, setColor } = props;
@@ -17,4 +17,4 @@ const Color = (props) => {
     )
 }
 
-export default Color
+export default Color;

@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import Meta from '../components/Meta'
-import BreadCrumb from '../components/BreadCrumb'
+import React, { useEffect, useState } from "react";
+import Meta from "../components/Meta";
+import BreadCrumb from "../components/BreadCrumb";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
-import Container from '../components/Container';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteCartProduct, getUserCart, updateCartProduct } from '../features/user/userSlice';
+import { Link } from "react-router-dom";
+import Container from "../components/Container";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    deleteCartProduct,
+    getUserCart,
+    updateCartProduct,
+} from "../features/user/userSlice";
 
 const Cart = () => {
     const dispatch = useDispatch();
     const [productUpdateDetails, setProductUpdateDetails] = useState({});
     const [subTotal, setSubTotal] = useState(0);
 
-    const userCartState = useSelector(state => state.auth?.cartProducts);
+    const userCartState = useSelector((state) => state.auth?.cartProducts);
     // console.log(userCartState);
 
     useEffect(() => {
-        dispatch(getUserCart())
-    }, [])
+        dispatch(getUserCart());
+    }, []);
 
     useEffect(() => {
         if (Object.keys(productUpdateDetails).length > 0) {
@@ -33,21 +37,21 @@ const Cart = () => {
         setProductUpdateDetails({
             [cartItemId]: {
                 cartItemId,
-                quantity
-            }
+                quantity,
+            },
         });
     };
 
     const deleteACartProduct = (id) => {
         dispatch(deleteCartProduct(id));
         setTimeout(() => {
-            dispatch(getUserCart())
-        }, 200)
-    }
+            dispatch(getUserCart());
+        }, 200);
+    };
 
     useEffect(() => {
         let sum = 0;
-        userCartState?.forEach(item => {
+        userCartState?.forEach((item) => {
             console.log(item);
             sum += Number(item?.price) * Number(item?.quantity);
         });
@@ -62,24 +66,33 @@ const Cart = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className="cart-header py-3 d-flex justify-content-between align-items-center">
-                            <h4 className='cart-col-1'>PRODUCT</h4>
-                            <h4 className='cart-col-2'>PRICE</h4>
-                            <h4 className='cart-col-3'>QUANTITY</h4>
-                            <h4 className='cart-col-4'>TOTAL</h4>
+                            <h4 className="cart-col-1">PRODUCT</h4>
+                            <h4 className="cart-col-2">PRICE</h4>
+                            <h4 className="cart-col-3">QUANTITY</h4>
+                            <h4 className="cart-col-4">TOTAL</h4>
                         </div>
-                        {
-                            userCartState && userCartState.map((item, index) => (
-                                <div key={index} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
+                        {userCartState &&
+                            userCartState.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center"
+                                >
                                     <div className="cart-col-1 gap-15 d-flex align-items-center">
                                         <div className="w-25">
-                                            <img src={item?.productId?.images[0]?.url} className='img-fluid' alt="product" />
+                                            <img
+                                                src={item?.productId?.images[0]?.url}
+                                                className="img-fluid"
+                                                alt="product"
+                                            />
                                         </div>
                                         <div className="w-75">
                                             <p>{item?.productId?.title}</p>
-                                            <div className='d-flex align-items-start gap-3'>
+                                            <div className="d-flex align-items-start gap-3">
                                                 <p>Color:</p>
-                                                <ul className='colors ps-0'>
-                                                    <li style={{ backgroundColor: item?.color?.title }}></li>
+                                                <ul className="colors ps-0">
+                                                    <li
+                                                        style={{ backgroundColor: item?.color?.title }}
+                                                    ></li>
                                                 </ul>
                                             </div>
                                             <p>Size: XXL</p>
@@ -91,44 +104,58 @@ const Cart = () => {
                                     <div className="cart-col-3 d-flex align-items-center gap-15">
                                         <div className="">
                                             <input
-                                                className='form-control'
+                                                className="form-control"
                                                 type="number"
                                                 name="quantity"
                                                 id="quantity"
                                                 min={1}
                                                 max={10}
-                                                value={productUpdateDetails[item?._id]?.quantity || item?.quantity}
-                                                onChange={(e) => handleQuantityChange(item?._id, e.target.value)}
+                                                value={
+                                                    productUpdateDetails[item?._id]?.quantity ||
+                                                    item?.quantity
+                                                }
+                                                onChange={(e) =>
+                                                    handleQuantityChange(item?._id, e.target.value)
+                                                }
                                             />
                                         </div>
-                                        <div className='reset-quantity-button' onClick={() => { deleteACartProduct(item?._id) }}>
-                                            <FaRegTrashCan className='reset-quantity-icon' />
+                                        <div
+                                            className="reset-quantity-button"
+                                            onClick={() => {
+                                                deleteACartProduct(item?._id);
+                                            }}
+                                        >
+                                            <FaRegTrashCan className="reset-quantity-icon" />
                                         </div>
                                     </div>
                                     <div className="cart-col-4 d-flex align-items-center">
                                         <h5 className="price">$ {item?.price * item?.quantity}</h5>
                                     </div>
                                 </div>
-                            ))
-                        }
+                            ))}
                     </div>
                     <div className="col-12 py-2 mt-4">
                         <div className="d-flex justify-content-between align-items-baseline">
-                            <Link to='/product' className='button'>Continue shopping</Link>
-                            {
-                                (subTotal === null || subTotal === 0) ? <></> :
-                                    <div className="cart-checkout-info d-flex flex-column align-items-end">
-                                        <h4>Subtotal: $ {subTotal}</h4>
-                                        <p>(Taxes and shipping calculated at checkout)</p>
-                                        <Link to='/checkout' className='button'>Checkout</Link>
-                                    </div>
-                            }
+                            <Link to="/product" className="button">
+                                Continue shopping
+                            </Link>
+                            {subTotal === null || subTotal === 0 ? (
+                                <></>
+                            ) : (
+                                <div className="cart-checkout-info d-flex flex-column align-items-end">
+                                    <h4>Subtotal: $ {subTotal}</h4>
+                                    <p>(Taxes and shipping calculated at checkout)</p>
+                                    <Link to="/checkout" className="button">
+                                        Checkout
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </Container>
         </>
-    )
-}
+    );
+};
 
-export default Cart
+export default Cart;

@@ -212,9 +212,7 @@ const Home = () => {
                             if (item?.tags?.includes("featured")) {
                                 return (
                                     <div key={index} className={"col-3"}>
-                                        <div
-                                            className="product-card position-relative"
-                                        >
+                                        <div className="product-card position-relative">
                                             <div className="wishlist-icon position-absolute">
                                                 <button
                                                     className="border-0 bg-transparent"
@@ -252,15 +250,18 @@ const Home = () => {
                                             </div>
                                             <div className="action-bar position-absolute">
                                                 <div className="d-flex flex-column gap-15">
-                                                    <button className="border-0 bg-transparent">
+                                                    {/* <button className="border-0 bg-transparent">
                                                         <img src={prodcompare} alt="prodcompare" />
-                                                    </button>
+                                                    </button> */}
                                                     <button className="border-0 bg-transparent">
-                                                        <IoEyeOutline onClick={() => navigate("/product/" + item?._id)} className="product-card-icons" />
+                                                        <IoEyeOutline
+                                                            onClick={() => navigate("/product/" + item?._id)}
+                                                            className="product-card-icons"
+                                                        />
                                                     </button>
-                                                    <button className="border-0 bg-transparent">
+                                                    {/* <button className="border-0 bg-transparent">
                                                         <IoCartOutline className="product-card-icons" />
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -373,9 +374,7 @@ const Home = () => {
                             if (item?.tags?.includes("popular")) {
                                 return (
                                     <div key={index} className={"col-3"}>
-                                        <div
-                                            className="product-card position-relative"
-                                        >
+                                        <div className="product-card position-relative">
                                             <div className="wishlist-icon position-absolute">
                                                 <button
                                                     className="border-0 bg-transparent"
@@ -417,7 +416,10 @@ const Home = () => {
                                                         <img src={prodcompare} alt="prodcompare" />
                                                     </button>
                                                     <button className="border-0 bg-transparent">
-                                                        <IoEyeOutline onClick={() => navigate("/product/" + item?._id)} className="product-card-icons" />
+                                                        <IoEyeOutline
+                                                            onClick={() => navigate("/product/" + item?._id)}
+                                                            className="product-card-icons"
+                                                        />
                                                     </button>
                                                     <button className="border-0 bg-transparent">
                                                         <IoCartOutline className="product-card-icons" />
