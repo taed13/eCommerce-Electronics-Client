@@ -133,6 +133,7 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: "",
+    deletedCartProduct: {},
 };
 
 export const authSlice = createSlice({
@@ -150,6 +151,7 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.createdUser = action.payload;
+                // console.log("createdUser", action.payload);
                 if (state.isSuccess === true) {
                     toast.info(action.payload.message);
                 }
@@ -171,8 +173,10 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.user = action.payload;
+                state.user = action.payload.findUser;
+                console.log('login slice', action.payload);
                 localStorage.setItem("token", action.payload.findUser.token);
+                localStorage.setItem("customer", JSON.stringify(action.payload.findUser));
                 if (state.isSuccess === true) {
                     toast.info(action.payload.message);
                 }
@@ -302,6 +306,11 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.updatedUser = action.payload;
                 if (state.isSuccess) {
+                    let newUpdatedData = {
+                        ...state.user,
+                        ...action.payload.updatedUser,
+                    }
+                    localStorage.setItem("customer", JSON.stringify(newUpdatedData));
                     toast.success("Profile updated successfully!");
                 }
             })

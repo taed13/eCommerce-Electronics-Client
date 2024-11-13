@@ -17,21 +17,26 @@ const Cart = () => {
     const [subTotal, setSubTotal] = useState(0);
 
     const userCartState = useSelector((state) => state.auth?.cartProducts);
-    // console.log(userCartState);
+    const userAuthState = useSelector((state) => state.auth?.cartProduct);
+    const userDeletedCartState = useSelector((state) => state.auth?.deletedCartProduct);
 
     useEffect(() => {
+        if (userAuthState) {
+            dispatch(getUserCart());
+        }
         dispatch(getUserCart());
-    }, []);
+    }, [dispatch, productUpdateDetails]);
+
+    console.log(userCartState);
 
     useEffect(() => {
         if (Object.keys(productUpdateDetails).length > 0) {
             const productDetails = Object.values(productUpdateDetails)[0];
             dispatch(updateCartProduct(productDetails));
-            setTimeout(() => {
-                dispatch(getUserCart());
-            }, 200);
+            dispatch(getUserCart());
+
         }
-    }, [productUpdateDetails]);
+    }, [productUpdateDetails, dispatch]);
 
     const handleQuantityChange = (cartItemId, quantity) => {
         setProductUpdateDetails({
@@ -44,15 +49,15 @@ const Cart = () => {
 
     const deleteACartProduct = (id) => {
         dispatch(deleteCartProduct(id));
-        setTimeout(() => {
-            dispatch(getUserCart());
-        }, 200);
     };
+
+    useEffect(() => {
+        dispatch(getUserCart());
+    }, [dispatch, userDeletedCartState]);
 
     useEffect(() => {
         let sum = 0;
         userCartState?.forEach((item) => {
-            console.log(item);
             sum += Number(item?.price) * Number(item?.quantity);
         });
         setSubTotal(sum);
@@ -73,20 +78,21 @@ const Cart = () => {
                         </div>
                         {userCartState &&
                             userCartState.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center"
-                                >
+                                <div key={index} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
                                     <div className="cart-col-1 gap-15 d-flex align-items-center">
                                         <div className="w-25">
-                                            <img
-                                                src={item?.productId?.images[0]?.url}
-                                                className="img-fluid"
-                                                alt="product"
-                                            />
+                                            <Link to={`/product/${item?.productId?._id}`}>
+                                                <img
+                                                    src={item?.productId?.images[0]?.url}
+                                                    className="img-fluid"
+                                                    alt="product"
+                                                />
+                                            </Link>
                                         </div>
                                         <div className="w-75">
-                                            <p>{item?.productId?.title}</p>
+                                            <Link to={`/product/${item?.productId?._id}`}>
+                                                <p className="text-decoration-underline link-primary">{item?.productId?.title}</p>
+                                            </Link>
                                             <div className="d-flex align-items-start gap-3">
                                                 <p>Color:</p>
                                                 <ul className="colors ps-0">
@@ -132,7 +138,8 @@ const Cart = () => {
                                         <h5 className="price">$ {item?.price * item?.quantity}</h5>
                                     </div>
                                 </div>
-                            ))}
+                            )
+                            )}
                     </div>
                     <div className="col-12 py-2 mt-4">
                         <div className="d-flex justify-content-between align-items-baseline">

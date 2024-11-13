@@ -255,7 +255,10 @@ const Home = () => {
                                                     </button> */}
                                                     <button className="border-0 bg-transparent">
                                                         <IoEyeOutline
-                                                            onClick={() => navigate("/product/" + item?._id)}
+                                                            onClick={() => {
+                                                                navigate("/product/" + item?._id);
+                                                                window.scrollTo(0, 0);
+                                                            }}
                                                             className="product-card-icons"
                                                         />
                                                     </button>
@@ -417,7 +420,10 @@ const Home = () => {
                                                     </button>
                                                     <button className="border-0 bg-transparent">
                                                         <IoEyeOutline
-                                                            onClick={() => navigate("/product/" + item?._id)}
+                                                            onClick={() => {
+                                                                navigate("/product/" + item?._id);
+                                                                window.scrollTo(0, 0);
+                                                            }}
                                                             className="product-card-icons"
                                                         />
                                                     </button>

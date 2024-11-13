@@ -44,11 +44,13 @@ const SingleProduct = () => {
             : "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MT3D3ref_VW_34FR+watch-case-44-aluminum-midnight-cell-se_VW_34FR+watch-face-44-aluminum-midnight-se_VW_34FR?wid=5120&hei=3280&bgc=fafafa&trim=1&fmt=p-jpg&qlt=80&.v=ajJYOEQxYjNlejNwbWNnSU16d0NYaWhSbVIzRFJTYlp1MEk4OWNDaTcvNTlEbzMrd1Z5SUpEd0hiT0ZLRlZGNHVDTzRRaC84T1VMbXJRN05SRldIelBRWnNWZWtLcTZCYVRER3FsWWowaTk5RG8zK3dWeUlKRHdIYk9GS0ZWRjR4cVNUNDJadDNVSmRncE9SalAvZ24wUVN3R3VxZWhYYXgwOHljYmZFMXBocmMyRTN3NCt6QkoxaUdRb0FBay9VYktGTHdENW9lYUFnak5pcy9ReEdDYitVd1NTQTM3UmZlcFMyUUhtajBOOUFTbk5vY3l1VDJCbGQ3QjJZZUd1bQ==",
     };
 
+    console.log( 'dsadas' , getProductId);
+
     useEffect(() => {
         dispatch(getAProduct(getProductId));
         dispatch(getUserCart());
         dispatch(getAllProducts());
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         for (let index = 0; index < cartState?.length; index++) {
@@ -71,7 +73,9 @@ const SingleProduct = () => {
                     price: productState?.price,
                 })
             );
+            setAlreadyAdded(false);
             navigate("/cart");
+            window.scrollTo(0, 0);
         }
     };
 

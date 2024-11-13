@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/user/userSlice";
 
-const singupSchema = yup.object({
+const signupSchema = yup.object({
     firstname: yup.string().required("First name is required"),
-    lastname: yup.string().required("Last name is required"),
+    lastname: yup.string().required("Last name is requiared"),
     email: yup.string().nullable().email().required("Email is required"),
     mobile: yup.string().required("Mobile number is required"),
     password: yup.string().required("Password is required"),
 });
 
 const Signup = () => {
+    const authState = useSelector((state) => state?.auth);
+    console.log('singup', authState);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             firstname: "",
@@ -27,11 +30,17 @@ const Signup = () => {
             mobile: "",
             password: "",
         },
-        validationSchema: singupSchema,
+        validationSchema: signupSchema,
         onSubmit: (values) => {
             dispatch(registerUser(values));
         },
     });
+    // useEffect(() => {
+    //     if (authState.createdUser !== null && authState.isError === false) {
+    //         navigate("/login");
+    //         // window.location.reload();
+    //     }
+    // }, [authState]);
     return (
         <>
             <Meta title={"Signup"} />
@@ -40,34 +49,39 @@ const Signup = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">
-                            <h3 className="text-center mb-3">Create account</h3>
+                            <h3 className="text-center mb-4">Create account</h3>
                             <form
                                 action=""
                                 onSubmit={formik.handleSubmit}
-                                className="d-flex flex-column gap-15"
+                                className="d-flex flex-column gap-10"
                             >
-                                <CustomInput
-                                    type="text"
-                                    name="firstname"
-                                    placeholder="First Name"
-                                    value={formik.values.firstname}
-                                    onChange={formik.handleChange("firstname")}
-                                    onBlur={formik.handleBlur("firstname")}
-                                />
-                                <div className="error text-danger">
-                                    {formik.touched.firstname && formik.errors.firstname}
-                                </div>
-
-                                <CustomInput
-                                    type="text"
-                                    name="lastname"
-                                    placeholder="Last Name"
-                                    value={formik.values.lastname}
-                                    onChange={formik.handleChange("lastname")}
-                                    onBlur={formik.handleBlur("lastname")}
-                                />
-                                <div className="error text-danger">
-                                    {formik.touched.lastname && formik.errors.lastname}
+                                <div className="d-flex gap-2">
+                                    <div className="d-flex flex-column gap-2 w-50">
+                                        <CustomInput
+                                            type="text"
+                                            name="firstname"
+                                            placeholder="First name"
+                                            value={formik.values.firstname}
+                                            onChange={formik.handleChange("firstname")}
+                                            onBlur={formik.handleBlur("firstname")}
+                                        />
+                                        <div className="error fail-message">
+                                            {formik.touched.firstname && formik.errors.firstname}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex flex-column gap-2 w-50">
+                                        <CustomInput
+                                            type="text"
+                                            name="lastname"
+                                            placeholder="Last name"
+                                            value={formik.values.lastname}
+                                            onChange={formik.handleChange("lastname")}
+                                            onBlur={formik.handleBlur("lastname")}
+                                        />
+                                        <div className="error fail-message">
+                                            {formik.touched.lastname && formik.errors.lastname}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <CustomInput
@@ -78,7 +92,7 @@ const Signup = () => {
                                     onChange={formik.handleChange("email")}
                                     onBlur={formik.handleBlur("email")}
                                 />
-                                <div className="error text-danger">
+                                <div className="error fail-message">
                                     {formik.touched.email && formik.errors.email}
                                 </div>
 
@@ -90,7 +104,7 @@ const Signup = () => {
                                     onChange={formik.handleChange("mobile")}
                                     onBlur={formik.handleBlur("mobile")}
                                 />
-                                <div className="error text-danger">
+                                <div className="error fail-message">
                                     {formik.touched.mobile && formik.errors.mobile}
                                 </div>
 
@@ -102,11 +116,11 @@ const Signup = () => {
                                     onChange={formik.handleChange("password")}
                                     onBlur={formik.handleBlur("password")}
                                 />
-                                <div className="error text-danger">
+                                <div className="error fail-message">
                                     {formik.touched.password && formik.errors.password}
                                 </div>
 
-                                <div className="mt-3 d-flex justify-content-center flex-column align-items-center gap-15">
+                                <div className="d-flex justify-content-center flex-column align-items-center gap-15">
                                     <button className="button border-0">Create</button>
                                     <Link to="/login">Cancel</Link>
                                 </div>

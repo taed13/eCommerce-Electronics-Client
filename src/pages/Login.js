@@ -20,13 +20,11 @@ const loginSchema = yup.object({
 const Login = () => {
     const authState = useSelector((state) => state?.auth);
     const navigate = useNavigate();
-    console.log(authState);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (authState?.isSuccess) {
             navigate("/");
-            window.location.reload();
         }
     }, [authState, navigate]);
 
@@ -49,11 +47,11 @@ const Login = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card shadow-lg">
-                            <h3 className="text-center mb-3">Login</h3>
+                            <h3 className="text-center mb-4">Login</h3>
                             <form
                                 action=""
                                 onSubmit={formik.handleSubmit}
-                                className="d-flex flex-column gap-15"
+                                className="d-flex flex-column gap-10"
                             >
                                 <CustomInput
                                     type="email"
@@ -63,7 +61,7 @@ const Login = () => {
                                     onChange={formik.handleChange("email")}
                                     onBlur={formik.handleBlur("email")}
                                 />
-                                <div className="error text-danger">
+                                <div className="error fail-message">
                                     {formik.touched.email && formik.errors.email}
                                 </div>
 
@@ -75,14 +73,13 @@ const Login = () => {
                                     onChange={formik.handleChange("password")}
                                     onBlur={formik.handleBlur("password")}
                                 />
-                                <div className="error text-danger">
+                                <div className="error fail-message">
                                     {formik.touched.password && formik.errors.password}
                                 </div>
-
-                                <div>
-                                    <Link to="/forgot-password">Forgot password?</Link>
+                                <div className="d-flex justify-content-center">
+                                    <Link to="/forgot-password" className="forgot-password-link">Forgot password?</Link>
                                 </div>
-                                <div className="mt-3 d-flex justify-content-center align-items-center gap-15">
+                                <div className="mt-2 d-flex justify-content-center align-items-center gap-15">
                                     <button type="submit" className="button border-0">
                                         Login
                                     </button>

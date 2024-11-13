@@ -65,7 +65,7 @@ const Store = () => {
             <Container class1="store-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-3">
-                        <div className="filter-card mb-3">
+                        {/* <div className="filter-card mb-3">
                             <h3 className="filter-title">Shop By Categories</h3>
                             <div>
                                 <ul className="ps-0">
@@ -84,11 +84,11 @@ const Store = () => {
                                         })}
                                 </ul>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="filter-card mb-3">
                             <h3 className="filter-title">Filter By</h3>
-                            <div>
-                                {/* <h5 className="sub-title">Availability</h5>
+                            {/* <div>
+                                <h5 className="sub-title">Availability</h5>
                                 <div>
                                     <div className="form-check">
                                         <input
@@ -112,8 +112,8 @@ const Store = () => {
                                             Out of stock (0)
                                         </label>
                                     </div>
-                                </div> */}
-                            </div>
+                                </div>
+                            </div> */}
                             <h5 className="sub-title">Price</h5>
                             <div className="d-flex align-items-center gap-10">
                                 <div className="form-floating">
@@ -144,8 +144,8 @@ const Store = () => {
                             {/* <h5 className="sub-title">Color</h5>
                             <div>
                                 <Color />
-                            </div> */}
-                            {/* <h5 className="sub-title">Size</h5>
+                            </div>
+                            <h5 className="sub-title">Size</h5>
                             <div>
                                 <div className="form-check">
                                     <input
@@ -188,13 +188,7 @@ const Store = () => {
                                         {tags &&
                                             [...new Set(tags)].map((tag, index) => {
                                                 return (
-                                                    <span
-                                                        key={index}
-                                                        onClick={() => {
-                                                            setTag(tag);
-                                                        }}
-                                                        className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
-                                                    >
+                                                    <span key={index} onClick={() => setTag(tag)} className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover">
                                                         {tag}
                                                     </span>
                                                 );
@@ -209,13 +203,7 @@ const Store = () => {
                                         {brands &&
                                             [...new Set(brands)].map((brand, index) => {
                                                 return (
-                                                    <span
-                                                        key={index}
-                                                        onClick={() => {
-                                                            setBrand(brand);
-                                                        }}
-                                                        className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
-                                                    >
+                                                    <span key={index} onClick={() => setBrand(brand)} className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover">
                                                         {brand}
                                                     </span>
                                                 );
@@ -253,7 +241,9 @@ const Store = () => {
                                 </div>
                                 <div>
                                     <div className="d-flex align-items-center gap-10">
-                                        <p className="totalproducts mb-0">21 Products</p>
+                                        <p className="totalproducts mb-0">
+                                            {productState?.length} {productState?.length === 1 ? "Product" : "Products"}
+                                        </p>
                                         <div className="d-flex gap-10 align-items-center grid">
                                             <img
                                                 onClick={() => {
