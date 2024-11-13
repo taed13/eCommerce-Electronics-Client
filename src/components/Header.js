@@ -9,26 +9,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
+import { getInfoByEmailAddress } from "../features/user/userSlice";
 import { getUserCart } from "../features/user/userSlice";
 
 const Header = () => {
-    const cartState = useSelector((state) => state?.auth?.cartProducts);
-    const authState = useSelector((state) => state?.auth);
-    const userState = useSelector((state) => state?.auth?.user?.findUser);
-    const productState = useSelector((state) => state?.product?.product);
-    const [productOtp, setProductOtp] = useState([]);
-    const [total, setTotal] = useState(null);
-    const [paginate, setPaginate] = useState(true);
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const isAuthenticated = Boolean(localStorage.getItem("token"));
+
+    const cartState = useSelector((state) => state?.auth?.cartProducts);
+    const userState = useSelector((state) => state?.auth?.user?.findUser);
+    const productState = useSelector((state) => state?.product?.product);
+    const authState = useSelector((state) => state?.auth);
+    // const userState = useSelector((state) => state?.user);
+
+    const [productOtp, setProductOtp] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [paginate, setPaginate] = useState(true);
 
     useEffect(() => {
-        let sum = 0;
-        for (let i = 0; i < cartState?.length; i++) {
-            sum += Number(cartState[i]?.price) * Number(cartState[i]?.quantity);
-            setTotal(sum);
+        // Decode token and fetch user info
+        const token = localStorage.getItem("token");
+        if (token) {
+            try {
+                const decoded = JSON.parse(atob(token.split(".")[1]));
+                dispatch(getInfoByEmailAddress(decoded.email));
+                console.log("decoded:::", decoded);
+            } catch (error) {
+                console.error("Token decoding error:", error);
+            }
         }
+    }, [dispatch]);
+
+    useEffect(() => {
+        // Calculate total price in cart
+        const sum = cartState?.reduce(
+            (acc, item) => acc + (item?.price * item?.quantity || 0),
+            0
+        );
+        setTotal(sum);
     }, [cartState]);
 
     useEffect(() => {
@@ -56,6 +75,7 @@ const Header = () => {
         localStorage.clear();
         window.location.reload();
     };
+    console.log("authState:::", authState);
 
     return (
         <>
@@ -240,13 +260,15 @@ const Header = () => {
                                         <NavLink className="header-navlinks" to="/contact">
                                             Contact
                                         </NavLink>
-                                        <button
-                                            onClick={handleLogout}
-                                            className="border border-0 bg-transparent text-white text-uppercase"
-                                            type="button"
-                                        >
-                                            Logout
-                                        </button>
+                                        {(authState?.user !== null || isAuthenticated) && (
+                                            <button
+                                                onClick={handleLogout}
+                                                className="border border-0 bg-transparent text-white text-uppercase"
+                                                type="button"
+                                            >
+                                                Logout
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -120,7 +120,7 @@ const Signup = () => {
                                     {formik.touched.password && formik.errors.password}
                                 </div>
 
-                                <div className="d-flex justify-content-center flex-column align-items-center gap-15">
+                                <div className="d-flex justify-content-center flex-row align-items-center gap-5">
                                     <button className="button border-0">Create</button>
                                     <Link to="/login">Cancel</Link>
                                 </div>

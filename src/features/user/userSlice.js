@@ -28,6 +28,17 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+export const logoutUser = createAsyncThunk(
+    "auth/logout",
+    async (thunkAPI) => {
+        try {
+            return authService.logout();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const getUserProductWishList = createAsyncThunk(
     "user/wishlist",
     async (thunkAPI) => {
@@ -127,6 +138,18 @@ export const getOrders = createAsyncThunk(
     }
 );
 
+export const getInfoByEmailAddress = createAsyncThunk(
+    "user/email/get",
+    async (email, thunkAPI) => {
+        console.log("email:::", email);
+        try {
+            return await authService.getUserInfoByEmail(email);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const initialState = {
     user: getCustomerFromLocalStorage,
     isError: false,
@@ -182,6 +205,29 @@ export const authSlice = createSlice({
                 }
             })
             .addCase(loginUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error.message;
+                if (state.isError === true) {
+                    toast.error(action.payload.message);
+                }
+            })
+            // LOGOUT USER
+            .addCase(logoutUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.user = null;
+                localStorage.removeItem("token");
+                if (state.isSuccess === true) {
+                    toast.info(action.payload.message);
+                }
+            })
+            .addCase(logoutUser.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
@@ -292,6 +338,21 @@ export const authSlice = createSlice({
                 state.getOrderedProduct = action.payload;
             })
             .addCase(getOrders.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(getInfoByEmailAddress.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getInfoByEmailAddress.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.userInfo = action.payload;
+            })
+            .addCase(getInfoByEmailAddress.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

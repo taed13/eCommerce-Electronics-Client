@@ -1,5 +1,6 @@
-import axios from "axios";
+// import axios from "axios";
 import { authMiddleware, base_url, config } from "../../utils/axiosConfig";
+import axios from '../../utils/axios';
 
 const register = async (userData) => {
     const response = await axios.post(`${base_url}user/register`, userData);
@@ -11,12 +12,17 @@ const register = async (userData) => {
 
 const login = async (userData) => {
     const response = await axios.post(`${base_url}user/login`, userData);
+    // const response = await api.post("/user/login", userData);
 
     localStorage.setItem("customer", JSON.stringify(response.data?.findUser));
 
     if (response.data) {
         return response.data;
     }
+};
+
+const logout = () => {
+    localStorage.removeItem("customer");
 };
 
 const getUserWishList = async () => {
@@ -39,6 +45,8 @@ const addToCart = async (cartData) => {
 
 const getCart = async () => {
     const response = await axios.get(`${base_url}user/cart`, authMiddleware);
+    // const response = await api.get("/user/cart", authMiddleware);
+
     if (response.data) {
         return response.data;
     }
@@ -119,6 +127,26 @@ const resetPass = async (data) => {
     }
 };
 
+const getUserInfoByEmail = async (email) => {
+    console.log("token:::", localStorage.getItem("token"));
+    console.log("email user service:::", email);
+    const response = await axios.post(
+        `${base_url}oauth2/getInfoByEmail`,
+        { email },
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Accept: "application/json",
+            },
+        },
+
+    );
+    console.log("response:::", response);
+    if (response.data) {
+        return response.data;
+    }
+};
+
 export const authService = {
     register,
     login,
@@ -132,4 +160,6 @@ export const authService = {
     updateUser,
     forgotPassToken,
     resetPass,
+    logout,
+    getUserInfoByEmail,
 };
