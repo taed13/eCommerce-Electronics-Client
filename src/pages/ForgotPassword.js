@@ -41,10 +41,10 @@ const ForgotPassword = () => {
                     <div className="col-12">
                         <div className="auth-card">
                             <h3 className="text-center mb-3">Reset your password</h3>
-                            <p className="text-center my-2 mb-3">
+                            <p className="text-center my-2 mb-4">
                                 We will sent you an email to reset your password
                             </p>
-                            <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15">
+                            <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-2">
                                 <CustomInput
                                     type="email"
                                     name="email"
@@ -53,10 +53,10 @@ const ForgotPassword = () => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                 />
-                                <div className="error text-danger text-center">
+                                <div className="error fail-message">
                                     {formik.touched.email && formik.errors.email}
                                 </div>
-                                <div className="mt-3 d-flex justify-content-center flex-column gap-15 align-items-center">
+                                <div className="d-flex justify-content-center flex-column gap-15 align-items-center">
                                     <button type="submit" className="button border-0">
                                         Submit
                                     </button>

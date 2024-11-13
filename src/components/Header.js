@@ -9,10 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
+import { getUserCart } from "../features/user/userSlice";
 
 const Header = () => {
     const cartState = useSelector((state) => state?.auth?.cartProducts);
     const authState = useSelector((state) => state?.auth);
+    const userState = useSelector((state) => state?.auth?.user?.findUser);
     const productState = useSelector((state) => state?.product?.product);
     const [productOtp, setProductOtp] = useState([]);
     const [total, setTotal] = useState(null);
@@ -29,7 +31,16 @@ const Header = () => {
         }
     }, [cartState]);
 
-    useEffect(() => { }, [authState]);
+    useEffect(() => {
+        console.log("-----------------");
+        console.log(authState);
+        console.log("-----------------");
+
+    }, [authState]);
+
+    useEffect(() => {
+        dispatch(getUserCart());
+    }, [dispatch, cartState]);
 
     useEffect(() => {
         let data = [];
@@ -49,7 +60,7 @@ const Header = () => {
     return (
         <>
             <header className="header-top-strip py-3">
-                <div className="container-xxl">
+                <div className="container-xxl">=
                     <div className="row">
                         <div className="col-6">
                             <p className="text-white mb-0">
@@ -134,12 +145,21 @@ const Header = () => {
                                                 Login <br /> Account
                                             </p>
                                         ) : (
-                                            <p className="mb-0">
-                                                {authState?.user?.firstname +
-                                                    " " +
-                                                    authState?.user?.lastname}
-                                                <br /> Account
-                                            </p>
+                                            authState?.updatedUser ? (
+                                                <p className="mb-0">
+                                                    {authState?.updatedUser?.updatedUser?.firstname +
+                                                        " " +
+                                                        authState?.updatedUser?.updatedUser?.lastname}
+                                                    <br /> Account
+                                                </p>
+                                            ) : (
+                                                <p className="mb-0">
+                                                    {authState?.user?.firstname +
+                                                        " " +
+                                                        authState?.user?.lastname}
+                                                    <br /> Account
+                                                </p>
+                                            )
                                         )}
                                     </Link>
                                 </div>

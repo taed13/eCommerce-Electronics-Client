@@ -83,10 +83,16 @@ const getUserOrders = async () => {
 };
 
 const updateUser = async (userData) => {
+    console.log("config::::", config);
     const response = await axios.put(
         `${base_url}user/edit-user`,
         userData,
-        config
+        {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("customer")).token}`,
+                Accept: "application/json",
+            },
+        }
     );
     if (response.data) {
         return response.data;

@@ -1039,3 +1039,29 @@ footer .input-group-text {
 }
 
 /* shipping page ends here */
+
+/* fail message */
+
+.fail-message {
+    font-size: 12px;
+    margin-left: 10px;
+    color: red;
+}
+
+/* fail message ends here */
+
+.forgot-password-link {
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.background-hover:hover {
+    background-color: var(--color-ededed) !important;
+}

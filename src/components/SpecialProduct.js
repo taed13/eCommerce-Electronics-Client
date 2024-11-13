@@ -60,7 +60,7 @@ const SpecialProduct = (props) => {
                                 ></div>
                             </div>
                         </div>
-                        <Link className="button" to={"/product/" + id}>
+                        <Link className="button" to={"/product/" + id} onClick={() => (window.scrollTo(0, 0))}>
                             View
                         </Link>
                     </div>
