@@ -12,6 +12,7 @@ import { getAProduct } from "../features/products/productSlice";
 import { getInfoByEmailAddress } from "../features/user/userSlice";
 import { getUserCart } from "../features/user/userSlice";
 
+
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -26,10 +27,10 @@ const Header = () => {
     const [productOtp, setProductOtp] = useState([]);
     const [total, setTotal] = useState(0);
     const [paginate, setPaginate] = useState(true);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         // Decode token and fetch user info
-        const token = localStorage.getItem("token");
         if (token) {
             try {
                 const decoded = JSON.parse(atob(token.split(".")[1]));
@@ -42,6 +43,19 @@ const Header = () => {
     }, [dispatch]);
 
     useEffect(() => {
+        if (authState?.userInfo?.user) {
+            console.log("User Info from Token:::::", authState?.userInfo?.user);
+            var infoUser = authState?.userInfo?.user;
+            var result = Object.keys(infoUser).map((key) => [key, infoUser[key], token]);
+            result.push(["token", token]);
+            var newResult = Object.fromEntries(result);
+            const finalResult = JSON.stringify(newResult);
+            console.log("result:::", finalResult);
+            localStorage.setItem("customer", finalResult);
+        }
+    }, [authState?.userInfo?.user]);
+
+    useEffect(() => {
         // Calculate total price in cart
         const sum = cartState?.reduce(
             (acc, item) => acc + (item?.price * item?.quantity || 0),
@@ -52,7 +66,8 @@ const Header = () => {
 
     useEffect(() => {
         console.log("-----------------");
-        console.log(authState);
+        console.log('authState:::', authState);
+
         console.log("-----------------");
 
     }, [authState]);
@@ -75,7 +90,6 @@ const Header = () => {
         localStorage.clear();
         window.location.reload();
     };
-    console.log("authState:::", authState);
 
     return (
         <>
@@ -156,13 +170,13 @@ const Header = () => {
                                 </div>
                                 <div>
                                     <Link
-                                        to={authState?.user === null ? "/login" : "/my-profile"}
+                                        to={(authState?.user !== null || authState?.userInfo !== null) ? "/my-profile" : "/login"}
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img src={user} alt="user" />
                                         {authState?.user === null ? (
                                             <p className="mb-0">
-                                                Login <br /> Account
+                                                {authState?.userInfo ? authState?.userInfo?.user?.name : "Login"} <br /> Account
                                             </p>
                                         ) : (
                                             authState?.updatedUser ? (
@@ -174,9 +188,14 @@ const Header = () => {
                                                 </p>
                                             ) : (
                                                 <p className="mb-0">
-                                                    {authState?.user?.firstname +
-                                                        " " +
-                                                        authState?.user?.lastname}
+                                                    {
+                                                        authState?.user?.firstname && authState?.user?.lastname ?
+                                                            (authState?.user?.firstname +
+                                                                " " +
+                                                                authState?.user?.lastname) : (
+                                                                authState?.userInfo?.user?.name
+                                                            )
+                                                    }
                                                     <br /> Account
                                                 </p>
                                             )

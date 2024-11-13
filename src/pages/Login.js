@@ -75,7 +75,8 @@ const Login = () => {
             console.log("Decoded Token:", decoded.email);
 
             dispatch(getInfoByEmailAddress(decoded.email));
-            console.log("User Info from Token:", decoded);
+            // console.log("User Info from Token:", decoded);
+            // console.log("User Info from Token:::::", authState);
 
             // dispatch
 
@@ -83,7 +84,7 @@ const Login = () => {
             window.history.replaceState({}, document.title, "/");
             navigate("/");
         }
-    }, [navigate]);
+    }, [navigate, authState?.userInfo?.user]);
 
     return (
         <>

@@ -18,11 +18,12 @@ const profileSchema = yup.object({
 const Profile = () => {
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.auth.user);
+    const userInfoState = useSelector((state) => state.auth?.userInfo?.user);
     const [edit, setEdit] = useState(true);
     const [initialValues, setInitialValues] = useState({
         firstname: userState?.firstname || "",
         lastname: userState?.lastname || "",
-        email: userState?.email || "",
+        email: userState?.email || userInfoState?.email ||"",
         mobile: userState?.mobile || "",
     });
 
