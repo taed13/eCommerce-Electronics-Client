@@ -6,8 +6,8 @@ import Container from "../components/Container";
 const ShippingPolicy = () => {
     return (
         <>
-            <Meta title={"Shipping Policy"} />
-            <BreadCrumb title="Shipping Policy" />
+            <Meta title={"Chính sách hoàn trả"} />
+            <BreadCrumb title="Chính sách hoàn trả" />
             <Container class1="policy-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">

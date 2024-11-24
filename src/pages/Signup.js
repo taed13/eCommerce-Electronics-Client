@@ -10,16 +10,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/user/userSlice";
 
 const signupSchema = yup.object({
-    firstname: yup.string().required("First name is required"),
-    lastname: yup.string().required("Last name is requiared"),
-    email: yup.string().nullable().email().required("Email is required"),
-    mobile: yup.string().required("Mobile number is required"),
-    password: yup.string().required("Password is required"),
+    firstname: yup.string().required("Họ không được để trống"),
+    lastname: yup.string().required("Tên không được để trống"),
+    email: yup.string().nullable().email().required("Email không được để trống"),
+    mobile: yup.string().required("Số điện thoại không được để trống"),
+    password: yup.string().required("Mật khẩu không được để trống"),
 });
 
 const Signup = () => {
     const authState = useSelector((state) => state?.auth);
-    console.log('singup', authState);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const formik = useFormik({
@@ -43,13 +42,16 @@ const Signup = () => {
     // }, [authState]);
     return (
         <>
-            <Meta title={"Signup"} />
-            <BreadCrumb title="Signup" />
+            <Meta title={"Đăng ký tài khoản"} />
+            <BreadCrumb title="Đăng ký tài khoản" />
             <Container class1="login-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <div className="auth-card">
-                            <h3 className="text-center mb-4">Create account</h3>
+                        <div className="auth-card shadow-lg">
+                            <h2 className="text-center fw-bold mb-2">Đăng ký</h2>
+                            <p className="text-center mb-5">
+                                Tài khoản Electronics mới của bạn
+                            </p>
                             <form
                                 action=""
                                 onSubmit={formik.handleSubmit}
@@ -60,7 +62,7 @@ const Signup = () => {
                                         <CustomInput
                                             type="text"
                                             name="firstname"
-                                            placeholder="First name"
+                                            placeholder="Họ"
                                             value={formik.values.firstname}
                                             onChange={formik.handleChange("firstname")}
                                             onBlur={formik.handleBlur("firstname")}
@@ -73,7 +75,7 @@ const Signup = () => {
                                         <CustomInput
                                             type="text"
                                             name="lastname"
-                                            placeholder="Last name"
+                                            placeholder="Tên"
                                             value={formik.values.lastname}
                                             onChange={formik.handleChange("lastname")}
                                             onBlur={formik.handleBlur("lastname")}
@@ -87,7 +89,7 @@ const Signup = () => {
                                 <CustomInput
                                     type="email"
                                     name="email"
-                                    placeholder="Email"
+                                    placeholder="Địa chỉ email"
                                     value={formik.values.email}
                                     onChange={formik.handleChange("email")}
                                     onBlur={formik.handleBlur("email")}
@@ -99,7 +101,7 @@ const Signup = () => {
                                 <CustomInput
                                     type="tel"
                                     name="mobile"
-                                    placeholder="Mobile number"
+                                    placeholder="Số điện thoại"
                                     value={formik.values.mobile}
                                     onChange={formik.handleChange("mobile")}
                                     onBlur={formik.handleBlur("mobile")}
@@ -111,7 +113,7 @@ const Signup = () => {
                                 <CustomInput
                                     type="password"
                                     name="password"
-                                    placeholder="Password"
+                                    placeholder="Mật khẩu"
                                     value={formik.values.password}
                                     onChange={formik.handleChange("password")}
                                     onBlur={formik.handleBlur("password")}
@@ -120,9 +122,9 @@ const Signup = () => {
                                     {formik.touched.password && formik.errors.password}
                                 </div>
 
-                                <div className="d-flex justify-content-center flex-row align-items-center gap-5">
-                                    <button className="button border-0">Create</button>
-                                    <Link to="/login">Cancel</Link>
+                                <div className="d-flex justify-content-center flex-row align-items-center gap-5 mt-3">
+                                    <button className="button border-0">Xác nhận</button>
+                                    <Link className="hover-underline" to="/login">Quay lại</Link>
                                 </div>
                             </form>
                         </div>

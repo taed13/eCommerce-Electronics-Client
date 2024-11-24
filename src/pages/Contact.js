@@ -18,16 +18,16 @@ const Contact = () => {
             comments: "",
         },
         validationSchema: yup.object({
-            name: yup.string().required("Name is required"),
-            email: yup.string().email("Invalid email").required("Email is required"),
+            name: yup.string().required("Tên không được để trống"),
+            email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
             mobile: yup
                 .string()
-                .required("Mobile number is required")
+                .required("Số điện thoại không được để trống")
                 .matches(
                     /^[0-9]{10}$/,
-                    "Mobile number must be 10 digits and contain only numbers"
+                    "Số điện thoại không hợp lệ, vui lòng nhập đúng 10 số"
                 ),
-            comments: yup.string().required("Comments is required"),
+            comments: yup.string().required("Nội dung không được để trống"),
         }),
         onSubmit: (values) => {
             dispatch(createQuery(values));
@@ -36,8 +36,8 @@ const Contact = () => {
     });
     return (
         <>
-            <Meta title={"Contact Us"} />
-            <BreadCrumb title="Contact Us" />
+            <Meta title={"Liên hệ chúng tôi"} />
+            <BreadCrumb title="Liên hệ chúng tôi" />
             <Container class1="contact-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-12">
@@ -55,7 +55,7 @@ const Contact = () => {
                     <div className="col-12 mt-5">
                         <div className="contact-inner-wrapper d-flex justify-content-between">
                             <div>
-                                <h3 className="contact-title mb-4">Contact</h3>
+                                <h3 className="contact-title mb-4">Liên hệ</h3>
                                 <form
                                     action=""
                                     onSubmit={formik.handleSubmit}
@@ -65,13 +65,13 @@ const Contact = () => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Name"
+                                            placeholder="Tên"
                                             name="name"
                                             onChange={formik.handleChange("name")}
                                             onBlur={formik.handleBlur("name")}
                                             value={formik.values.name}
                                         />
-                                        <div className="errors">
+                                        <div className="error fail-message">
                                             {formik.touched.name && formik.errors.name}
                                         </div>
                                     </div>
@@ -79,13 +79,13 @@ const Contact = () => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Email"
+                                            placeholder="Địa chỉ email"
                                             name="email"
                                             onChange={formik.handleChange("email")}
                                             onBlur={formik.handleBlur("email")}
                                             value={formik.values.email}
                                         />
-                                        <div className="errors">
+                                        <div className="error fail-message">
                                             {formik.touched.email && formik.errors.email}
                                         </div>
                                     </div>
@@ -93,13 +93,13 @@ const Contact = () => {
                                         <input
                                             type="tel"
                                             className="form-control"
-                                            placeholder="Mobile Number"
+                                            placeholder="Số điện thoại"
                                             name="mobile"
                                             onChange={formik.handleChange("mobile")}
                                             onBlur={formik.handleBlur("mobile")}
                                             value={formik.values.mobile}
                                         />
-                                        <div className="errors">
+                                        <div className="error fail-message">
                                             {formik.touched.mobile && formik.errors.mobile}
                                         </div>
                                     </div>
@@ -109,31 +109,31 @@ const Contact = () => {
                                             className="form-control w-100"
                                             cols="30"
                                             rows="4"
-                                            placeholder="Comments"
+                                            placeholder="Nội dung"
                                             name="comments"
                                             onChange={formik.handleChange("comments")}
                                             onBlur={formik.handleBlur("comments")}
                                             value={formik.values.comments}
                                         ></textarea>
-                                        <div className="errors">
+                                        <div className="error fail-message">
                                             {formik.touched.comments && formik.errors.comments}
                                         </div>
                                     </div>
                                     <div>
                                         <button type="submit" className="button border-0">
-                                            Submit
+                                            Gửi đơn
                                         </button>
                                     </div>
                                 </form>
                             </div>
                             <div>
-                                <h3 className="contact-title mb-4">Get in touch with us</h3>
+                                <h3 className="contact-title mb-4">Hoặc liên hệ tới chúng tôi từ</h3>
                                 <div>
                                     <ul className="ps-0">
                                         <li className="mb-3 d-flex align-items-center gap-15">
                                             <AiOutlineHome className="fs-5" />
                                             <address className="mb-0">
-                                                Hno: 390/4 Hoang Dieu, Hai Chau, Danang
+                                                12 Hàm Nghi, Hải Châu, Đà Nẵng
                                             </address>
                                         </li>
                                         <li className="mb-3 d-flex gap-15 align-items-center">
@@ -143,12 +143,12 @@ const Contact = () => {
                                         <li className="mb-3 d-flex gap-15 align-items-center">
                                             <AiOutlineMail className="fs-5" />
                                             <a href="mailto: tancuynh@gmail.com">
-                                                tancuynh@gmail.com
+                                                support@electronics.com
                                             </a>
                                         </li>
                                         <li className="mb-3 d-flex gap-15 align-items-center">
                                             <BiInfoCircle className="fs-5" />
-                                            <p className="mb-0">Monday - Friday 10AM - 8PM</p>
+                                            <p className="mb-0">Thứ 2 - Thứ 6 10AM - 8PM</p>
                                         </li>
                                     </ul>
                                 </div>

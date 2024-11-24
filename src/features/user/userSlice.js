@@ -174,7 +174,6 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.createdUser = action.payload;
-                // console.log("createdUser", action.payload);
                 if (state.isSuccess === true) {
                     toast.info(action.payload.message);
                 }
@@ -197,7 +196,6 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.user = action.payload.findUser;
-                console.log('login slice', action.payload);
                 localStorage.setItem("token", action.payload.findUser.token);
                 localStorage.setItem("customer", JSON.stringify(action.payload.findUser));
                 if (state.isSuccess === true) {
@@ -210,7 +208,8 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error.message;
                 if (state.isError === true) {
-                    toast.error(action.payload.message);
+                    // toast.error(action.payload.message); // TODO: Needs to be fixed
+                    toast.error("Sai email hoặc mật khẩu!");
                 }
             })
             // LOGOUT USER
@@ -262,7 +261,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.cartProduct = action.payload;
                 if (state.isSuccess) {
-                    toast.success("Product added to cart");
+                    toast.success("Sản phẩm đã được thêm vào giỏ hàng!");
                 }
             })
             .addCase(addProdToCart.rejected, (state, action) => {
@@ -295,7 +294,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.deletedCartProduct = action.payload;
                 if (state.isSuccess) {
-                    toast.success("Product removed from cart!");
+                    toast.success("Sản phần đã được xóa khỏi giỏ hàng!");
                 }
             })
             .addCase(deleteCartProduct.rejected, (state, action) => {
@@ -304,7 +303,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error("Product not removed from cart!");
+                    toast.error("Sản phẩm chưa được xóa khỏi giỏ hàng!");
                 }
             })
             .addCase(updateCartProduct.pending, (state) => {
@@ -316,7 +315,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.updatedCartProduct = action.payload;
                 if (state.isSuccess) {
-                    toast.success("Product updated!");
+                    toast.success("Sản phẩm đã được cập nhật!");
                 }
             })
             .addCase(updateCartProduct.rejected, (state, action) => {
@@ -325,7 +324,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error("Product not updated!");
+                    toast.error("Sản phẩm chưa được cập nhật!");
                 }
             })
             .addCase(getOrders.pending, (state) => {
@@ -372,7 +371,7 @@ export const authSlice = createSlice({
                         ...action.payload.updatedUser,
                     }
                     localStorage.setItem("customer", JSON.stringify(newUpdatedData));
-                    toast.success("Profile updated successfully!");
+                    toast.success("Cập nhật thành công!");
                 }
             })
             .addCase(updateProfile.rejected, (state, action) => {
@@ -381,7 +380,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error("Profile not updated!");
+                    toast.error("Cập nhật chưa thành công!");
                 }
             })
             .addCase(forgotPasswordToken.pending, (state) => {
@@ -393,7 +392,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.token = action.payload;
                 if (state.isSuccess) {
-                    toast.success("Password reset link sent to your email!");
+                    toast.success("Link đổi mật khẩu đã được gửi đến email của bạn!");
                 }
             })
             .addCase(forgotPasswordToken.rejected, (state, action) => {
@@ -402,7 +401,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error("Password reset link not sent to your email!");
+                    toast.error("Link đổi mật khẩu chưa được gửi đến email của bạn!");
                 }
             })
             .addCase(resetPassword.pending, (state) => {
@@ -414,7 +413,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.pass = action.payload;
                 if (state.isSuccess) {
-                    toast.success("Password updated successfully!");
+                    toast.success("Mật khẩu đã được thay đổi!");
                 }
             })
             .addCase(resetPassword.rejected, (state, action) => {
@@ -423,7 +422,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isSuccess === false) {
-                    toast.error("Something went wrong!");
+                    toast.error("Mật khẩu chưa được thay đổi!");
                 }
             });
     },

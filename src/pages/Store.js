@@ -49,7 +49,7 @@ const Store = () => {
             categories.push(element.category);
             newColors.push(element.color);
 
-            const splitTags = element.tags.split(",").map((tag) => tag.trim());
+            const splitTags = element.tags ? element.tags.split(",").map((tag) => tag.trim()) : [];
             newTags = [...newTags, ...splitTags];
         }
         setBrands(newBrands);
@@ -60,8 +60,8 @@ const Store = () => {
 
     return (
         <>
-            <Meta title={"Our Store"} />
-            <BreadCrumb title="Our Store" />
+            <Meta title={"Cửa hàng"} />
+            <BreadCrumb title="Cửa hàng" />
             <Container class1="store-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-3">
@@ -86,7 +86,7 @@ const Store = () => {
                             </div>
                         </div> */}
                         <div className="filter-card mb-3">
-                            <h3 className="filter-title">Filter By</h3>
+                            <h3 className="filter-title">Bộ lọc</h3>
                             {/* <div>
                                 <h5 className="sub-title">Availability</h5>
                                 <div>
@@ -114,7 +114,7 @@ const Store = () => {
                                     </div>
                                 </div>
                             </div> */}
-                            <h5 className="sub-title">Price</h5>
+                            <h5 className="sub-title">Giá sản phẩm</h5>
                             <div className="d-flex align-items-center gap-10">
                                 <div className="form-floating">
                                     <input
@@ -126,7 +126,7 @@ const Store = () => {
                                             setMinPrice(e.target.value);
                                         }}
                                     />
-                                    <label htmlFor="floatingInput1">From</label>
+                                    <label htmlFor="floatingInput1">Từ</label>
                                 </div>
                                 <div className="form-floating">
                                     <input
@@ -138,7 +138,7 @@ const Store = () => {
                                             setMaxPrice(e.target.value);
                                         }}
                                     />
-                                    <label htmlFor="floatingInput2">To</label>
+                                    <label htmlFor="floatingInput2">Đến</label>
                                 </div>
                             </div>
                             {/* <h5 className="sub-title">Color</h5>
@@ -182,7 +182,7 @@ const Store = () => {
                                 </div>
                             </div> */}
                             <div className="mb-3 mt-4">
-                                <h3 className="sub-title">Product Tags</h3>
+                                <h3 className="sub-title">Tag sản phẩm</h3>
                                 <div>
                                     <div className="product-tags d-flex flex-wrap align-items-center gap-10">
                                         {tags &&
@@ -197,7 +197,7 @@ const Store = () => {
                                 </div>
                             </div>
                             <div className="mb-3 mt-4">
-                                <h3 className="sub-title">Product Brands</h3>
+                                <h3 className="sub-title">Hãng</h3>
                                 <div>
                                     <div className="product-tags d-flex flex-wrap align-items-center gap-10">
                                         {brands &&
@@ -218,7 +218,7 @@ const Store = () => {
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center gap-10">
                                     <p className="mb-0" style={{ width: "100px" }}>
-                                        Sort by:
+                                        Sắp xếp theo:
                                     </p>
                                     <select
                                         defaultValue={"manual"}
@@ -231,12 +231,12 @@ const Store = () => {
                                     >
                                         {/* <option value="manual">Featured</option>
                                         <option value="best-selling">Best selling</option> */}
-                                        <option value="title">Alphabetically, A-Z</option>
-                                        <option value="-title">Alphabetically, Z-A</option>
-                                        <option value="price">Price, low to high</option>
-                                        <option value="-price">Price, high to low</option>
-                                        <option value="option">Date, old to new</option>
-                                        <option value="-option">Date, new to old</option>
+                                        <option value="title">Từ A đến Z</option>
+                                        <option value="-title">Từ Z đến A</option>
+                                        <option value="price">Giá từ thấp nhất đến cao nhất</option>
+                                        <option value="-price">Giá từ cao nhất đến thấp nhất</option>
+                                        <option value="option">Từ cũ nhất đến mới nhát</option>
+                                        <option value="-option">Từ mới nhất đến cũ nhất</option>
                                     </select>
                                 </div>
                                 <div>
