@@ -1065,3 +1065,7 @@ footer .input-group-text {
 .background-hover:hover {
     background-color: var(--color-ededed) !important;
 }
+
+.hover-underline:hover {
+    text-decoration: underline;
+}

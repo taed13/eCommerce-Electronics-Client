@@ -12,8 +12,8 @@ import { forgotPasswordToken } from "../features/user/userSlice";
 const emailSchema = yup.object({
     email: yup
         .string()
-        .email("Email should be valid")
-        .required("Email is required"),
+        .email("Địa chỉ email không hợp lệ")
+        .required("Chưa nhập địa chỉ email"),
 });
 
 const ForgotPassword = () => {
@@ -34,21 +34,21 @@ const ForgotPassword = () => {
 
     return (
         <>
-            <Meta title={"Forgot password"} />
-            <BreadCrumb title="Forgot password" />
+            <Meta title={"Quên mật khẩu"} />
+            <BreadCrumb title="Quên mật khẩu" />
             <Container class1="login-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">
-                            <h3 className="text-center mb-3">Reset your password</h3>
+                            <h3 className="text-center mb-3">Quên mật khẩu</h3>
                             <p className="text-center my-2 mb-4">
-                                We will sent you an email to reset your password
+                                Vui lòng nhập email của bạn để nhận hướng dẫn khôi phục mật khẩu
                             </p>
                             <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-2">
                                 <CustomInput
                                     type="email"
                                     name="email"
-                                    placeholder="Email"
+                                    placeholder="Địa chỉ email"
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -58,9 +58,9 @@ const ForgotPassword = () => {
                                 </div>
                                 <div className="d-flex justify-content-center flex-column gap-15 align-items-center">
                                     <button type="submit" className="button border-0">
-                                        Submit
+                                        Gửi
                                     </button>
-                                    <Link to="/login">Cancel</Link>
+                                    <Link to="/login">Quay lại</Link>
                                 </div>
                             </form>
                         </div>

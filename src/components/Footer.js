@@ -12,7 +12,7 @@ const Footer = () => {
                         <div className="col-5">
                             <div className="footer-top-data d-flex gap-30 align-items-center">
                                 <img src={newsletter} alt="newsletter" />
-                                <h3 className="mb-0 text-white">Sign up for Newsletter</h3>
+                                <h3 className="mb-0 text-white">Đăng ký nhận thông tin mới nhất</h3>
                             </div>
                         </div>
                         <div className="col-7">
@@ -20,12 +20,12 @@ const Footer = () => {
                                 <input
                                     type="text"
                                     className="form-control py-1"
-                                    placeholder="Your Email Address"
+                                    placeholder="Địa chỉ email của bạn"
                                     aria-label="Your Email Address"
                                     aria-describedby="basic-addon2"
                                 />
                                 <span className="input-group-text py-2 px-3" id="basic-addon2">
-                                    Subscribe
+                                    Đăng ký
                                 </span>
                             </div>
                         </div>
@@ -36,10 +36,10 @@ const Footer = () => {
                 <div className="container-xxl">
                     <div className="row">
                         <div className="col-4">
-                            <h4 className="text-white mb-4">Contact Us</h4>
+                            <h4 className="text-white mb-4">Liên hệ chúng tôi</h4>
                             <div className="">
                                 <address className="text-white fs-6">
-                                    Hno: 15 Quang Trung, <br /> Danang, Vietnam <br />
+                                    12 Hàm Nghi, <br /> Đà Nẵng, Việt Nam <br />
                                     PinCode: 120302
                                 </address>
                                 <a
@@ -52,7 +52,7 @@ const Footer = () => {
                                     href="mailto: tancuynh@gmail.com"
                                     className="mt-3 d-block mb-0 text-white"
                                 >
-                                    tancuynh@gmail.com
+                                    support@electronics.com
                                 </a>
                             </div>
                             <div className="social_icons d-flex align-items-center gap-30 mt-4">
@@ -71,40 +71,40 @@ const Footer = () => {
                             </div>
                         </div>
                         <div className="col-3">
-                            <h4 className="text-white mb-4">Information</h4>
+                            <h4 className="text-white mb-4">Thông tin</h4>
                             <div className="footer-link d-flex flex-column ">
-                                <Link to="privacy-policy" className="text-white py-2 mb-1">
-                                    Privacy Policy
+                                <Link to="privacy-policy" className="text-white py-2 mb-1" onClick={() => window.scrollTo(0, 0)}>
+                                    Chính sách bảo mật
                                 </Link>
-                                <Link to="refund-policy" className="text-white py-2 mb-1">
-                                    Refund Policy
+                                <Link to="refund-policy" className="text-white py-2 mb-1" onClick={() => window.scrollTo(0, 0)}>
+                                    Chính sách hoàn trả
                                 </Link>
-                                <Link to="shipping-policy" className="text-white py-2 mb-1">
-                                    Shipping Policy
+                                <Link to="shipping-policy" className="text-white py-2 mb-1" onClick={() => window.scrollTo(0, 0)}>
+                                    Chính sách vận chuyển
                                 </Link>
-                                <Link to="term-and-condition" className="text-white py-2 mb-1">
-                                    Terms & Conditions
+                                <Link to="term-and-condition" className="text-white py-2 mb-1" onClick={() => window.scrollTo(0, 0)}>
+                                    Điều khoản và điều kiện
                                 </Link>
-                                <Link to="blogs" className="text-white py-2 mb-1">
-                                    Blogs
+                                <Link to="blogs" className="text-white py-2 mb-1" onClick={() => window.scrollTo(0, 0)}>
+                                    Blog
                                 </Link>
                             </div>
                         </div>
                         <div className="col-3">
-                            <h4 className="text-white mb-4">Account</h4>
+                            <h4 className="text-white mb-4">Tài khoản</h4>
                             <div className="footer-link d-flex flex-column ">
-                                <Link className="text-white py-2 mb-1">About Us</Link>
+                                <Link className="text-white py-2 mb-1">Về chúng tôi</Link>
                                 <Link className="text-white py-2 mb-1">FAQ</Link>
-                                <Link className="text-white py-2 mb-1">Contact</Link>
+                                <Link className="text-white py-2 mb-1" to="/contact" onClick={() => window.scrollTo(0, 0)}>Liên hệ</Link>
                             </div>
                         </div>
                         <div className="col-2">
-                            <h4 className="text-white mb-4">Quick Links</h4>
+                            <h4 className="text-white mb-4">Đường dẫn</h4>
                             <div className="footer-link d-flex flex-column ">
                                 <Link className="text-white py-2 mb-1">Laptops</Link>
-                                <Link className="text-white py-2 mb-1">Headphones</Link>
-                                <Link className="text-white py-2 mb-1">Tablets</Link>
-                                <Link className="text-white py-2 mb-1">Watches</Link>
+                                <Link className="text-white py-2 mb-1">Tai nghe</Link>
+                                <Link className="text-white py-2 mb-1">Máy tính bảng</Link>
+                                <Link className="text-white py-2 mb-1">Đồng hồ</Link>
                             </div>
                         </div>
                     </div>

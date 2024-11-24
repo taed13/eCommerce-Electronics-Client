@@ -50,10 +50,10 @@ const Home = () => {
                                 alt="main-banner"
                             />
                             <div className="main-banner-content position-absolute">
-                                <h4>SUPERCHARGED FOR PROS.</h4>
+                                <h4>SUPERCHARGED CHO PROS.</h4>
                                 <h5>iPad S13+ Pro.</h5>
-                                <p>From $990.00 or $41.62/mo.</p>
-                                <Link className="button">BUY NOW</Link>
+                                <p>Từ 24,000,000đ <br /> hoặc $1,270,000/tháng</p>
+                                <Link className="button">MUA NGAY</Link>
                             </div>
                         </div>
                     </div>
@@ -66,10 +66,10 @@ const Home = () => {
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>BEST SALE</h4>
+                                    <h4>BEST SELLER</h4>
                                     <h5>Laptops Max</h5>
                                     <p>
-                                        From $1699.00 <br /> or $64.62/mo.
+                                        Từ 43,000,000đ <br /> hoặc 1,600,000đ/tháng
                                     </p>
                                 </div>
                             </div>
@@ -80,10 +80,10 @@ const Home = () => {
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL</h4>
-                                    <h5>Buy iPad Air</h5>
+                                    <h4>Sản phẩm mới</h4>
+                                    <h5>iPad Air</h5>
                                     <p>
-                                        From $599.00 <br /> or $49.91/mo. for 12 mo. *
+                                        Từ 15,000,000đ<br /> hoặc 1,270,000đ/tháng *
                                     </p>
                                 </div>
                             </div>
@@ -94,10 +94,10 @@ const Home = () => {
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL</h4>
-                                    <h5>Buy iPad Air</h5>
+                                    <h4>Sản phẩm mới</h4>
+                                    <h5>iPad Air</h5>
                                     <p>
-                                        From $599.00 <br /> or $49.91/mo. for 12 mo. *
+                                        Từ 15,000,000đ <br /> hoặc 1,270,000đ/tháng *
                                     </p>
                                 </div>
                             </div>
@@ -108,10 +108,10 @@ const Home = () => {
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL</h4>
-                                    <h5>Buy iPad Air</h5>
+                                    <h4>Sản phẩm mới</h4>
+                                    <h5>iPad Air</h5>
                                     <p>
-                                        From $599.00 <br /> or $49.91/mo. for 12 mo. *
+                                        Từ 15,000,000đ <br /> hoặc 1,270,000đ/tháng *
                                     </p>
                                 </div>
                             </div>
@@ -144,56 +144,56 @@ const Home = () => {
                         <div className="categories d-flex flex-wrap justify-content-between align-items-center">
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Camaras</h6>
+                                    <h6 className="fw-bold">Camara</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Smart TV</h6>
+                                    <h6 className="fw-bold">TV</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/tv.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Headphone</h6>
+                                    <h6 className="fw-bold">Tai nghe</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/headphone.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Music $ Games</h6>
+                                    <h6 className="fw-bold">Âm nhạc & trò chơi</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Camaras</h6>
+                                    <h6 className="fw-bold">Camara</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Smart TV</h6>
+                                    <h6 className="fw-bold">TV</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/tv.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Headphone</h6>
+                                    <h6 className="fw-bold">Tai nghe</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/headphone.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Music $ Games</h6>
+                                    <h6 className="fw-bold">Âm nhạc & trò chơi</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
@@ -205,7 +205,7 @@ const Home = () => {
             <Container class1="featured-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <h3 className="section-heading">Feature collections</h3>
+                        <h3 className="section-heading">Từ các bộ sưu tập</h3>
                     </div>
                     {productState &&
                         productState?.map((item, index) => {
@@ -286,9 +286,9 @@ const Home = () => {
                                 alt="famous"
                             />
                             <div className="famous-content position-absolute">
-                                <h5>big screen</h5>
+                                <h5>Màn hình rộng</h5>
                                 <h6>Smart Watch Series 7</h6>
-                                <p>From $399 or $16.62/mo. for 24 mo.*</p>
+                                <p>Từ 10,000,000đ hoặc 422,000đ/tháng trong 24 tháng *</p>
                             </div>
                         </div>
                     </div>
@@ -301,7 +301,7 @@ const Home = () => {
                             />
                             <div className="famous-content position-absolute">
                                 <h5 className="text-dark">studio display</h5>
-                                <h6 className="text-dark">600 nits of brightness.</h6>
+                                <h6 className="text-dark">Độ sáng lên đến 600 nits.</h6>
                                 <p className="text-dark">27-inch 5K Retina display</p>
                             </div>
                         </div>
@@ -315,9 +315,9 @@ const Home = () => {
                             />
                             <div className="famous-content position-absolute">
                                 <h5 className="text-dark">smartphones</h5>
-                                <h6 className="text-dark">Iphone 13 Pro.</h6>
+                                <h6 className="text-dark">Iphone 16 Pro.</h6>
                                 <p className="text-dark">
-                                    Now in Green. From $990.00 or $41.62/mo. for 24mo.
+                                    Từ 25.167.000đ hoặc 1,058,000đ/tháng trong 24 tháng
                                 </p>
                             </div>
                         </div>
@@ -332,7 +332,7 @@ const Home = () => {
                             <div className="famous-content position-absolute">
                                 <h5 className="text-dark">home speakers</h5>
                                 <h6 className="text-dark">Room-filling sounds.</h6>
-                                <p className="text-dark">From $699 or $116.58/mo. for 12mo.*</p>
+                                <p className="text-dark">Từ 17,770,000đ hoặc $2,964,000đ/tháng trong 12 tháng*</p>
                             </div>
                         </div>
                     </div>
@@ -341,7 +341,7 @@ const Home = () => {
             <Container class1="special-wrapper py-4 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <h3 className="section-heading">Special Products</h3>
+                        <h3 className="section-heading">Sản phẩm đặc biệt</h3>
                     </div>
                 </div>
                 <div className="row">
@@ -368,7 +368,7 @@ const Home = () => {
             <Container class1="popular-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <h3 className="section-heading">Our popular products</h3>
+                        <h3 className="section-heading">Các sản phẩm phổ biến</h3>
                     </div>
                 </div>
                 <div className="row">
@@ -477,7 +477,7 @@ const Home = () => {
             <Container class1="blog-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <h3 className="section-heading">Our Latest Blogs</h3>
+                        <h3 className="section-heading">Các bài viết mới nhất</h3>
                     </div>
                     <div className="row">
                         {blogState &&

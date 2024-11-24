@@ -33,7 +33,7 @@ const SingleBlog = () => {
                         <div className="single-blog-card">
                             <Link to="/blogs" className="d-flex align-items-center gap-10">
                                 <HiOutlineArrowLeft className="fs-4" />
-                                Go back to Blogs
+                                Quay lại trang blog
                             </Link>
                             <h3 className="title">{blogState?.data?.title}</h3>
                             <img

@@ -21,16 +21,16 @@ const Blog = () => {
 
     return (
         <>
-            <Meta title={"Blogs"} />
-            <BreadCrumb title="Blogs" />
+            <Meta title={"Blog"} />
+            <BreadCrumb title="Blog" />
             <Container class1="blog-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-3">
                         <div className="filter-card mb-3">
-                            <h3 className="filter-title">FInd By Categories</h3>
+                            <h3 className="filter-title">Tìm theo danh mục</h3>
                             <div>
                                 <ul className="ps-0">
-                                    <li>Watch</li>
+                                    <li>Đồng hồ</li>
                                     <li>TV</li>
                                     <li>Camera</li>
                                     <li>Laptop</li>

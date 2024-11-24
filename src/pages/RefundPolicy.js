@@ -6,8 +6,8 @@ import Container from "../components/Container";
 const RefundPolicy = () => {
     return (
         <>
-            <Meta title={"Refund Policy"} />
-            <BreadCrumb title="Refund Policy" />
+            <Meta title={"Chính sách hoàn trả"} />
+            <BreadCrumb title="Chính sách hoàn trả" />
             <Container class1="policy-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">

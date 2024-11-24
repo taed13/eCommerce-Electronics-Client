@@ -5,7 +5,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../features/user/userSlice";
-import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const profileSchema = yup.object({
@@ -23,7 +22,7 @@ const Profile = () => {
     const [initialValues, setInitialValues] = useState({
         firstname: userState?.firstname || "",
         lastname: userState?.lastname || "",
-        email: userState?.email || userInfoState?.email ||"",
+        email: userState?.email || userInfoState?.email || "",
         mobile: userState?.mobile || "",
     });
 
@@ -43,6 +42,11 @@ const Profile = () => {
         }
     }, [edit]);
 
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.reload();
+    };
+
     const handleCancel = () => {
         formik.resetForm();
         setEdit(true);
@@ -50,15 +54,15 @@ const Profile = () => {
 
     return (
         <>
-            <BreadCrumb title="My Profile" />
+            <BreadCrumb title="Tài khoản của tôi" />
             <Container class1="cart-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-12">
                         <div className="d-flex justify-content-between align-items-start">
                             {edit ? (
-                                <h3 className="mb-4">My Profile</h3>
+                                <h3 className="mb-4">Tài khoản của tôi</h3>
                             ) : (
-                                <h3 className="mb-4">Update Profile</h3>
+                                <h3 className="mb-4">Chỉnh sửa tài khoản</h3>
                             )}
                         </div>
                     </div>
@@ -67,7 +71,7 @@ const Profile = () => {
                             <div className="d-flex gap-2">
                                 <div className="mb-3 w-50">
                                     <label htmlFor="firstname" className="form-label">
-                                        First name
+                                        Họ
                                     </label>
                                     <input
                                         type="text"
@@ -85,7 +89,7 @@ const Profile = () => {
                                 </div>
                                 <div className="mb-3 w-50">
                                     <label htmlFor="lastname" className="form-label">
-                                        Last name
+                                        Tên
                                     </label>
                                     <input
                                         type="text"
@@ -104,7 +108,7 @@ const Profile = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="email" className="form-label">
-                                    Email address
+                                    Địa chỉ email
                                 </label>
                                 <input
                                     type="email"
@@ -122,7 +126,7 @@ const Profile = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="mobile" className="form-label">
-                                    Mobile number
+                                    Số điện thoại
                                 </label>
                                 <input
                                     type="text"
@@ -139,20 +143,29 @@ const Profile = () => {
                                 </div>
                             </div>
                             {edit ? (
-                                <Link onClick={() => setEdit(false)} className="button border-0 mt-2">
-                                    <span>Edit Profile</span>
-                                </Link>
+                                <div className="d-flex align-items-center gap-2">
+                                    <Link onClick={() => setEdit(false)} className="button border-0 mt-2">
+                                        <span>Chỉnh sửa tài khoản</span>
+                                    </Link>
+                                    <Link
+                                        onClick={() => {
+                                            handleLogout();
+                                        }}
+                                        className="button border-0 mt-2">
+                                        <span>Đăng xuất</span>
+                                    </Link>
+                                </div>
                             ) : (
                                 <div className="d-flex gap-2 mt-4">
                                     <button type="submit" className="button border-0">
-                                        Confirm
+                                        Xác nhận
                                     </button>
                                     <button
                                         type="button"
                                         className="button signup border-0"
                                         onClick={handleCancel}
                                     >
-                                        Cancel
+                                        Quay lại
                                     </button>
                                 </div>
                             )}

@@ -12,9 +12,9 @@ import { loginUser, getInfoByEmailAddress } from "../features/user/userSlice";
 const loginSchema = yup.object({
     email: yup
         .string()
-        .email("Email should be valid")
-        .required("Email is required"),
-    password: yup.string().required("Password is required"),
+        .email("Địa chỉ email không hợp lệ")
+        .required("Chưa nhập địa chỉ email"),
+    password: yup.string().required("Chưa nhập mật khẩu"),
 });
 
 const getOauthGoogleUrl = () => {
@@ -70,17 +70,11 @@ const Login = () => {
             localStorage.setItem("token", accessToken);
             localStorage.setItem("refresh_token", refreshToken);
 
-            // Decode JWT to retrieve user information or use an API to fetch it if necessary
             const decoded = JSON.parse(atob(accessToken.split(".")[1]));
             console.log("Decoded Token:", decoded.email);
 
             dispatch(getInfoByEmailAddress(decoded.email));
-            // console.log("User Info from Token:", decoded);
-            // console.log("User Info from Token:::::", authState);
 
-            // dispatch
-
-            // Navigate to dashboard or remove tokens from URL
             window.history.replaceState({}, document.title, "/");
             navigate("/");
         }
@@ -88,25 +82,21 @@ const Login = () => {
 
     return (
         <>
-            <Meta title={"Login"} />
-            <BreadCrumb title="Login" />
+            <Meta title={"Đăng nhập"} />
+            <BreadCrumb title="Đăng nhập" />
             <Container class1="login-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card shadow-lg">
-                            <h2 className="text-center mb-4">Login</h2>
-                            <p className="text-center">
-                                to continue to your Electronics account.
+                            <h2 className="text-center fw-bold mb-3">Đăng nhập</h2>
+                            <p className="text-center mb-5">
+                                vào tài khoản Electronics của bạn
                             </p>
-                            <form
-                                action=""
-                                onSubmit={formik.handleSubmit}
-                                className="d-flex flex-column gap-2"
-                            >
+                            <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-2">
                                 <CustomInput
                                     type="email"
                                     name="email"
-                                    placeholder="Email address"
+                                    placeholder="Địa chỉ email"
                                     value={formik.values.email}
                                     onChange={(e) => {
                                         formik.handleChange("email")(e);
@@ -121,7 +111,7 @@ const Login = () => {
                                 <CustomInput
                                     type="password"
                                     name="password"
-                                    placeholder="Password"
+                                    placeholder="Mật khẩu"
                                     value={formik.values.password}
                                     onChange={formik.handleChange("password")}
                                     onBlur={formik.handleBlur("password")}
@@ -131,27 +121,20 @@ const Login = () => {
                                 </div>
 
                                 <div className="d-flex justify-content-end">
-                                    <Link to="/forgot-password" className="">
-                                        Forgot password?
+                                    <Link to="/forgot-password" className="hover-underline">
+                                        Quên mật khẩu?
                                     </Link>
                                 </div>
 
                                 <div className="d-flex justify-content-center align-items-center gap-3">
-                                    <button
-                                        type="submit"
-                                        className={`button border-0 ${!email && !password ? "disabled" : ""
-                                            }`}
-                                    >
-                                        Login
+                                    <button type="submit" className={`button border-0 ${!email && !password ? "disabled" : ""}`}>
+                                        Đăng nhập
                                     </button>
                                 </div>
                             </form>
-                            <p className="text-center mt-3">or login with</p>
-                            <div className="d-flex justify-content-center align-items-center m-2">
-                                <Link
-                                    to={oauthURL}
-                                    className="bg-light border-0 rounded d-flex align-items-center justify-content-center p-2 px-4"
-                                >
+                            <p className="text-center mt-3">hoặc</p>
+                            <div className="d-flex justify-content-center align-items-center m-3">
+                                <Link to={oauthURL} className="bg-light border-0 rounded d-flex align-items-center justify-content-center p-2 px-4">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 326667 333333"
@@ -186,11 +169,9 @@ const Login = () => {
                                 </Link>
                             </div>
 
-                            <div className="d-flex gap-1 justify-content-center align-items-center">
-                                <h6 className="text-center mt-2">Don't have an account?</h6>
-                                <Link to="/signup" className="text-primary">
-                                    Sign up
-                                </Link>
+                            <div className="d-flex gap-1 justify-content-center align-items-baseline">
+                                <p className="text-center mt-2">Bạn mới biết đến Electronics?</p>
+                                <Link to="/signup" className="text-primary hover-underline">Đăng ký</Link>
                             </div>
                         </div>
                     </div>

@@ -9,8 +9,8 @@ import axios from "axios";
 import { config } from "../utils/axiosConfig";
 
 const shippingSchema = yup.object({
-    firstName: yup.string().required("First Name is required"),
-    lastName: yup.string().required("Last Name is required"),
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
     address: yup.string().required("Address is required"),
     city: yup.string().required("City is required"),
     state: yup.string().required("State is required"),
@@ -149,7 +149,7 @@ const Checkout = () => {
                                             );
                                         })}
                                     </select>
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.country && formik.errors.country}
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@ const Checkout = () => {
                                         onChange={formik.handleChange("firstName")}
                                         onBlur={formik.handleBlur("firstName")}
                                     />
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.firstName && formik.errors.firstName}
                                     </div>
                                 </div>
@@ -177,7 +177,7 @@ const Checkout = () => {
                                         onChange={formik.handleChange("lastName")}
                                         onBlur={formik.handleBlur("lastName")}
                                     />
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.lastName && formik.errors.lastName}
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@ const Checkout = () => {
                                         onChange={formik.handleChange("address")}
                                         onBlur={formik.handleBlur("address")}
                                     />
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.address && formik.errors.address}
                                     </div>
                                 </div>
@@ -205,7 +205,7 @@ const Checkout = () => {
                                         onChange={formik.handleChange("other")}
                                         onBlur={formik.handleBlur("other")}
                                     />
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.other && formik.errors.other}
                                     </div>
                                 </div>
@@ -219,7 +219,7 @@ const Checkout = () => {
                                         onChange={formik.handleChange("city")}
                                         onBlur={formik.handleBlur("city")}
                                     />
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.city && formik.errors.city}
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@ const Checkout = () => {
                                         <option value="1">State 1</option>
                                         <option value="2">State 2</option>
                                     </select>
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.state && formik.errors.state}
                                     </div>
                                 </div>
@@ -252,16 +252,13 @@ const Checkout = () => {
                                         onChange={formik.handleChange("pincode")}
                                         onBlur={formik.handleBlur("pincode")}
                                     />
-                                    <div className="error text-danger ms-2 my-1">
+                                    <div className="error fail-message mt-1">
                                         {formik.touched.pincode && formik.errors.pincode}
                                     </div>
                                 </div>
                                 <div className="w-100">
                                     <div className="d-flex justify-content-between align-items-center">
-                                        <Link
-                                            to="/cart"
-                                            className="text-dark d-flex align-items-center"
-                                        >
+                                        <Link to="/cart" className="text-dark d-flex align-items-center hover-underline">
                                             <IoIosArrowBack className="fs-5 me-1" />
                                             Return to cart
                                         </Link>
@@ -324,7 +321,7 @@ const Checkout = () => {
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <p className="mb-0 partial">Shipping</p>
-                                <p className="mb-0 partial-price">$ 34.00</p>
+                                <p className="mb-0 partial-price">$ 34</p>
                             </div>
                         </div>
                         <div className="d-flex justify-content-between align-items-center border-bottom py-4">
