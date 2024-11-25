@@ -347,17 +347,18 @@ const Home = () => {
                 <div className="row">
                     {productState &&
                         productState?.map((item, index) => {
-                            if (item?.tags?.includes("special")) {
+                            if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "special")) {
                                 return (
                                     <SpecialProduct
                                         key={index}
                                         id={item?._id}
-                                        title={item?.title}
+                                        title={item?.product_name}
+                                        img={item?.product_images[0]?.url}
                                         brand={item?.brand}
-                                        totalRating={item?.totalRating.toString()}
-                                        price={item?.price}
-                                        sold={item?.sold}
-                                        quantity={item?.quantity}
+                                        totalRating={item?.product_totalRating.toString()}
+                                        price={item?.product_price}
+                                        sold={item?.product_sold}
+                                        quantity={item?.product_quantity}
                                     />
                                 );
                             }
@@ -374,7 +375,7 @@ const Home = () => {
                 <div className="row">
                     {productState &&
                         productState?.map((item, index) => {
-                            if (item?.tags?.includes("popular")) {
+                            if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "popular")) {
                                 return (
                                     <div key={index} className={"col-3"}>
                                         <div className="product-card position-relative">
@@ -388,30 +389,35 @@ const Home = () => {
                                             </div>
                                             <div className="product-image">
                                                 <img
-                                                    src={item?.images[0]}
+                                                    src={item?.product_images[0]?.url}
                                                     className="img-fluid mx-auto"
                                                     alt="product"
                                                     width={160}
                                                 />
                                                 <img
-                                                    src={item?.images[0]}
+                                                    src={item?.product_images[0]?.url}
                                                     className="img-fluid mx-auto"
                                                     alt="product"
                                                     width={160}
                                                 />
                                             </div>
                                             <div className="product-details">
-                                                <h6 className="brand">{item?.brand}</h6>
-                                                <h5 className="product-title">{item?.title}</h5>
+                                                <h6 className="brand">{item?.product_brand?.map((brand, index) => (
+                                                    <span key={brand._id}>
+                                                        {brand.title}
+                                                        {index < item.product_brand.length - 1 && " | "}
+                                                    </span>
+                                                ))}</h6>
+                                                <h5 className="product-title">{item?.product_name}</h5>
                                                 <ReactStars
                                                     count={5}
                                                     size={24}
-                                                    value={+item?.totalRating}
+                                                    value={+item?.product_totalRating}
                                                     edit={false}
                                                     activeColor="#ffd700"
                                                 />
 
-                                                <p className="price">$ {item?.price}</p>
+                                                <p className="price">{item?.product_price}</p>
                                             </div>
                                             <div className="action-bar position-absolute">
                                                 <div className="d-flex flex-column gap-15">
@@ -480,16 +486,16 @@ const Home = () => {
                         <h3 className="section-heading">Các bài viết mới nhất</h3>
                     </div>
                     <div className="row">
-                        {blogState &&
-                            blogState.data?.map((item, index) => {
+                        {
+                            blogState?.data?.map((item, index) => {
                                 if (index < 4) {
                                     return (
                                         <div className="col-3" key={index}>
                                             <BlogCard
                                                 id={item?.id}
-                                                title={item?.title}
-                                                description={item?.description}
-                                                image={item?.image[0]?.url}
+                                                title={item?.blog_title}
+                                                description={item?.blog_description}
+                                                image={item?.blog_images[0]}
                                                 date={moment(item?.createdAt).format(
                                                     "MMMM DD YYYY, H:mm a"
                                                 )}

@@ -35,12 +35,14 @@ const SingleProduct = () => {
     const productsState = useSelector((state) => state?.product?.product);
     const cartState = useSelector((state) => state?.auth?.cartProducts);
 
+    console.log('productState:::', productState);
+
     const props = {
         width: 600,
         height: 500,
         zoomWidth: 600,
-        img: productState?.images[0]?.url
-            ? productState?.images[0]?.url
+        img: productState?.product_images[0]?.url
+            ? productState?.product_images[0]?.url
             : "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MT3D3ref_VW_34FR+watch-case-44-aluminum-midnight-cell-se_VW_34FR+watch-face-44-aluminum-midnight-se_VW_34FR?wid=5120&hei=3280&bgc=fafafa&trim=1&fmt=p-jpg&qlt=80&.v=ajJYOEQxYjNlejNwbWNnSU16d0NYaWhSbVIzRFJTYlp1MEk4OWNDaTcvNTlEbzMrd1Z5SUpEd0hiT0ZLRlZGNHVDTzRRaC84T1VMbXJRN05SRldIelBRWnNWZWtLcTZCYVRER3FsWWowaTk5RG8zK3dWeUlKRHdIYk9GS0ZWRjR4cVNUNDJadDNVSmRncE9SalAvZ24wUVN3R3VxZWhYYXgwOHljYmZFMXBocmMyRTN3NCt6QkoxaUdRb0FBay9VYktGTHdENW9lYUFnak5pcy9ReEdDYitVd1NTQTM3UmZlcFMyUUhtajBOOUFTbk5vY3l1VDJCbGQ3QjJZZUd1bQ==",
     };
 
@@ -68,7 +70,7 @@ const SingleProduct = () => {
                     productId: productState?._id,
                     color,
                     quantity,
-                    price: productState?.price,
+                    price: productState?.product_price,
                 })
             );
             setAlreadyAdded(false);
@@ -85,17 +87,12 @@ const SingleProduct = () => {
         document.execCommand("copy");
         textField.remove();
     };
-
     useEffect(() => {
-        let data = [];
-        for (let i = 0; i < productsState.length; i++) {
-            const element = productsState[i];
-            if (element?.tags.includes("popular")) {
-                data.push(element);
-            }
+        const data = productsState.filter((product) =>
+            product.product_tags?.some((tag) => tag.name.toLowerCase() === "popular")
+        );
 
-            setPopularProducts(data);
-        }
+        setPopularProducts(data);
     }, [productsState]);
 
     const addRatingToProduct = () => {
@@ -119,8 +116,8 @@ const SingleProduct = () => {
 
     return (
         <>
-            <Meta title={productState?.title} />
-            <BreadCrumb title={productState?.title} />
+            <Meta title={productState?.product_name} />
+            <BreadCrumb title={productState?.product_name} />
             <Container class1="main-product-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-6">
@@ -130,7 +127,7 @@ const SingleProduct = () => {
                             </div>
                         </div>
                         <div className="other-product-images d-flex flex-wrap gap-15">
-                            {productState?.images.map((item, index) => {
+                            {productState?.product_images?.map((item, index) => {
                                 return (
                                     <div>
                                         <img src={item?.url} className="img-fluid" alt="" />
@@ -142,19 +139,19 @@ const SingleProduct = () => {
                     <div className="col-6">
                         <div className="main-product-details">
                             <div className="border-bottom">
-                                <h3 className="title">{productState?.title}</h3>
+                                <h3 className="title">{productState?.product_name}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price">$ {productState?.price}</p>
+                                <p className="price">{productState?.product_price} &#8363;</p>
                                 <div className="d-flex align-items-center gap-10">
                                     <ReactStars
                                         count={5}
                                         size={24}
-                                        value={productState?.totalRating}
+                                        value={productState?.product_totalRating}
                                         edit={false}
                                         activeColor="#ffd700"
                                     />
-                                    <p className="mb-0 t-review">(2 đánh giá)</p>
+                                    <p className="mb-0 t-review">({productState?.product_ratings?.length} đánh giá)</p>
                                 </div>
                                 <a className="review-btn" href="#review">
                                     Viết đánh giá
@@ -167,21 +164,44 @@ const SingleProduct = () => {
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Hãng: </h3>
-                                    <p className="product-data">{productState?.brand}</p>
+                                    <p className="product-data">
+                                        {productState?.product_brand?.map((brand, index) => (
+                                            <span key={brand._id}>
+                                                {brand.title}
+                                                {index < productState.product_brand.length - 1 && " | "}
+                                            </span>
+                                        ))}
+                                    </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Danh mục: </h3>
-                                    <p className="product-data">{productState?.category}</p>
+                                    <p className="product-data">
+                                        {productState?.product_category?.map((category, index) => (
+                                            <span key={category._id}>
+                                                {category.title}
+                                                {index < productState.product_category.length - 1 && " | "}
+                                            </span>
+                                        ))}
+                                    </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Tag sản phẩm: </h3>
-                                    <p className="product-data">{productState?.tags}</p>
+                                    <p className="product-data">
+                                        {productState?.product_tags?.map((tags, index) => (
+                                            <span key={tags._id}>
+                                                {tags.name}
+                                                {index < productState.product_tags.length - 1 && " | "}
+                                            </span>
+                                        ))}
+                                    </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Trạng thái: </h3>
-                                    <p className="product-data">In Stock</p>
+                                    <p className="product-data">
+                                        {productState?.product_quantity > 0 ? "Còn hàng" : "Đã bán hết"}
+                                    </p>
                                 </div>
-                                <div className="d-flex gap-10 flex-column mt-2 mb-3">
+                                {/* <div className="d-flex gap-10 flex-column mt-2 mb-3">
                                     <h3 className="product-heading">Size: </h3>
                                     <div className="d-flex flex-wrap gap-15">
                                         <span className="badge border border-1 bg-white text-dark border-secondary">
@@ -197,14 +217,14 @@ const SingleProduct = () => {
                                             XL
                                         </span>
                                     </div>
-                                </div>
+                                </div> */}
                                 {alreadyAdded === false && (
                                     <>
                                         <div className="d-flex gap-10 flex-column mt-2 mb-3">
                                             <h3 className="product-heading">Màu: </h3>
                                             <Color
                                                 setColor={setColor}
-                                                colorData={productState?.color}
+                                                colorData={productState?.product_color}
                                             />
                                         </div>
                                     </>
@@ -218,7 +238,7 @@ const SingleProduct = () => {
                                                     type="number"
                                                     name=""
                                                     min={1}
-                                                    max={10}
+                                                    max={productState?.product_quantity}
                                                     className="form-control"
                                                     style={{ width: "70px" }}
                                                     id=""
@@ -246,7 +266,7 @@ const SingleProduct = () => {
                                                     : uploadCart(productState?._id);
                                             }}
                                         >
-                                            {alreadyAdded ? "Go to cart" : "Add to cart"}
+                                            {alreadyAdded ? "Đi đến giỏ hàng" : "Thêm vào giỏ hàng"}
                                         </button>
                                         {/* <Link to="/signup" className="button signup">Buy it now</Link> */}
                                     </div>
@@ -266,11 +286,11 @@ const SingleProduct = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-10 flex-column my-3">
-                                    <h3 className="product-heading">Shipping & Returns: </h3>
+                                    <h3 className="product-heading">Vận chuyển & Đổi trả: </h3>
                                     <p className="product-data">
-                                        Free shipping and returns available on all order! <br />
-                                        We ship all Vietnam domestic order within{" "}
-                                        <b>5-10 business days!</b>
+                                        Miễn phí vận chuyển và đổi trả cho tất cả các đơn hàng! <br />
+                                        Chúng tôi vận chuyển tất cả các đơn hàng nội địa Việt Nam trong vòng{" "}
+                                        <b>5-10 ngày làm việc!</b>
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
@@ -296,7 +316,7 @@ const SingleProduct = () => {
                         <div className="bg-white p-3">
                             <p
                                 dangerouslySetInnerHTML={{
-                                    __html: productState?.description,
+                                    __html: productState?.product_description,
                                 }}
                             ></p>
                         </div>
@@ -315,11 +335,11 @@ const SingleProduct = () => {
                                         <ReactStars
                                             count={5}
                                             size={24}
-                                            value={3}
+                                            value={+productState?.product_totalRating}
                                             edit={false}
                                             activeColor="#ffd700"
                                         />
-                                        <p className="mb-0">Dựa theo 2 đánh giá</p>
+                                        <p className="mb-0">Dựa theo {productState?.product_ratings?.length} đánh giá</p>
                                     </div>
                                 </div>
                                 {orderedProducts && (
@@ -369,9 +389,9 @@ const SingleProduct = () => {
                                     </div>
                                 </form>
                             </div>
-                            <div className="reviews mt-4">
-                                {productState &&
-                                    productState?.ratings?.map((item, index) => {
+                            {/* <div className="reviews mt-4">
+                                {
+                                    productState?.product_ratings?.map((item, index) => {
                                         return (
                                             <div className="review" key={index}>
                                                 <div className="d-flex align-items-center gap-10">
@@ -387,8 +407,9 @@ const SingleProduct = () => {
                                                 <p className="mt-3">{item?.comment}</p>
                                             </div>
                                         );
-                                    })}
-                            </div>
+                                    })
+                                }
+                            </div> */}
                         </div>
                     </div>
                 </div>

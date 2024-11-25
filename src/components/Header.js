@@ -9,9 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
-import { getInfoByEmailAddress } from "../features/user/userSlice";
-import { getUserCart } from "../features/user/userSlice";
-
+import { getInfoByEmailAddress, getUserCart } from "../features/user/userSlice";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -45,10 +43,10 @@ const Header = () => {
     useEffect(() => {
         if (authState?.userInfo?.user) {
             console.log("User Info from Token:::::", authState?.userInfo?.user);
-            var infoUser = authState?.userInfo?.user;
-            var result = Object.keys(infoUser).map((key) => [key, infoUser[key], token]);
+            let infoUser = authState?.userInfo?.user;
+            let result = Object.keys(infoUser).map((key) => [key, infoUser[key], token]);
             result.push(["token", token]);
-            var newResult = Object.fromEntries(result);
+            let newResult = Object.fromEntries(result);
             const finalResult = JSON.stringify(newResult);
             console.log("result:::", finalResult);
             localStorage.setItem("customer", finalResult);
@@ -86,7 +84,7 @@ const Header = () => {
         let data = [];
         for (let i = 0; i < productState?.length; i++) {
             const element = productState[i];
-            data.push({ id: i, prod: element?._id, name: element?.title });
+            data.push({ id: i, prod: element?._id, name: element?.product_name });
         }
 
         setProductOtp(data);
@@ -113,7 +111,7 @@ const Header = () => {
                         </div>
                         <div className="col-6">
                             <p className="text-end text-white mb-0">
-                                Hotline: &nbsp;
+                                Đường dây nóng: &nbsp;
                                 <Link className="text-white" to="tel: +84 989 112 223">
                                     +84 989 112 223
                                 </Link>
@@ -282,16 +280,20 @@ const Header = () => {
                                             Cửa hàng
                                         </NavLink>
                                         {(authState?.user !== null || isAuthenticated) && (
-                                            <NavLink className="header-navlinks" to="/my-orders">
-                                                Đơn hàng
-                                            </NavLink>
+                                            <>
+                                                |
+                                                <NavLink className="header-navlinks" to="/my-orders">
+                                                    Đơn hàng
+                                                </NavLink>
+                                            </>
                                         )}
+                                        |
                                         <NavLink className="header-navlinks" to="/blogs">
-                                            Blogs
+                                            Blog
                                         </NavLink>
                                         |
                                         <NavLink className="header-navlinks" to="/contact">
-                                            Contact
+                                            Liên hệ
                                         </NavLink>
                                         {(authState?.user !== null || isAuthenticated) && (
                                             <>
@@ -301,7 +303,7 @@ const Header = () => {
                                                     className="border border-0 bg-transparent text-white text-uppercase"
                                                     type="button"
                                                 >
-                                                    Logout
+                                                    Đăng xuất
                                                 </button>
                                             </>
 

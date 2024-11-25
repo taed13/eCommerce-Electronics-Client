@@ -3,13 +3,15 @@ import ReactStars from "react-rating-stars-component";
 import { Link } from "react-router-dom";
 
 const SpecialProduct = (props) => {
-    const { id, title, brand, totalRating, price, sold, quantity } = props;
+    const { id, title, img, brand, totalRating, price, sold, quantity } = props;
+    console.log('brand:::', brand);
     return (
         <div className="col-6 mb-3">
             <div className="special-product-card">
                 <div className="d-flex justify-content-between">
                     <div>
-                        <img src="images/watch.jpg" className="img-fluid" alt="watch" />
+                        <img src={img}
+                            className="img-fluid" alt="watch" />
                     </div>
                     <div className="special-product-content">
                         <h5 className="brand">{brand}</h5>

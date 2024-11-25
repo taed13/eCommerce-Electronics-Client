@@ -11,10 +11,10 @@ const getProducts = async (data) => {
         queryParams.append('category', data.category);
     }
     if (data?.minPrice) {
-        queryParams.append('price[gte]', data.minPrice);
+        queryParams.append('product_price[gte]', data.minPrice);
     }
     if (data?.maxPrice) {
-        queryParams.append('price[lte]', data.maxPrice);
+        queryParams.append('product_price[lte]', data.maxPrice);
     }
     if (data?.tag?.length) {
         queryParams.append('tag', data.tag);

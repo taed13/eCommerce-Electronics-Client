@@ -42,22 +42,32 @@ const Store = () => {
         let newBrands = [];
         let categories = [];
         let newTags = [];
-        let newColors = [];
+        let colorsSet = new Set();
+
+        console.log('productState:::', productState);
         for (let i = 0; i < productState?.length; i++) {
             const element = productState[i];
-            newBrands.push(element.brand);
-            categories.push(element.category);
-            newColors.push(element.color);
+            newBrands.push(element.product_brand[0].title);
+            element.product_category.forEach((category) => {
+                categories.push(category.title);
+            });
+            element.product_color.forEach((color) => {
+                colorsSet.add(JSON.stringify({ _id: color._id, code: color.code, title: color.title }));
+            });
 
-            const splitTags = element.tags ? element.tags.split(",").map((tag) => tag.trim()) : [];
+            const splitTags = element.product_tags.map((tag) => tag.name).flat();
             newTags = [...newTags, ...splitTags];
         }
+
+        const uniqueColors = Array.from(colorsSet).map((color) => JSON.parse(color));
+
         setBrands(newBrands);
         setCategories(categories);
         setTags(newTags);
-        setColors(newColors);
+        setColors(uniqueColors);
     }, [productState]);
 
+    // console.log('tags:::', tags);
     return (
         <>
             <Meta title={"Cửa hàng"} />
@@ -65,14 +75,15 @@ const Store = () => {
             <Container class1="store-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-3">
-                        {/* <div className="filter-card mb-3">
-                            <h3 className="filter-title">Shop By Categories</h3>
+                        <div className="filter-card mb-3">
+                            <h3 className="filter-title">Mua sắm theo danh mục</h3>
                             <div>
-                                <ul className="ps-0">
+                                <ul className="px-0 d-flex gap-2 flex-wrap">
                                     {categories &&
                                         [...new Set(categories)].map((category, index) => {
                                             return (
                                                 <li
+                                                    className="pointer-cursor"
                                                     key={index}
                                                     onClick={() => {
                                                         setCategory(category);
@@ -84,7 +95,7 @@ const Store = () => {
                                         })}
                                 </ul>
                             </div>
-                        </div> */}
+                        </div>
                         <div className="filter-card mb-3">
                             <h3 className="filter-title">Bộ lọc</h3>
                             {/* <div>
@@ -141,11 +152,15 @@ const Store = () => {
                                     <label htmlFor="floatingInput2">Đến</label>
                                 </div>
                             </div>
-                            {/* <h5 className="sub-title">Color</h5>
+                            <h5 className="sub-title">Color</h5>
                             <div>
-                                <Color />
+                                {/* <Color /> */}
+                                <Color
+                                    setColor={setColor}
+                                    colorData={colors}
+                                />
                             </div>
-                            <h5 className="sub-title">Size</h5>
+                            {/* <h5 className="sub-title">Size</h5>
                             <div>
                                 <div className="form-check">
                                     <input
@@ -231,10 +246,10 @@ const Store = () => {
                                     >
                                         {/* <option value="manual">Featured</option>
                                         <option value="best-selling">Best selling</option> */}
-                                        <option value="title">Từ A đến Z</option>
-                                        <option value="-title">Từ Z đến A</option>
-                                        <option value="price">Giá từ thấp nhất đến cao nhất</option>
-                                        <option value="-price">Giá từ cao nhất đến thấp nhất</option>
+                                        <option value="product_name">Từ A đến Z</option>
+                                        <option value="-product_name">Từ Z đến A</option>
+                                        <option value="product_price">Giá từ thấp nhất đến cao nhất</option>
+                                        <option value="-product_price">Giá từ cao nhất đến thấp nhất</option>
                                         <option value="option">Từ cũ nhất đến mới nhát</option>
                                         <option value="-option">Từ mới nhất đến cũ nhất</option>
                                     </select>
