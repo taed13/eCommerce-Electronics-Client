@@ -56,25 +56,31 @@ const Header = () => {
     }, [authState?.userInfo?.user]);
 
     useEffect(() => {
-        // Calculate total price in cart
-        const sum = cartState?.reduce(
-            (acc, item) => acc + (item?.price * item?.quantity || 0),
-            0
-        );
-        setTotal(sum);
+        // Calculate total price in cart only if cartState changes
+        if (cartState?.length > 0) {
+            const sum = cartState.reduce(
+                (acc, item) => acc + (item?.price * item?.quantity || 0),
+                0
+            );
+            setTotal(sum);
+        }
     }, [cartState]);
 
+    // useEffect(() => {
+    //     console.log("-----------------");
+    //     console.log('authState:::', authState);
+
+    //     console.log("-----------------");
+
+    // }, [authState]);
+
     useEffect(() => {
-        console.log("-----------------");
-        console.log('authState:::', authState);
-
-        console.log("-----------------");
-
-    }, [authState]);
-
-    useEffect(() => {
-        dispatch(getUserCart());
-    }, [dispatch, cartState]);
+        console.log("cartState:::", cartState);
+        // Fetch cart data if user is authenticated and cart isn't already loaded
+        if (token && !cartState?.length) {
+            dispatch(getUserCart());
+        }
+    }, [dispatch, token]);
 
     useEffect(() => {
         let data = [];
@@ -90,6 +96,10 @@ const Header = () => {
         localStorage.clear();
         window.location.reload();
     };
+
+    // dispatch(getInfoByEmailAddress(authState?.user?.email));
+
+    console.log("authState:::", authState);
 
     return (
         <>
@@ -122,7 +132,7 @@ const Header = () => {
                                 </Link>
                             </h2>
                         </div>
-                        <div className="col-5">
+                        <div className="col-6">
                             <div className="input-group">
                                 <Typeahead
                                     id="pagination-typeahead"
@@ -144,7 +154,7 @@ const Header = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="col-5">
+                        <div className="col-4">
                             <div className="header-upper-links d-flex align-items-center justify-content-between">
                                 <div>
                                     {/* <Link
@@ -157,7 +167,7 @@ const Header = () => {
                                         </p>
                                     </Link> */}
                                 </div>
-                                <div>
+                                {/* <div>
                                     <Link
                                         to="/wishlist"
                                         className="d-flex align-items-center gap-10 text-white"
@@ -167,7 +177,7 @@ const Header = () => {
                                             Danh sách <br /> yêu thích
                                         </p>
                                     </Link>
-                                </div>
+                                </div> */}
                                 <div>
                                     <Link
                                         to={(authState?.user !== null || authState?.userInfo !== null) ? "/my-profile" : "/login"}
@@ -192,9 +202,10 @@ const Header = () => {
                                             ) : (
                                                 <p className="mb-0">
                                                     {
-                                                        authState?.user?.firstname && authState?.user?.lastname
-                                                            ? (authState?.user?.firstname + " " + authState?.user?.lastname)
-                                                            : (authState?.userInfo?.user?.name)
+                                                        authState?.user?.name ?
+                                                            (authState?.user?.name) : (
+                                                                authState?.userInfo?.user?.name
+                                                            )
                                                     }
                                                 </p>
                                             )
@@ -262,19 +273,39 @@ const Header = () => {
                                     </div>
                                 </div>
                                 <div className="menu-links">
-                                    <div className="d-flex align-items-center gap-15">
+                                    <div className="d-flex align-items-center gap-15 text-white">
                                         <NavLink className="header-navlinks" to="/">
                                             Trang chủ
                                         </NavLink>
+                                        |
                                         <NavLink className="header-navlinks" to="/product">
                                             Cửa hàng
                                         </NavLink>
+                                        |
                                         <NavLink className="header-navlinks" to="/my-orders">
                                             Đơn hàng
                                         </NavLink>
+                                        |
                                         <NavLink className="header-navlinks" to="/blogs">
-                                            Blog
+                                            Blogs
                                         </NavLink>
+                                        |
+                                        <NavLink className="header-navlinks" to="/contact">
+                                            Contact
+                                        </NavLink>
+                                        {(authState?.user !== null || isAuthenticated) && (
+                                            <>
+                                                |
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="border border-0 bg-transparent text-white text-uppercase"
+                                                    type="button"
+                                                >
+                                                    Logout
+                                                </button>
+                                            </>
+
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -10,11 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/user/userSlice";
 
 const signupSchema = yup.object({
-    firstname: yup.string().required("Họ không được để trống"),
-    lastname: yup.string().required("Tên không được để trống"),
-    email: yup.string().nullable().email().required("Email không được để trống"),
-    mobile: yup.string().required("Số điện thoại không được để trống"),
-    password: yup.string().required("Mật khẩu không được để trống"),
+    name: yup.string().required("Name is required"),
+    email: yup.string().nullable().email().required("Email is required"),
+    password: yup.string().required("Password is required"),
 });
 
 const Signup = () => {
@@ -23,10 +21,8 @@ const Signup = () => {
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
-            firstname: "",
-            lastname: "",
+            name: "",
             email: "",
-            mobile: "",
             password: "",
         },
         validationSchema: signupSchema,
@@ -34,12 +30,14 @@ const Signup = () => {
             dispatch(registerUser(values));
         },
     });
+
     // useEffect(() => {
     //     if (authState.createdUser !== null && authState.isError === false) {
     //         navigate("/login");
     //         // window.location.reload();
     //     }
     // }, [authState]);
+
     return (
         <>
             <Meta title={"Đăng ký tài khoản"} />
@@ -57,33 +55,16 @@ const Signup = () => {
                                 onSubmit={formik.handleSubmit}
                                 className="d-flex flex-column gap-10"
                             >
-                                <div className="d-flex gap-2">
-                                    <div className="d-flex flex-column gap-2 w-50">
-                                        <CustomInput
-                                            type="text"
-                                            name="firstname"
-                                            placeholder="Họ"
-                                            value={formik.values.firstname}
-                                            onChange={formik.handleChange("firstname")}
-                                            onBlur={formik.handleBlur("firstname")}
-                                        />
-                                        <div className="error fail-message">
-                                            {formik.touched.firstname && formik.errors.firstname}
-                                        </div>
-                                    </div>
-                                    <div className="d-flex flex-column gap-2 w-50">
-                                        <CustomInput
-                                            type="text"
-                                            name="lastname"
-                                            placeholder="Tên"
-                                            value={formik.values.lastname}
-                                            onChange={formik.handleChange("lastname")}
-                                            onBlur={formik.handleBlur("lastname")}
-                                        />
-                                        <div className="error fail-message">
-                                            {formik.touched.lastname && formik.errors.lastname}
-                                        </div>
-                                    </div>
+                                <CustomInput
+                                    type="text"
+                                    name="name"
+                                    placeholder="Name"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange("name")}
+                                    onBlur={formik.handleBlur("name")}
+                                />
+                                <div className="error fail-message">
+                                    {formik.touched.name && formik.errors.name}
                                 </div>
 
                                 <CustomInput
@@ -96,18 +77,6 @@ const Signup = () => {
                                 />
                                 <div className="error fail-message">
                                     {formik.touched.email && formik.errors.email}
-                                </div>
-
-                                <CustomInput
-                                    type="tel"
-                                    name="mobile"
-                                    placeholder="Số điện thoại"
-                                    value={formik.values.mobile}
-                                    onChange={formik.handleChange("mobile")}
-                                    onBlur={formik.handleBlur("mobile")}
-                                />
-                                <div className="error fail-message">
-                                    {formik.touched.mobile && formik.errors.mobile}
                                 </div>
 
                                 <CustomInput

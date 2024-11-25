@@ -223,7 +223,7 @@ const Home = () => {
                                             </div>
                                             <div className="product-image">
                                                 <img
-                                                    src={item?.images[0]}
+                                                    src={item?.images[0]?.url}
                                                     className="img-fluid mx-auto"
                                                     alt="product"
                                                     width={160}

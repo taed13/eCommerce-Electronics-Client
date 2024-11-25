@@ -13,9 +13,9 @@ export const NoRecordFound = () => {
                         No records has been added yet.
                     </div>
                     <div className="empty-state__help">
-                        Add new records by simply clicking favorites in my store.
+                        Add new records by simply clicking favorites in my cart.
                         <Link to="/product" className="empty-state__link">
-                            My store
+                            My Cart
                         </Link>
                     </div>
                 </div>
