@@ -281,11 +281,11 @@ const Header = () => {
                                         <NavLink className="header-navlinks" to="/product">
                                             Cửa hàng
                                         </NavLink>
-                                        |
-                                        <NavLink className="header-navlinks" to="/my-orders">
-                                            Đơn hàng
-                                        </NavLink>
-                                        |
+                                        {(authState?.user !== null || isAuthenticated) && (
+                                            <NavLink className="header-navlinks" to="/my-orders">
+                                                Đơn hàng
+                                            </NavLink>
+                                        )}
                                         <NavLink className="header-navlinks" to="/blogs">
                                             Blogs
                                         </NavLink>

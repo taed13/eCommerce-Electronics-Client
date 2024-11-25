@@ -40,9 +40,9 @@ const ForgotPassword = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">
-                            <h3 className="text-center mb-3">Quên mật khẩu</h3>
+                            <h2 className="text-center fw-bold mb-3">Quên mật khẩu</h2>
                             <p className="text-center my-2 mb-4">
-                                Vui lòng nhập email của bạn để nhận hướng dẫn khôi phục mật khẩu
+                            Nhập email của bạn để nhận đường dẫn khôi phục mật khẩu
                             </p>
                             <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-2">
                                 <CustomInput
