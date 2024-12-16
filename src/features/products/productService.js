@@ -5,10 +5,10 @@ const getProducts = async (data) => {
     const queryParams = new URLSearchParams();
 
     if (data?.brand?.length) {
-        queryParams.append('brand', data.brand);
+        queryParams.append('product_brand', data.brand);
     }
     if (data?.category?.length) {
-        queryParams.append('category', data.category);
+        queryParams.append('product_category', data.category);
     }
     if (data?.minPrice) {
         queryParams.append('product_price[gte]', data.minPrice);
@@ -17,7 +17,10 @@ const getProducts = async (data) => {
         queryParams.append('product_price[lte]', data.maxPrice);
     }
     if (data?.tag?.length) {
-        queryParams.append('tag', data.tag);
+        queryParams.append('product_tags', data.tag);
+    }
+    if (data?.color?.length) {
+        queryParams.append('product_color', data.color);
     }
     if (data?.sort) {
         queryParams.append('sort', data.sort);

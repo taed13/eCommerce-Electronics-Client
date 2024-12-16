@@ -1069,3 +1069,12 @@ footer .input-group-text {
 .hover-underline:hover {
     text-decoration: underline;
 }
+
+.color-box {
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.color-box:hover {
+    transform: scale(1.1);
+}

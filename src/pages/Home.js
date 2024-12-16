@@ -7,12 +7,12 @@ import { services } from "../utils/Data";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../features/blogs/blogSlice";
-import { getAllProducts } from "../features/products/productSlice";
+import { getAllProducts, addToWishlist } from "../features/products/productSlice";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import wish from "../images/wish.svg";
 import prodcompare from "../images/prodcompare.svg";
-import { addToWishlist } from "../features/products/productSlice";
+
 import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
 
 const Home = () => {
@@ -27,7 +27,7 @@ const Home = () => {
         getProducts();
     }, []);
     const getBlogs = () => {
-        dispatch(getAllBlogs());
+        dispatch(getAllBlogs({}));
     };
     const getProducts = () => {
         dispatch(getAllProducts());
@@ -123,7 +123,7 @@ const Home = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className="services d-flex align-items-center justify-content-between">
-                            {services?.map((service, index) => {
+                            {services && services?.map((service, index) => {
                                 return (
                                     <div className="d-flex align-items-center gap-15" key={index}>
                                         <img src={service.image} alt="services" />
@@ -144,59 +144,59 @@ const Home = () => {
                         <div className="categories d-flex flex-wrap justify-content-between align-items-center">
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Camara</h6>
+                                    <h6 className="fw-bold">Smartphones</h6>
                                     <p>10 items</p>
                                 </div>
-                                <img src="images/camera.jpg" alt="camera" />
+                                <img src="images/smartphones.png" alt="smartphones" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">TV</h6>
+                                    <h6 className="fw-bold">Laptops</h6>
                                     <p>10 items</p>
                                 </div>
-                                <img src="images/tv.jpg" alt="camera" />
+                                <img src="images/laptop.jpg" alt="laptops" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Tai nghe</h6>
+                                    <h6 className="fw-bold">Tablets</h6>
+                                    <p>10 items</p>
+                                </div>
+                                <img src="images/tablets.png" alt="tablets" />
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <div className="">
+                                    <h6 className="fw-bold">Headphones</h6>
                                     <p>10 items</p>
                                 </div>
                                 <img src="images/headphone.jpg" alt="camera" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Âm nhạc & trò chơi</h6>
+                                    <h6 className="fw-bold">Airpods</h6>
                                     <p>10 items</p>
                                 </div>
-                                <img src="images/camera.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Camara</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/camera.jpg" alt="camera" />
+                                <img src="images/airpods.png" alt="airpods" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
                                     <h6 className="fw-bold">TV</h6>
                                     <p>10 items</p>
                                 </div>
-                                <img src="images/tv.jpg" alt="camera" />
+                                <img src="images/tv.jpg" alt="tv" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Tai nghe</h6>
+                                    <h6 className="fw-bold">Smartwatches</h6>
                                     <p>10 items</p>
                                 </div>
-                                <img src="images/headphone.jpg" alt="camera" />
+                                <img src="images/smartwatches.png" alt="smartwatches" />
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="">
-                                    <h6 className="fw-bold">Âm nhạc & trò chơi</h6>
+                                    <h6 className="fw-bold">Đồ Gia Dụng</h6>
                                     <p>10 items</p>
                                 </div>
-                                <img src="images/camera.jpg" alt="camera" />
+                                <img src="images/househoulds.jpg" alt="households" />
                             </div>
                         </div>
                     </div>
@@ -209,7 +209,7 @@ const Home = () => {
                     </div>
                     {productState &&
                         productState?.map((item, index) => {
-                            if (item?.tags?.includes("featured")) {
+                            if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "featured")) {
                                 return (
                                     <div key={index} className={"col-3"}>
                                         <div className="product-card position-relative">
@@ -223,30 +223,35 @@ const Home = () => {
                                             </div>
                                             <div className="product-image">
                                                 <img
-                                                    src={item?.images[0]?.url}
+                                                    src={item?.product_images[0]?.url}
                                                     className="img-fluid mx-auto"
                                                     alt="product"
                                                     width={160}
                                                 />
                                                 <img
-                                                    src={item?.images[0]}
+                                                    src={item?.product_images[0]?.url}
                                                     className="img-fluid mx-auto"
                                                     alt="product"
                                                     width={160}
                                                 />
                                             </div>
                                             <div className="product-details">
-                                                <h6 className="brand">{item?.brand}</h6>
-                                                <h5 className="product-title">{item?.title}</h5>
+                                                <h6 className="brand">{item?.product_brand?.map((brand, index) => (
+                                                    <span key={brand._id}>
+                                                        {brand.title}
+                                                        {index < item.product_brand.length - 1 && " | "}
+                                                    </span>
+                                                ))}</h6>
+                                                <h5 className="product-title">{item?.product_name}</h5>
                                                 <ReactStars
                                                     count={5}
                                                     size={24}
-                                                    value={+item?.totalRating}
+                                                    value={+item?.product_totalRating}
                                                     edit={false}
                                                     activeColor="#ffd700"
                                                 />
 
-                                                <p className="price">$ {item?.price}</p>
+                                                <p className="price">$ {item?.product_price}</p>
                                             </div>
                                             <div className="action-bar position-absolute">
                                                 <div className="d-flex flex-column gap-15">
@@ -487,7 +492,7 @@ const Home = () => {
                     </div>
                     <div className="row">
                         {
-                            blogState?.data?.map((item, index) => {
+                            blogState && blogState?.map((item, index) => {
                                 if (index < 4) {
                                     return (
                                         <div className="col-3" key={index}>
@@ -495,7 +500,7 @@ const Home = () => {
                                                 id={item?.id}
                                                 title={item?.blog_title}
                                                 description={item?.blog_description}
-                                                image={item?.blog_images[0]}
+                                                image={item?.blog_images[0]?.url}
                                                 date={moment(item?.createdAt).format(
                                                     "MMMM DD YYYY, H:mm a"
                                                 )}

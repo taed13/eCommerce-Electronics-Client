@@ -26,6 +26,13 @@ const Store = () => {
     const [minPrice, setMinPrice] = useState(null);
     const [sort, setSort] = useState("manual");
 
+    const [initialFilters, setInitialFilters] = useState({
+        brands: [],
+        categories: [],
+        tags: [],
+        colors: [],
+    });
+
     const productState = useSelector((state) => state?.product?.product);
 
     useEffect(() => {
@@ -33,38 +40,69 @@ const Store = () => {
     }, [brand, category, tag, color, minPrice, maxPrice, sort]);
 
     const getProducts = () => {
+        console.log("sort:::", sort);
+        console.log("brand:::", brand);
+        console.log("category:::", category);
+        console.log("tag:::", tag);
         dispatch(
-            getAllProducts({ sort, brand, category, tag, minPrice, maxPrice })
+            getAllProducts({ sort, brand, category, tag, minPrice, maxPrice, color })
         );
     };
 
+    const clearFilter = () => {
+        setBrand([]);
+        setCategory([]);
+        setTag([]);
+        setColor([]);
+        setMaxPrice(null);
+        setMinPrice(null);
+        setSort("manual");
+    };
+
     useEffect(() => {
-        let newBrands = [];
-        let categories = [];
-        let newTags = [];
-        let colorsSet = new Set();
+        if (productState?.length > 0 && !initialFilters.brands.length) {
+            let newBrands = [];
+            let categories = [];
+            let newTags = [];
+            let colorsSet = new Set();
 
-        console.log('productState:::', productState);
-        for (let i = 0; i < productState?.length; i++) {
-            const element = productState[i];
-            newBrands.push(element.product_brand[0].title);
-            element.product_category.forEach((category) => {
-                categories.push(category.title);
-            });
-            element.product_color.forEach((color) => {
-                colorsSet.add(JSON.stringify({ _id: color._id, code: color.code, title: color.title }));
-            });
+            for (let i = 0; i < productState.length; i++) {
+                const element = productState[i];
+                newBrands.push(element.product_brand[0].title);
+                element.product_category.forEach((category) => {
+                    categories.push(category.title);
+                });
+                element.product_color.forEach((color) => {
+                    colorsSet.add(
+                        JSON.stringify({
+                            _id: color._id,
+                            code: color.code,
+                            title: color.title,
+                        })
+                    );
+                });
 
-            const splitTags = element.product_tags.map((tag) => tag.name).flat();
-            newTags = [...newTags, ...splitTags];
+                const splitTags = element.product_tags.map((tag) => tag.name).flat();
+                newTags = [...newTags, ...splitTags];
+            }
+
+            const uniqueColors = Array.from(colorsSet).map((color) =>
+                JSON.parse(color)
+            );
+
+            setBrands(newBrands);
+            setCategories(categories);
+            setTags(newTags);
+            setColors(uniqueColors);
+
+            // Save initial filters so that they don't change on subsequent renders
+            setInitialFilters({
+                brands: [...new Set(newBrands)],
+                categories: [...new Set(categories)],
+                tags: [...new Set(newTags)],
+                colors: uniqueColors,
+            });
         }
-
-        const uniqueColors = Array.from(colorsSet).map((color) => JSON.parse(color));
-
-        setBrands(newBrands);
-        setCategories(categories);
-        setTags(newTags);
-        setColors(uniqueColors);
     }, [productState]);
 
     // console.log('tags:::', tags);
@@ -83,7 +121,7 @@ const Store = () => {
                                         [...new Set(categories)].map((category, index) => {
                                             return (
                                                 <li
-                                                    className="pointer-cursor"
+                                                    className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover"
                                                     key={index}
                                                     onClick={() => {
                                                         setCategory(category);
@@ -97,7 +135,15 @@ const Store = () => {
                             </div>
                         </div>
                         <div className="filter-card mb-3">
-                            <h3 className="filter-title">Bộ lọc</h3>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h2 className="filter-title">Bộ lọc</h2>
+                                <button
+                                    className="btn btn-outline-secondary filter-title"
+                                    onClick={clearFilter}
+                                >
+                                    Xóa Bộ Lọc
+                                </button>
+                            </div>
                             {/* <div>
                                 <h5 className="sub-title">Availability</h5>
                                 <div>
@@ -133,6 +179,7 @@ const Store = () => {
                                         className="form-control"
                                         id="floatingInput1"
                                         placeholder="From"
+                                        value={minPrice || ""}
                                         onChange={(e) => {
                                             setMinPrice(e.target.value);
                                         }}
@@ -145,6 +192,7 @@ const Store = () => {
                                         className="form-control"
                                         id="floatingInput2"
                                         placeholder="To"
+                                        value={maxPrice || ""}
                                         onChange={(e) => {
                                             setMaxPrice(e.target.value);
                                         }}
@@ -155,10 +203,7 @@ const Store = () => {
                             <h5 className="sub-title">Color</h5>
                             <div>
                                 {/* <Color /> */}
-                                <Color
-                                    setColor={setColor}
-                                    colorData={colors}
-                                />
+                                <Color setColor={setColor} colorData={colors} />
                             </div>
                             {/* <h5 className="sub-title">Size</h5>
                             <div>
@@ -203,7 +248,11 @@ const Store = () => {
                                         {tags &&
                                             [...new Set(tags)].map((tag, index) => {
                                                 return (
-                                                    <span key={index} onClick={() => setTag(tag)} className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover">
+                                                    <span
+                                                        key={index}
+                                                        onClick={() => setTag(tag)}
+                                                        className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover"
+                                                    >
                                                         {tag}
                                                     </span>
                                                 );
@@ -218,7 +267,11 @@ const Store = () => {
                                         {brands &&
                                             [...new Set(brands)].map((brand, index) => {
                                                 return (
-                                                    <span key={index} onClick={() => setBrand(brand)} className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover">
+                                                    <span
+                                                        key={index}
+                                                        onClick={() => setBrand(brand)}
+                                                        className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 pointer-cursor background-hover"
+                                                    >
                                                         {brand}
                                                     </span>
                                                 );
@@ -232,7 +285,7 @@ const Store = () => {
                         <div className="filter-sort-grid mb-4">
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center gap-10">
-                                    <p className="mb-0" style={{ width: "100px" }}>
+                                    <p className="mb-0" style={{ width: "150px" }}>
                                         Sắp xếp theo:
                                     </p>
                                     <select
@@ -248,16 +301,20 @@ const Store = () => {
                                         <option value="best-selling">Best selling</option> */}
                                         <option value="product_name">Từ A đến Z</option>
                                         <option value="-product_name">Từ Z đến A</option>
-                                        <option value="product_price">Giá từ thấp nhất đến cao nhất</option>
-                                        <option value="-product_price">Giá từ cao nhất đến thấp nhất</option>
-                                        <option value="option">Từ cũ nhất đến mới nhát</option>
+                                        <option value="product_price">
+                                            Giá từ thấp nhất đến cao nhất
+                                        </option>
+                                        <option value="-product_price">
+                                            Giá từ cao nhất đến thấp nhất
+                                        </option>
+                                        <option value="option">Từ cũ nhất đến mới nhất</option>
                                         <option value="-option">Từ mới nhất đến cũ nhất</option>
                                     </select>
                                 </div>
                                 <div>
                                     <div className="d-flex align-items-center gap-10">
                                         <p className="totalproducts mb-0">
-                                            {productState?.length} {productState?.length === 1 ? "Product" : "Products"}
+                                            {productState?.length} sản phẩm
                                         </p>
                                         <div className="d-flex gap-10 align-items-center grid">
                                             <img

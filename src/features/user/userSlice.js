@@ -334,7 +334,7 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.getOrderedProduct = action.payload;
+                state.getOrderedProduct = action.payload.orders;
             })
             .addCase(getOrders.rejected, (state, action) => {
                 state.isLoading = false;

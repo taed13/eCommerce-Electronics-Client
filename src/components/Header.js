@@ -54,12 +54,12 @@ const Header = () => {
     }, [authState?.userInfo?.user]);
 
     useEffect(() => {
-        // Calculate total price in cart only if cartState changes
-        if (cartState?.length > 0) {
-            const sum = cartState.reduce(
+        if (cartState?.data?.cart_products) {
+            const sum = cartState?.data?.cart_products?.reduce(
                 (acc, item) => acc + (item?.price * item?.quantity || 0),
                 0
             );
+
             setTotal(sum);
         }
     }, [cartState]);
@@ -218,7 +218,7 @@ const Header = () => {
                                         <img src={cart} alt="cart" />
                                         <div className="d-flex flex-column">
                                             <span className="badge bg-white text-dark">
-                                                {cartState?.length ? cartState?.length : 0}
+                                                {cartState?.data?.cart_count_product || 0}
                                             </span>
                                             <p className="mb-0">$ {total == null ? 0 : total}</p>
                                         </div>
@@ -306,7 +306,6 @@ const Header = () => {
                                                     Đăng xuất
                                                 </button>
                                             </>
-
                                         )}
                                     </div>
                                 </div>

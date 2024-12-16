@@ -27,8 +27,6 @@ const Cart = () => {
         dispatch(getUserCart());
     }, [dispatch, productUpdateDetails]);
 
-    console.log(userCartState);
-
     useEffect(() => {
         if (Object.keys(productUpdateDetails).length > 0) {
             const productDetails = Object.values(productUpdateDetails)[0];
@@ -57,11 +55,14 @@ const Cart = () => {
 
     useEffect(() => {
         let sum = 0;
-        userCartState?.forEach((item) => {
+        userCartState?.data?.cart_products?.forEach((item) => {
             sum += Number(item?.price) * Number(item?.quantity);
         });
         setSubTotal(sum);
     }, [userCartState]);
+
+    console.log('subTotal', subTotal);
+    console.log("userCartState", userCartState);
 
     return (
         <>
@@ -76,14 +77,14 @@ const Cart = () => {
                             <h4 className="cart-col-3">Số lượng</h4>
                             <h4 className="cart-col-4">Tổng</h4>
                         </div>
-                        {userCartState &&
-                            userCartState.map((item, index) => (
+                        {
+                            userCartState && userCartState?.data?.cart_products?.map((item, index) => (
                                 <div key={index} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
                                     <div className="cart-col-1 gap-15 d-flex align-items-center">
                                         <div className="w-25">
                                             <Link to={`/product/${item?.productId?._id}`}>
                                                 <img
-                                                    src={item?.productId?.images[0]?.url}
+                                                    src={item?.productId?.product_images[0]?.url}
                                                     className="img-fluid"
                                                     alt="product"
                                                 />
@@ -91,13 +92,13 @@ const Cart = () => {
                                         </div>
                                         <div className="w-75">
                                             <Link to={`/product/${item?.productId?._id}`}>
-                                                <p className="text-decoration-underline link-primary">{item?.productId?.title}</p>
+                                                <p className="text-decoration-underline link-primary">{item?.productId?.product_name}</p>
                                             </Link>
                                             <div className="d-flex align-items-start gap-3">
                                                 <p>Màu:</p>
                                                 <ul className="colors ps-0">
                                                     <li
-                                                        style={{ backgroundColor: item?.color?.title }}
+                                                        style={{ backgroundColor: item?.product_color[0]?.code }}
                                                     ></li>
                                                 </ul>
                                             </div>

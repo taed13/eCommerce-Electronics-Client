@@ -7,7 +7,7 @@ import { getOrders } from "../features/user/userSlice";
 const Orders = () => {
     const dispatch = useDispatch();
     const orderState = useSelector(
-        (state) => state?.auth?.getOrderedProduct?.userOrders
+        (state) => state?.auth?.getOrderedProduct
     );
 
     useEffect(() => {
@@ -49,13 +49,13 @@ const Orders = () => {
                                         <p>{order?._id}</p>
                                     </div>
                                     <div className="col-3">
-                                        <p>{order?.totalPrice}</p>
+                                        <p>{order?.checkoutInfo?.totalPrice}</p>
                                     </div>
                                     <div className="col-3">
-                                        <p>{order?.totalPriceAfterDiscount}</p>
+                                        <p>{order?.checkoutInfo?.totalPriceAfterDiscount}</p>
                                     </div>
                                     <div className="col-3">
-                                        <p>{order?.orderStatus}</p>
+                                        <p>{order?.order_status}</p>
                                     </div>
                                     <div className="col-12">
                                         <div
@@ -74,12 +74,12 @@ const Orders = () => {
                                             <div className="col-3">
                                                 <h6 className="text-white">Color</h6>
                                             </div>
-                                            {order?.orderItems?.map((item, index) => (
+                                            {order?.order_items?.map((item, index) => (
                                                 <div className="col-12" key={index}>
                                                     <div className="row bg-secondary p-3">
                                                         <div className="col-3">
                                                             <p className="text-white">
-                                                                {item?.product?.title}
+                                                                {item?.productId?.product_name}
                                                             </p>
                                                         </div>
                                                         <div className="col-3">

@@ -25,8 +25,8 @@ const SingleBlog = () => {
 
     return (
         <>
-            <Meta title={blogState?.data?.title} />
-            <BreadCrumb title={blogState?.data?.title} />
+            <Meta title={blogState?.data?.blog_title} />
+            <BreadCrumb title={blogState?.data?.blog_title} />
             <Container class1="blog-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-12">
@@ -35,19 +35,26 @@ const SingleBlog = () => {
                                 <HiOutlineArrowLeft className="fs-4" />
                                 Quay lại trang blog
                             </Link>
-                            <h3 className="title">{blogState?.data?.title}</h3>
+                            <h3 className="title">{blogState?.data?.blog_title}</h3>
                             <img
                                 src={
-                                    blogState?.data?.image[0]?.url
-                                        ? blogState?.data?.image[0]?.url
+                                    blogState?.data?.blog_images[0]?.url
+                                        ? blogState?.data?.blog_images[0]?.url
                                         : blog
                                 }
-                                className="img-fluid w-100 my-4"
+                                className="img-fluid my-4"
                                 alt="blog"
+                                style={{
+                                    width: "250px",
+                                    maxWidth: "100%",
+                                    margin: "0 auto",
+                                    display: "block",
+                                    borderRadius: "10px",
+                                }}
                             />
                             <p
                                 dangerouslySetInnerHTML={{
-                                    __html: blogState?.data?.description,
+                                    __html: blogState?.data?.blog_description,
                                 }}
                             ></p>
                         </div>

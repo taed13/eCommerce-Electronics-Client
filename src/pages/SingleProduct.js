@@ -35,7 +35,8 @@ const SingleProduct = () => {
     const productsState = useSelector((state) => state?.product?.product);
     const cartState = useSelector((state) => state?.auth?.cartProducts);
 
-    console.log('productState:::', productState);
+    console.log("productState:::", productState);
+    console.log("productsState:::", productsState);
 
     const props = {
         width: 600,
@@ -65,14 +66,27 @@ const SingleProduct = () => {
             toast.error("Hãy chọn màu sắc sản phẩm");
             return false;
         } else {
-            dispatch(
-                addProdToCart({
-                    productId: productState?._id,
-                    color,
-                    quantity,
-                    price: productState?.product_price,
-                })
-            );
+            console.log("prepare data to add to cart");
+            const data = {
+                cart_products: [
+                    {
+                        productId: productState?._id,
+                        product_color: [
+                            {
+                                code: productState?.product_color?.find((item) => item._id === color)?.code,
+                                name: productState?.product_color?.find((item) => item._id === color)?.title,
+                            },
+                        ],
+                        quantity: quantity,
+                        price: productState?.product_price,
+                        name: productState?.product_name,
+                    },
+                ],
+                cart_state: "active",
+            };
+
+            console.log("data:::", data);
+            dispatch(addProdToCart(data));
             setAlreadyAdded(false);
             navigate("/cart");
             window.scrollTo(0, 0);
@@ -87,10 +101,15 @@ const SingleProduct = () => {
         document.execCommand("copy");
         textField.remove();
     };
+
     useEffect(() => {
-        const data = productsState.filter((product) =>
-            product.product_tags?.some((tag) => tag.name.toLowerCase() === "popular")
-        );
+        const data =
+            productsState &&
+            productsState?.filter((product) =>
+                product.product_tags?.some(
+                    (tag) => tag.name.toLowerCase() === "popular"
+                )
+            );
 
         setPopularProducts(data);
     }, [productsState]);
@@ -127,13 +146,14 @@ const SingleProduct = () => {
                             </div>
                         </div>
                         <div className="other-product-images d-flex flex-wrap gap-15">
-                            {productState?.product_images?.map((item, index) => {
-                                return (
-                                    <div>
-                                        <img src={item?.url} className="img-fluid" alt="" />
-                                    </div>
-                                );
-                            })}
+                            {productState &&
+                                productState?.product_images?.map((item, index) => {
+                                    return (
+                                        <div>
+                                            <img src={item?.url} className="img-fluid" alt="" />
+                                        </div>
+                                    );
+                                })}
                         </div>
                     </div>
                     <div className="col-6">
@@ -142,7 +162,7 @@ const SingleProduct = () => {
                                 <h3 className="title">{productState?.product_name}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price">{productState?.product_price} &#8363;</p>
+                                <p className="price">{productState?.product_price} VND</p>
                                 <div className="d-flex align-items-center gap-10">
                                     <ReactStars
                                         count={5}
@@ -151,7 +171,9 @@ const SingleProduct = () => {
                                         edit={false}
                                         activeColor="#ffd700"
                                     />
-                                    <p className="mb-0 t-review">({productState?.product_ratings?.length} đánh giá)</p>
+                                    <p className="mb-0 t-review">
+                                        ({productState?.product_ratings?.length} đánh giá)
+                                    </p>
                                 </div>
                                 <a className="review-btn" href="#review">
                                     Viết đánh giá
@@ -165,40 +187,48 @@ const SingleProduct = () => {
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Hãng: </h3>
                                     <p className="product-data">
-                                        {productState?.product_brand?.map((brand, index) => (
-                                            <span key={brand._id}>
-                                                {brand.title}
-                                                {index < productState.product_brand.length - 1 && " | "}
-                                            </span>
-                                        ))}
+                                        {productState &&
+                                            productState?.product_brand?.map((brand, index) => (
+                                                <span key={brand._id}>
+                                                    {brand.title}
+                                                    {index < productState.product_brand.length - 1 &&
+                                                        " | "}
+                                                </span>
+                                            ))}
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Danh mục: </h3>
                                     <p className="product-data">
-                                        {productState?.product_category?.map((category, index) => (
-                                            <span key={category._id}>
-                                                {category.title}
-                                                {index < productState.product_category.length - 1 && " | "}
-                                            </span>
-                                        ))}
+                                        {productState &&
+                                            productState?.product_category?.map((category, index) => (
+                                                <span key={category._id}>
+                                                    {category.title}
+                                                    {index < productState.product_category.length - 1 &&
+                                                        " | "}
+                                                </span>
+                                            ))}
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Tag sản phẩm: </h3>
                                     <p className="product-data">
-                                        {productState?.product_tags?.map((tags, index) => (
-                                            <span key={tags._id}>
-                                                {tags.name}
-                                                {index < productState.product_tags.length - 1 && " | "}
-                                            </span>
-                                        ))}
+                                        {productState &&
+                                            productState?.product_tags?.map((tags, index) => (
+                                                <span key={tags._id}>
+                                                    {tags.name}
+                                                    {index < productState.product_tags.length - 1 &&
+                                                        " | "}
+                                                </span>
+                                            ))}
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Trạng thái: </h3>
                                     <p className="product-data">
-                                        {productState?.product_quantity > 0 ? "Còn hàng" : "Đã bán hết"}
+                                        {productState?.product_quantity > 0
+                                            ? "Còn hàng"
+                                            : "Đã bán hết"}
                                     </p>
                                 </div>
                                 {/* <div className="d-flex gap-10 flex-column mt-2 mb-3">
@@ -219,15 +249,35 @@ const SingleProduct = () => {
                                     </div>
                                 </div> */}
                                 {alreadyAdded === false && (
-                                    <>
-                                        <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                                            <h3 className="product-heading">Màu: </h3>
-                                            <Color
-                                                setColor={setColor}
-                                                colorData={productState?.product_color}
-                                            />
+                                    <div className="d-flex gap-10 flex-column mt-2 mb-3">
+                                        <h3 className="product-heading">Màu: </h3>
+                                        <div className="d-flex flex-wrap gap-2">
+                                            {productState &&
+                                                productState?.product_color?.map((colorItem) => (
+                                                    <div
+                                                        key={colorItem._id}
+                                                        onClick={() => setColor(colorItem._id)}
+                                                        className="color-box"
+                                                        style={{
+                                                            backgroundColor: colorItem.code,
+                                                            width: "20px",
+                                                            height: "20px",
+                                                            borderRadius: "50%",
+                                                            cursor: "pointer",
+                                                            border:
+                                                                color === colorItem._id
+                                                                    ? "2px solid black"
+                                                                    : "1px solid #ccc",
+                                                        }}
+                                                    ></div>
+                                                ))}
                                         </div>
-                                    </>
+                                        {!color && (
+                                            <p className="text-danger mt-2">
+                                                Hãy chọn màu sắc sản phẩm!
+                                            </p>
+                                        )}
+                                    </div>
                                 )}
                                 <div className="d-flex align-items-center gap-15 mt-2 mb-3">
                                     {alreadyAdded === false && (
@@ -288,9 +338,10 @@ const SingleProduct = () => {
                                 <div className="d-flex gap-10 flex-column my-3">
                                     <h3 className="product-heading">Vận chuyển & Đổi trả: </h3>
                                     <p className="product-data">
-                                        Miễn phí vận chuyển và đổi trả cho tất cả các đơn hàng! <br />
-                                        Chúng tôi vận chuyển tất cả các đơn hàng nội địa Việt Nam trong vòng{" "}
-                                        <b>5-10 ngày làm việc!</b>
+                                        Miễn phí vận chuyển và đổi trả cho tất cả các đơn hàng!{" "}
+                                        <br />
+                                        Chúng tôi vận chuyển tất cả các đơn hàng nội địa Việt Nam
+                                        trong vòng <b>5-10 ngày làm việc!</b>
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
@@ -339,7 +390,9 @@ const SingleProduct = () => {
                                             edit={false}
                                             activeColor="#ffd700"
                                         />
-                                        <p className="mb-0">Dựa theo {productState?.product_ratings?.length} đánh giá</p>
+                                        <p className="mb-0">
+                                            Dựa theo {productState?.product_ratings?.length} đánh giá
+                                        </p>
                                     </div>
                                 </div>
                                 {orderedProducts && (

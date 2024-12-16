@@ -1,16 +1,16 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const BlogCard = (props) => {
-    const { id, title, description, image, date } = props;
-
+const BlogCard = ({ id, title, description, image, date }) => {
     return (
         <div className="blog-card">
-            <div className="card-image">
+            <div className="card-image" style={{ height: "150px", overflow: "hidden" }}>
                 <img
-                    src={image ? image : "images/blog-1.jpg"}
+                    src={image || "images/blog-1.jpg"}
                     className="img-fluid w-100"
-                    alt="blog-1"
+                    alt={title || "blog image"}
+                    style={{ objectFit: "contain", height: "100%", width: "100%" }}
                 />
             </div>
             <div className="blog-content">
@@ -28,6 +28,14 @@ const BlogCard = (props) => {
             </div>
         </div>
     );
+};
+
+BlogCard.propTypes = {
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    date: PropTypes.string.isRequired,
 };
 
 export default BlogCard;

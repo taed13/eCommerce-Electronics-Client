@@ -1,8 +1,15 @@
 import axios from "axios";
 import { base_url } from "../../utils/axiosConfig";
 
-const getBlogs = async () => {
-    const response = await axios.get(`${base_url}blog`);
+const getBlogs = async (categoryIds) => {
+    const queryParams = new URLSearchParams();
+
+    if (categoryIds?.length) {
+        queryParams.append("categoryIds", categoryIds.join(","));
+    }
+
+    const response = await axios.get(`${base_url}blog?${queryParams.toString()}`);
+
     if (response.data) {
         return response.data;
     }
