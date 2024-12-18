@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,13 +10,13 @@ import { config } from "../utils/axiosConfig";
 
 const shippingSchema = yup.object({
     order_shipping: yup.object({
-        firstName: yup.string().required("First name is required"),
-        lastName: yup.string().required("Last name is required"),
-        address: yup.string().required("Address is required"),
-        city: yup.string().required("City is required"),
-        state: yup.string().required("State is required"),
-        country: yup.string().required("Country is required"),
-        pincode: yup.string().required("Pincode is required"),
+        firstName: yup.string().required("Tên là bắt buộc"),
+        lastName: yup.string().required("Họ là bắt buộc"),
+        address: yup.string().required("Địa chỉ là bắt buộc"),
+        city: yup.string().required("Thành phố là bắt buộc"),
+        state: yup.string().required("Tỉnh/Thành là bắt buộc"),
+        country: yup.string().required("Quốc gia là bắt buộc"),
+        pincode: yup.string().required("Mã bưu điện là bắt buộc"),
         other: yup.string(),
     }),
 });
@@ -24,9 +24,12 @@ const shippingSchema = yup.object({
 const Checkout = () => {
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth?.cartProducts);
+    const cart_userId = userCartState?.data?.cart_userId;
+    console.log('cart user id:::', cart_userId);
     const [subTotal, setSubTotal] = useState(0);
     const [countryList, setCountryList] = useState([]);
     const [shippingInfo, setShippingInfo] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -69,8 +72,8 @@ const Checkout = () => {
         onSubmit: (values) => {
             console.log("Submitted Values:", values);
             setShippingInfo(values);
-            // checkOutHandler(values);
-            // navigate("/");
+            checkOutHandler(values);
+            navigate("/");
         },
     });
 
@@ -79,17 +82,19 @@ const Checkout = () => {
             const response = await axios.post(
                 "http://127.0.0.1:5001/api/user/order/purchase",
                 {
-                    items: userCartState, // Send cart items
-                    shippingInfo: values, // Include shipping information
+                    items: userCartState,
+                    shippingInfo: values.order_shipping,
                 },
                 config
             ); // Include any necessary config if required
 
             // Redirect to the checkout URL returned from your server
-            window.location = response.data.url;
+            if (response.data.url) {
+                window.location = response.data.url;
+            }
         } catch (error) {
             console.error("Error during checkout:", error);
-            alert("An error occurred during checkout. Please try again."); // User-friendly error message
+            alert("Đã xảy ra lỗi khi thanh toán. Vui lòng thử lại.");
         }
     };
 
@@ -106,28 +111,29 @@ const Checkout = () => {
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item">
                                     <Link className="text-dark" to="/cart">
-                                        Cart
+                                        Giỏ hàng
                                     </Link>
                                 </li>
                                 &nbsp; /
                                 <li className="breadcrumb-item partial-price active">
-                                    Information
+                                    Thông tin
                                 </li>
                                 &nbsp; /
                                 <li className="breadcrumb-item partial-price active">
-                                    Shipping
+                                    Giao hàng
                                 </li>
                                 &nbsp; /
                                 <li
                                     className="breadcrumb-item partial-price active"
                                     aria-current="page"
                                 >
-                                    Payment
+                                    Thanh toán
                                 </li>
                             </ol>
                         </nav>
                         <h4 className="title total">Thông tin liên hệ</h4>
-                        <p className="user-details">John Doe (johndoe101@gmail.com)</p>
+                        <p className="user-details">{cart_userId?.name}
+                            ({cart_userId?.email})</p>
                         <h4 className="mb-3">Địa chỉ giao hàng</h4>
                         <form
                             onSubmit={formik.handleSubmit}
@@ -142,7 +148,7 @@ const Checkout = () => {
                                     onBlur={formik.handleBlur}
                                 >
                                     <option value="" disabled>
-                                        Select Country
+                                        Chọn quốc gia
                                     </option>
                                     {countryList.map((country, index) => (
                                         <option key={index} value={country.name.common}>
@@ -158,7 +164,7 @@ const Checkout = () => {
                             <div className="flex-grow-1">
                                 <input
                                     type="text"
-                                    placeholder="First name"
+                                    placeholder="Tên"
                                     className="form-control"
                                     name="order_shipping.firstName"
                                     value={formik.values.order_shipping.firstName}
@@ -173,7 +179,7 @@ const Checkout = () => {
                             <div className="flex-grow-1">
                                 <input
                                     type="text"
-                                    placeholder="Last name"
+                                    placeholder="Họ"
                                     className="form-control"
                                     name="order_shipping.lastName"
                                     value={formik.values.order_shipping.lastName}
@@ -188,7 +194,7 @@ const Checkout = () => {
                             <div className="w-100">
                                 <input
                                     type="text"
-                                    placeholder="Address"
+                                    placeholder="Địa Chỉ"
                                     className="form-control"
                                     name="order_shipping.address"
                                     value={formik.values.order_shipping.address}
@@ -203,7 +209,7 @@ const Checkout = () => {
                             <div className="flex-grow-1">
                                 <input
                                     type="text"
-                                    placeholder="City"
+                                    placeholder="Thành Phố"
                                     className="form-control"
                                     name="order_shipping.city"
                                     value={formik.values.order_shipping.city}
@@ -224,10 +230,10 @@ const Checkout = () => {
                                     onBlur={formik.handleBlur}
                                 >
                                     <option value="" disabled>
-                                        Select state
+                                        Chọn tỉnh/thành phố
                                     </option>
-                                    <option value="State 1">State 1</option>
-                                    <option value="State 2">State 2</option>
+                                    <option value="Tỉnh 1">Tỉnh 1</option>
+                                    <option value="Tỉnh 2">Tỉnh 2</option>
                                 </select>
                                 <div className="error fail-message mt-1">
                                     {formik.touched.order_shipping?.state &&
@@ -237,7 +243,7 @@ const Checkout = () => {
                             <div className="flex-grow-1">
                                 <input
                                     type="text"
-                                    placeholder="Zipcode"
+                                    placeholder="Mã bưu điện"
                                     className="form-control"
                                     name="order_shipping.pincode"
                                     value={formik.values.order_shipping.pincode}
@@ -252,7 +258,7 @@ const Checkout = () => {
                             <div className="w-100">
                                 <input
                                     type="text"
-                                    placeholder="Apartment, suite, etc.. (optional)"
+                                    placeholder="Căn hộ, phòng (tuỳ chọn)"
                                     className="form-control"
                                     name="order_shipping.other"
                                     value={formik.values.order_shipping.other}
@@ -271,10 +277,10 @@ const Checkout = () => {
                                         className="text-dark d-flex align-items-center hover-underline"
                                     >
                                         <IoIosArrowBack className="fs-5 me-1" />
-                                        Return to cart
+                                        Quay lại giỏ hàng
                                     </Link>
                                     <button className="button" type="submit">
-                                        Place Order
+                                        Đặt hàng
                                     </button>
                                 </div>
                             </div>
