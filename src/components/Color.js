@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const Color = (props) => {
     const { colorData, setColor } = props;
-    console.log('colorData', colorData);
     return (
         <ul className='colors ps-0'>
             {

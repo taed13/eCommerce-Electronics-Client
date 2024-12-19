@@ -90,7 +90,6 @@ const getUserOrders = async () => {
 };
 
 const updateUser = async (userData) => {
-    console.log("config::::", config);
     const response = await axios.put(
         `${base_url}user/edit-user`,
         userData,
@@ -127,8 +126,6 @@ const resetPass = async (data) => {
 };
 
 const getUserInfoByEmail = async (email) => {
-    console.log("token:::", localStorage.getItem("token"));
-    console.log("email user service:::", email);
     const response = await axios.post(
         `${base_url}oauth2/getInfoByEmail`,
         { email },
@@ -140,7 +137,6 @@ const getUserInfoByEmail = async (email) => {
         },
 
     );
-    console.log("response:::", response);
     if (response.data) {
         return response.data;
     }

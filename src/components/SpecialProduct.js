@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const SpecialProduct = (props) => {
     const { id, title, img, brand, totalRating, price, sold, quantity } = props;
-    console.log('brand:::', brand);
     return (
         <div className="col-6 mb-3">
             <div className="special-product-card">

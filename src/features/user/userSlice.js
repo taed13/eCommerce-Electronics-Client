@@ -141,7 +141,6 @@ export const getOrders = createAsyncThunk(
 export const getInfoByEmailAddress = createAsyncThunk(
     "user/email/get",
     async (email, thunkAPI) => {
-        console.log("email:::", email);
         try {
             return await authService.getUserInfoByEmail(email);
         } catch (error) {

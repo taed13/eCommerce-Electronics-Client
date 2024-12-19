@@ -14,8 +14,7 @@ const ProductCard = (props) => {
     const addToWish = (prodId) => {
         dispatch(addToWishlist(prodId));
     };
-
-    console.log('data:::', data);
+    
     return (
         <>
             {

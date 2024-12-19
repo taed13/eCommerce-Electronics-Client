@@ -33,7 +33,6 @@ const Header = () => {
             try {
                 const decoded = JSON.parse(atob(token.split(".")[1]));
                 dispatch(getInfoByEmailAddress(decoded.email));
-                console.log("decoded:::", decoded);
             } catch (error) {
                 console.error("Token decoding error:", error);
             }
@@ -42,13 +41,11 @@ const Header = () => {
 
     useEffect(() => {
         if (authState?.userInfo?.user) {
-            console.log("User Info from Token:::::", authState?.userInfo?.user);
             let infoUser = authState?.userInfo?.user;
             let result = Object.keys(infoUser).map((key) => [key, infoUser[key], token]);
             result.push(["token", token]);
             let newResult = Object.fromEntries(result);
             const finalResult = JSON.stringify(newResult);
-            console.log("result:::", finalResult);
             localStorage.setItem("customer", finalResult);
         }
     }, [authState?.userInfo?.user]);
@@ -64,17 +61,7 @@ const Header = () => {
         }
     }, [cartState]);
 
-    // useEffect(() => {
-    //     console.log("-----------------");
-    //     console.log('authState:::', authState);
-
-    //     console.log("-----------------");
-
-    // }, [authState]);
-
     useEffect(() => {
-        console.log("cartState:::", cartState);
-        // Fetch cart data if user is authenticated and cart isn't already loaded
         if (token && !cartState?.length) {
             dispatch(getUserCart());
         }
@@ -94,10 +81,6 @@ const Header = () => {
         localStorage.clear();
         window.location.reload();
     };
-
-    // dispatch(getInfoByEmailAddress(authState?.user?.email));
-
-    console.log("authState:::", authState);
 
     return (
         <>
