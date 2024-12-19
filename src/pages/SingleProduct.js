@@ -68,21 +68,16 @@ const SingleProduct = () => {
         } else {
             console.log("prepare data to add to cart");
             const data = {
-                cart_products: [
+                productId: productState?._id,
+                product_color: [
                     {
-                        productId: productState?._id,
-                        product_color: [
-                            {
-                                code: productState?.product_color?.find((item) => item._id === color)?.code,
-                                name: productState?.product_color?.find((item) => item._id === color)?.title,
-                            },
-                        ],
-                        quantity: quantity,
-                        price: productState?.product_price,
-                        name: productState?.product_name,
+                        code: productState?.product_color?.find((item) => item._id === color)?.code,
+                        name: productState?.product_color?.find((item) => item._id === color)?.title,
                     },
                 ],
-                cart_state: "active",
+                quantity: quantity,
+                price: productState?.product_price,
+                name: productState?.product_name,
             };
 
             console.log("data:::", data);
@@ -293,7 +288,11 @@ const SingleProduct = () => {
                                                     style={{ width: "70px" }}
                                                     id=""
                                                     onChange={(e) => {
-                                                        setQuantity(e.target.value);
+                                                        let value = parseInt(e.target.value, 10);
+                                                        if (isNaN(value)) value = 1;
+                                                        if (value < 1) value = 1;
+                                                        if (value > productState?.product_quantity) value = productState?.product_quantity; // Giới hạn trên
+                                                        setQuantity(value);
                                                     }}
                                                     value={quantity}
                                                 />

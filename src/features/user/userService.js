@@ -33,7 +33,7 @@ const getUserWishList = async () => {
 
 const addToCart = async (cartData) => {
     const response = await axios.post(
-        `${base_url}user/cart`,
+        `${base_url}user/cart/add-to-cart`,
         cartData,
         authMiddleware
     );

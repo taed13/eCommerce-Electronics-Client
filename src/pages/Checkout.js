@@ -132,8 +132,7 @@ const Checkout = () => {
                             </ol>
                         </nav>
                         <h4 className="title total">Thông tin liên hệ</h4>
-                        <p className="user-details">{cart_userId?.name}
-                            ({cart_userId?.email})</p>
+                        <p className="user-details">{cart_userId?.name} - {cart_userId?.email}</p>
                         <h4 className="mb-3">Địa chỉ giao hàng</h4>
                         <form
                             onSubmit={formik.handleSubmit}
