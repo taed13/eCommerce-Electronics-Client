@@ -10,6 +10,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
 import { getInfoByEmailAddress, getUserCart } from "../features/user/userSlice";
+import { toast } from "react-toastify";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -80,6 +81,16 @@ const Header = () => {
     const handleLogout = () => {
         localStorage.clear();
         window.location.reload();
+    };
+
+    const handleCartClick = (e) => {
+        // Nếu giỏ hàng trống, hiển thị thông báo và ngăn chuyển trang
+        if (!cartState?.data?.cart_count_product || cartState?.data?.cart_count_product === 0) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+            toast.error("Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước!");
+        } else {
+            navigate("/cart"); // Chuyển hướng đến trang giỏ hàng nếu có sản phẩm
+        }
     };
 
     return (
@@ -194,8 +205,9 @@ const Header = () => {
                                     </Link>
                                 </div>
                                 <div>
-                                    <Link
-                                        to="/cart"
+                                    <a
+                                        href="#"
+                                        onClick={handleCartClick}
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img src={cart} alt="cart" />
@@ -205,7 +217,7 @@ const Header = () => {
                                             </span>
                                             <p className="mb-0">$ {total == null ? 0 : total}</p>
                                         </div>
-                                    </Link>
+                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -18,22 +18,22 @@ const Orders = () => {
 
     return (
         <>
-            <BreadCrumb title="My Orders" />
+            <BreadCrumb title="Đơn hàng của tôi" />
             <Container class1="cart-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-12">
                         <div className="row">
                             <div className="col-3">
-                                <h5>Order Id</h5>
+                                <h5>Mã đơn hàng</h5>
                             </div>
                             <div className="col-3">
-                                <h5>Total Amount</h5>
+                                <h5>Tổng tiền</h5>
                             </div>
                             <div className="col-3">
-                                <h5>Total Amount After Discount</h5>
+                                <h5>Tổng tiền sau khi giảm giá</h5>
                             </div>
                             <div className="col-3">
-                                <h5>Status</h5>
+                                <h5>Trạng thái</h5>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@ const Orders = () => {
                                     key={index}
                                 >
                                     <div className="col-3">
-                                        <p>{order?._id}</p>
+                                        <p>{order?.order_code}</p>
                                     </div>
                                     <div className="col-3">
                                         <p>{order?.checkoutInfo?.totalPrice}</p>
@@ -63,16 +63,16 @@ const Orders = () => {
                                             style={{ backgroundColor: "#232f3e" }}
                                         >
                                             <div className="col-3">
-                                                <h6 className="text-white">Product Name</h6>
+                                                <h6 className="text-white">Tên sản phẩm</h6>
                                             </div>
                                             <div className="col-3">
-                                                <h6 className="text-white">Quantity</h6>
+                                                <h6 className="text-white">Số lượng</h6>
                                             </div>
                                             <div className="col-3">
-                                                <h6 className="text-white">Price</h6>
+                                                <h6 className="text-white">Giá</h6>
                                             </div>
                                             <div className="col-3">
-                                                <h6 className="text-white">Color</h6>
+                                                <h6 className="text-white">Màu</h6>
                                             </div>
                                             {order?.order_items?.map((item, index) => (
                                                 <div className="col-12" key={index}>
@@ -92,7 +92,7 @@ const Orders = () => {
                                                             <ul className="colors ps-0">
                                                                 <li
                                                                     style={{
-                                                                        backgroundColor: item?.color?.title,
+                                                                        backgroundColor: item?.product_colors[0]?.code,
                                                                     }}
                                                                 ></li>
                                                             </ul>

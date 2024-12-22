@@ -54,8 +54,8 @@ const OrderSuccess = () => {
         }
     }, [orderData]);
 
-    if (loading) return <p className="text-center">Loading...</p>;
-    if (error) return <p className="text-center text-danger">{error}</p>;
+    if (loading) return <p className="text-center py-5">Loading...</p>;
+    if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
     return (
         <section className="vh-50 gradient-custom-2">
