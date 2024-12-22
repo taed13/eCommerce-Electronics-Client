@@ -130,7 +130,7 @@ const OrderSuccess = () => {
                                     <div>
                                         <MDBTypography tag="h6" className="mb-0">
                                             {" "}
-                                            <a href="#">View Details</a>{" "}
+                                            <a href="/my-orders">Chi tiết đơn hàng</a>
                                         </MDBTypography>
                                     </div>
                                 </div>
