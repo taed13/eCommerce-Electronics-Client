@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import { authService } from "./userService";
 import { toast } from "react-toastify";
 
@@ -159,6 +159,8 @@ export const createOrderAndCheckOrderBefore = createAsyncThunk(
         }
     }
 );
+
+export const resetCart = createAction("user/cart/reset");
 
 const initialState = {
     user: getCustomerFromLocalStorage,
@@ -456,6 +458,9 @@ export const authSlice = createSlice({
                 if (state.isSuccess === false) {
                     toast.error("Đơn hàng chưa được tạo!");
                 }
+            })
+            .addCase(resetCart, (state) => {
+                state.cartProducts = null;
             });
     },
 });

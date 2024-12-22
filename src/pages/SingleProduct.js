@@ -122,6 +122,8 @@ const SingleProduct = () => {
         return false;
     };
 
+    console.log('productState:::', productState);
+
     return (
         <>
             <Meta title={productState?.product_name} />
@@ -156,7 +158,7 @@ const SingleProduct = () => {
                                     <ReactStars
                                         count={5}
                                         size={24}
-                                        value={productState?.product_totalRating}
+                                        value={+productState?.product_totalRating}
                                         edit={false}
                                         activeColor="#ffd700"
                                     />
@@ -239,8 +241,8 @@ const SingleProduct = () => {
                                 </div> */}
                                 {alreadyAdded === false && (
                                     <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                                        <h3 className="product-heading">Màu: </h3>
                                         <div className="d-flex flex-wrap gap-2">
+                                            <h3 className="product-heading align-self-center">Màu: </h3>
                                             {productState &&
                                                 productState?.product_color?.map((colorItem) => (
                                                     <div

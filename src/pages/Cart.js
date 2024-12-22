@@ -37,14 +37,27 @@ const Cart = () => {
     }, [productUpdateDetails, dispatch]);
 
     const handleQuantityChange = (cartItemId, quantity) => {
-        setProductUpdateDetails({
-            [cartItemId]: {
-                cartItemId,
-                quantity,
-            },
+        setProductUpdateDetails((prevState) => {
+            const updatedDetails = {
+                ...prevState,
+                [cartItemId]: {
+                    cartItemId,
+                    quantity: Number(quantity),
+                },
+            };
+    
+            // Tính toán subtotal ngay khi số lượng thay đổi
+            let newSubTotal = 0;
+            userCartState?.data?.cart_products?.forEach((item) => {
+                const updatedQuantity = updatedDetails[item?._id]?.quantity || item?.quantity;
+                newSubTotal += updatedQuantity * item?.price;
+            });
+    
+            setSubTotal(newSubTotal);
+            return updatedDetails;
         });
     };
-
+    
     const deleteACartProduct = (id) => {
         dispatch(deleteCartProduct(id));
     };
@@ -60,7 +73,7 @@ const Cart = () => {
         });
         setSubTotal(sum);
     }, [userCartState]);
-    
+
     return (
         <>
             <Meta title={"Giỏ hàng của tôi"} />
@@ -113,14 +126,17 @@ const Cart = () => {
                                                 name="quantity"
                                                 id="quantity"
                                                 min={1}
-                                                max={10}
-                                                value={
-                                                    productUpdateDetails[item?._id]?.quantity ||
-                                                    item?.quantity
-                                                }
-                                                onChange={(e) =>
-                                                    handleQuantityChange(item?._id, e.target.value)
-                                                }
+                                                max={item?.productId?.product_quantity}
+                                                value={productUpdateDetails[item?._id]?.quantity || item?.quantity}
+                                                onChange={(e) => {
+                                                    let value = parseInt(e.target.value, 10);
+                                                    const max = item?.productId?.product_quantity;
+                                                    if (isNaN(value)) value = 1;
+                                                    if (value < 1) value = 1;
+                                                    if (value > max) value = max;
+
+                                                    handleQuantityChange(item?._id, value);
+                                                }}
                                             />
                                         </div>
                                         <div
@@ -133,7 +149,9 @@ const Cart = () => {
                                         </div>
                                     </div>
                                     <div className="cart-col-4 d-flex align-items-center">
-                                        <h5 className="price">{item?.price * item?.quantity}đ</h5>
+                                        <h5 className="price">
+                                        {item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)}đ
+                                        </h5>
                                     </div>
                                 </div>
                             )

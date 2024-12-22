@@ -15,6 +15,8 @@ import './style.css';
 import axios from 'axios';
 import { config } from "../../utils/axiosConfig";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { resetCart } from "../../features/user/userSlice";
 
 const OrderSuccess = () => {
     const [orderData, setOrderData] = useState(null);
@@ -48,6 +50,7 @@ const OrderSuccess = () => {
     useEffect(() => {
         if (orderData?.session?.payment_status === "paid") {
             toast.success("Payment successful");
+            resetCart();
         }
     }, [orderData]);
 
@@ -113,12 +116,12 @@ const OrderSuccess = () => {
                             </MDBCard>
                         </div>
 
-                        <MDBCard className="card-stepper" style={{ borderRadius: "16px" }}>
+                        <MDBCard className="card-stepper w-75" style={{ borderRadius: "16px" }}>
                             <MDBCardHeader className="p-3">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
                                         <p className="text-muted mb-2">Mã đơn hàng {" "}
-                                            <span className="fw-bold text-body">{orderData.session.id}</span>
+                                            <span className="fw-bold text-body">{orderData.order.order_code}</span>
                                         </p>
                                         <p className="text-muted mb-0">Ngày đặt hàng {" "}
                                             <span className="fw-bold text-body">{new Date(orderData.session.created * 1000).toLocaleDateString()}</span>
