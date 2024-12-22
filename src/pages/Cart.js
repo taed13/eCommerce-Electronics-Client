@@ -60,10 +60,7 @@ const Cart = () => {
         });
         setSubTotal(sum);
     }, [userCartState]);
-
-    console.log('subTotal', subTotal);
-    console.log("userCartState", userCartState);
-
+    
     return (
         <>
             <Meta title={"Giỏ hàng của tôi"} />

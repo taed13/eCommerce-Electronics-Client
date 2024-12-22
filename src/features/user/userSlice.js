@@ -149,12 +149,24 @@ export const getInfoByEmailAddress = createAsyncThunk(
     }
 );
 
+export const createOrderAndCheckOrderBefore = createAsyncThunk(
+    "order/create",
+    async (orderDetail, thunkAPI) => {
+        try {
+            return await authService.createOrderAndCheckOrderBefore(orderDetail);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const initialState = {
     user: getCustomerFromLocalStorage,
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: "",
+    createdOrder: {},
     deletedCartProduct: {},
 };
 
@@ -422,6 +434,27 @@ export const authSlice = createSlice({
                 state.message = action.error;
                 if (state.isSuccess === false) {
                     toast.error("Mật khẩu chưa được thay đổi!");
+                }
+            })
+            .addCase(createOrderAndCheckOrderBefore.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(createOrderAndCheckOrderBefore.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.createdOrder = action.payload;
+                if (state.isSuccess) {
+                    toast.success("Đơn hàng đã được tạo!");
+                }
+            })
+            .addCase(createOrderAndCheckOrderBefore.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isSuccess === false) {
+                    toast.error("Đơn hàng chưa được tạo!");
                 }
             });
     },

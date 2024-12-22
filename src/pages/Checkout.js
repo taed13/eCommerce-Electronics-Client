@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
+import { createOrderAndCheckOrderBefore } from "../features/user/userSlice";
 
 const shippingSchema = yup.object({
     order_shipping: yup.object({
@@ -24,12 +25,11 @@ const shippingSchema = yup.object({
 const Checkout = () => {
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth?.cartProducts);
+    const userState = useSelector((state) => state.auth);
     const cart_userId = userCartState?.data?.cart_userId;
-    console.log('cart user id:::', cart_userId);
+    const [order, setOrder] = useState(null);
     const [subTotal, setSubTotal] = useState(0);
     const [countryList, setCountryList] = useState([]);
-    const [shippingInfo, setShippingInfo] = useState({});
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -48,11 +48,13 @@ const Checkout = () => {
     console.log(userCartState);
 
     useEffect(() => {
-        let sum = 0;
-        userCartState?.data?.cart_products?.forEach((item) => {
-            sum += Number(item?.price) * Number(item?.quantity);
-        });
-        setSubTotal(sum);
+        const calculateSubTotal = () => {
+            const total = userCartState?.data?.cart_products?.reduce((sum, item) => {
+                return sum + Number(item?.price) * Number(item?.quantity);
+            }, 0);
+            setSubTotal(total || 0);
+        };
+        calculateSubTotal();
     }, [userCartState]);
 
     const formik = useFormik({
@@ -69,21 +71,70 @@ const Checkout = () => {
             },
         },
         validationSchema: shippingSchema,
-        onSubmit: (values) => {
-            console.log("Submitted Values:", values);
-            setShippingInfo(values);
-            checkOutHandler(values);
-            navigate("/");
-        },
+        onSubmit: (values) => handleSubmit(values),
     });
 
-    const checkOutHandler = async (values) => {
+    const formattedCartProducts = userCartState?.data?.cart_products?.map(item => ({
+        productId: item.productId._id,
+        product_colors: item.product_color.map(color => {
+            return {
+                code: color.code,
+                name: color.name
+            }
+        }),
+        quantity: item.quantity,
+        name: item.name,
+        price: item.price,
+        _id: item._id
+    })) || [];
+
+    const prepareOrderData = {
+        order_shipping: formik.values.order_shipping,
+        order_items: formattedCartProducts,
+        paymentInfo: {
+            paymentMethod: "Credit Card",
+            paymentStatus: "Pending",
+        },
+        checkoutInfo: {
+            totalPrice: subTotal,
+            totalPriceAfterDiscount: subTotal - 50000,
+            feeShip: 34,
+            discountApplied: "63f6c8f59d1e6c72b0dbe2f5",
+        },
+        estimatedDeliveryDate: new Date(),
+    }
+
+    const handleSubmit = (values) => {
+        // Dispatch để tạo đơn hàng
+        dispatch(createOrderAndCheckOrderBefore(prepareOrderData));
+    };
+
+    useEffect(() => {
+        // Lắng nghe sự thay đổi của Redux state để lấy order khi tạo xong
+        if (userState?.createdOrder?.order) {
+            setOrder(userState.createdOrder.order);
+        }
+    }, [userState?.createdOrder?.order]);
+
+    useEffect(() => {
+        // Khi `order` đã có giá trị, gọi `checkOutHandler`
+        if (order) {
+            checkOutHandler();
+        }
+    }, [order]);
+
+    const checkOutHandler = async () => {
+        if (!order || !order._id) {
+            alert("Order is not ready yet. Please wait.");
+            return;
+        }
         try {
             const response = await axios.post(
                 "http://127.0.0.1:5001/api/user/order/purchase",
                 {
                     items: userCartState,
-                    shippingInfo: values.order_shipping,
+                    shippingInfo: formik.values.order_shipping,
+                    orderId: order._id,
                 },
                 config
             ); // Include any necessary config if required

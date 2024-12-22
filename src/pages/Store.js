@@ -40,10 +40,6 @@ const Store = () => {
     }, [brand, category, tag, color, minPrice, maxPrice, sort]);
 
     const getProducts = () => {
-        console.log("sort:::", sort);
-        console.log("brand:::", brand);
-        console.log("category:::", category);
-        console.log("tag:::", tag);
         dispatch(
             getAllProducts({ sort, brand, category, tag, minPrice, maxPrice, color })
         );
@@ -104,8 +100,7 @@ const Store = () => {
             });
         }
     }, [productState]);
-
-    // console.log('tags:::', tags);
+    
     return (
         <>
             <Meta title={"Cửa hàng"} />

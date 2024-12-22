@@ -50,10 +50,6 @@ const Blog = () => {
         title: item?.title,
     }));
 
-    console.log('bCategoryState::::', bCategoryState);
-    console.log('categories::::', categories);
-    console.log("blogState", blogState);
-
     return (
         <>
             <Meta title={"Blog"} />

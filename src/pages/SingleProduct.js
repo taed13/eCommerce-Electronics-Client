@@ -35,9 +35,6 @@ const SingleProduct = () => {
     const productsState = useSelector((state) => state?.product?.product);
     const cartState = useSelector((state) => state?.auth?.cartProducts);
 
-    console.log("productState:::", productState);
-    console.log("productsState:::", productsState);
-
     const props = {
         width: 600,
         height: 500,
@@ -66,7 +63,6 @@ const SingleProduct = () => {
             toast.error("Hãy chọn màu sắc sản phẩm");
             return false;
         } else {
-            console.log("prepare data to add to cart");
             const data = {
                 productId: productState?._id,
                 product_color: [
@@ -79,8 +75,6 @@ const SingleProduct = () => {
                 price: productState?.product_price,
                 name: productState?.product_name,
             };
-
-            console.log("data:::", data);
             dispatch(addProdToCart(data));
             setAlreadyAdded(false);
             navigate("/cart");
