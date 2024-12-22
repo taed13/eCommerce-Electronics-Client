@@ -52,8 +52,8 @@ const Home = () => {
                             <div className="main-banner-content position-absolute">
                                 <h4>SUPERCHARGED CHO PROS.</h4>
                                 <h5>iPad S13+ Pro.</h5>
-                                <p>Từ 24,000,000đ <br /> hoặc $1,270,000/tháng</p>
-                                <Link className="button">MUA NGAY</Link>
+                                <p>Từ 36,990,000₫ <br /> hoặc 3,080,000₫/tháng</p>
+                                <Link to="/product/6768452d9e52a08d38d2f0aa" className="button">ĐẶT NGAY</Link>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@ const Home = () => {
                                     <h4>BEST SELLER</h4>
                                     <h5>Laptops Max</h5>
                                     <p>
-                                        Từ 43,000,000đ <br /> hoặc 1,600,000đ/tháng
+                                        Từ 43,000,000₫ <br /> hoặc 1,600,000₫/tháng
                                     </p>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@ const Home = () => {
                                     <h4>Sản phẩm mới</h4>
                                     <h5>iPad Air</h5>
                                     <p>
-                                        Từ 15,000,000đ<br /> hoặc 1,270,000đ/tháng *
+                                        Từ 15,000,000₫<br /> hoặc 1,270,000₫/tháng *
                                     </p>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ const Home = () => {
                                     <h4>Sản phẩm mới</h4>
                                     <h5>iPad Air</h5>
                                     <p>
-                                        Từ 15,000,000đ <br /> hoặc 1,270,000đ/tháng *
+                                        Từ 15,000,000₫ <br /> hoặc 1,270,000₫/tháng *
                                     </p>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ const Home = () => {
                                     <h4>Sản phẩm mới</h4>
                                     <h5>iPad Air</h5>
                                     <p>
-                                        Từ 15,000,000đ <br /> hoặc 1,270,000đ/tháng *
+                                        Từ 15,000,000₫ <br /> hoặc 1,270,000₫/tháng *
                                     </p>
                                 </div>
                             </div>
@@ -212,27 +212,19 @@ const Home = () => {
                             if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "featured")) {
                                 return (
                                     <div key={index} className={"col-3"}>
-                                        <div className="product-card position-relative">
-                                            <div className="wishlist-icon position-absolute">
-                                                <button
-                                                    className="border-0 bg-transparent"
-                                                    onClick={() => addToWish(item?._id)}
-                                                >
-                                                    <img src={wish} alt="wishlist" />
-                                                </button>
-                                            </div>
-                                            <div className="product-image">
+                                        <div className="product-card position-relative pointer-cursor" onClick={() => {navigate("/product/" + item?._id);window.scrollTo(0, 0);}}>
+                                            <div className="product-image d-flex">
                                                 <img
                                                     src={item?.product_images[0]?.url}
-                                                    className="img-fluid mx-auto"
+                                                    className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    width={160}
+                                                    // width={160}
                                                 />
                                                 <img
-                                                    src={item?.product_images[0]?.url}
-                                                    className="img-fluid mx-auto"
+                                                    src={item?.product_images[1]?.url}
+                                                    className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    width={160}
+                                                    // width={160}
                                                 />
                                             </div>
                                             <div className="product-details">
@@ -251,14 +243,14 @@ const Home = () => {
                                                     activeColor="#ffd700"
                                                 />
 
-                                                <p className="price">$ {item?.product_price}</p>
+                                                <p className="price">{item?.product_price.toLocaleString()}₫</p>
                                             </div>
                                             <div className="action-bar position-absolute">
                                                 <div className="d-flex flex-column gap-15">
                                                     {/* <button className="border-0 bg-transparent">
                                                         <img src={prodcompare} alt="prodcompare" />
                                                     </button> */}
-                                                    <button className="border-0 bg-transparent">
+                                                    {/* <button className="border-0 bg-transparent">
                                                         <IoEyeOutline
                                                             onClick={() => {
                                                                 navigate("/product/" + item?._id);
@@ -266,7 +258,7 @@ const Home = () => {
                                                             }}
                                                             className="product-card-icons"
                                                         />
-                                                    </button>
+                                                    </button> */}
                                                     {/* <button className="border-0 bg-transparent">
                                                         <IoCartOutline className="product-card-icons" />
                                                     </button> */}
@@ -293,7 +285,7 @@ const Home = () => {
                             <div className="famous-content position-absolute">
                                 <h5>Màn hình rộng</h5>
                                 <h6>Smart Watch Series 7</h6>
-                                <p>Từ 10,000,000đ hoặc 422,000đ/tháng trong 24 tháng *</p>
+                                <p>Từ 10,000,000₫ hoặc 422,000₫/tháng trong 24 tháng *</p>
                             </div>
                         </div>
                     </div>
@@ -322,7 +314,7 @@ const Home = () => {
                                 <h5 className="text-dark">smartphones</h5>
                                 <h6 className="text-dark">Iphone 16 Pro.</h6>
                                 <p className="text-dark">
-                                    Từ 25.167.000đ hoặc 1,058,000đ/tháng trong 24 tháng
+                                    Từ 25.167.000₫ hoặc 1,058,000₫/tháng trong 24 tháng
                                 </p>
                             </div>
                         </div>
@@ -337,7 +329,7 @@ const Home = () => {
                             <div className="famous-content position-absolute">
                                 <h5 className="text-dark">home speakers</h5>
                                 <h6 className="text-dark">Room-filling sounds.</h6>
-                                <p className="text-dark">Từ 17,770,000đ hoặc $2,964,000đ/tháng trong 12 tháng*</p>
+                                <p className="text-dark">Từ 17,770,000₫ hoặc 2,964,000₫/tháng trong 12 tháng*</p>
                             </div>
                         </div>
                     </div>
@@ -382,28 +374,28 @@ const Home = () => {
                         productState?.map((item, index) => {
                             if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "popular")) {
                                 return (
-                                    <div key={index} className={"col-3"}>
+                                    <div key={index} className={"col-3 pointer-cursor"} onClick={() => {navigate("/product/" + item?._id);window.scrollTo(0, 0);}}>
                                         <div className="product-card position-relative">
-                                            <div className="wishlist-icon position-absolute">
+                                            {/* <div className="wishlist-icon position-absolute">
                                                 <button
                                                     className="border-0 bg-transparent"
                                                     onClick={() => addToWish(item?._id)}
                                                 >
                                                     <img src={wish} alt="wishlist" />
                                                 </button>
-                                            </div>
-                                            <div className="product-image">
+                                            </div> */}
+                                            <div className="product-image d-flex">
                                                 <img
                                                     src={item?.product_images[0]?.url}
-                                                    className="img-fluid mx-auto"
+                                                    className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    width={160}
+                                                    // width={160}
                                                 />
                                                 <img
-                                                    src={item?.product_images[0]?.url}
-                                                    className="img-fluid mx-auto"
+                                                    src={item?.product_images[1]?.url}
+                                                    className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    width={160}
+                                                    // width={160}
                                                 />
                                             </div>
                                             <div className="product-details">
@@ -422,11 +414,11 @@ const Home = () => {
                                                     activeColor="#ffd700"
                                                 />
 
-                                                <p className="price">{item?.product_price}</p>
+                                                <p className="price">{item?.product_price.toLocaleString()}₫</p>
                                             </div>
                                             <div className="action-bar position-absolute">
                                                 <div className="d-flex flex-column gap-15">
-                                                    <button className="border-0 bg-transparent">
+                                                    {/* <button className="border-0 bg-transparent">
                                                         <img src={prodcompare} alt="prodcompare" />
                                                     </button>
                                                     <button className="border-0 bg-transparent">
@@ -440,7 +432,7 @@ const Home = () => {
                                                     </button>
                                                     <button className="border-0 bg-transparent">
                                                         <IoCartOutline className="product-card-icons" />
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </div>
                                         </div>

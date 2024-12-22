@@ -136,7 +136,7 @@ const Store = () => {
                                     className="btn btn-outline-secondary filter-title"
                                     onClick={clearFilter}
                                 >
-                                    Xóa Bộ Lọc
+                                    Xóa bộ lọc
                                 </button>
                             </div>
                             {/* <div>
@@ -195,7 +195,7 @@ const Store = () => {
                                     <label htmlFor="floatingInput2">Đến</label>
                                 </div>
                             </div>
-                            <h5 className="sub-title">Color</h5>
+                            <h5 className="sub-title">Màu sắc</h5>
                             <div>
                                 {/* <Color /> */}
                                 <Color setColor={setColor} colorData={colors} />
@@ -296,12 +296,8 @@ const Store = () => {
                                         <option value="best-selling">Best selling</option> */}
                                         <option value="product_name">Từ A đến Z</option>
                                         <option value="-product_name">Từ Z đến A</option>
-                                        <option value="product_price">
-                                            Giá từ thấp nhất đến cao nhất
-                                        </option>
-                                        <option value="-product_price">
-                                            Giá từ cao nhất đến thấp nhất
-                                        </option>
+                                        <option value="product_price">Giá từ thấp nhất đến cao nhất</option>
+                                        <option value="-product_price">Giá từ cao nhất đến thấp nhất</option>
                                         <option value="option">Từ cũ nhất đến mới nhất</option>
                                         <option value="-option">Từ mới nhất đến cũ nhất</option>
                                     </select>

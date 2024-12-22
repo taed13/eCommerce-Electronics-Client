@@ -346,14 +346,14 @@ const Checkout = () => {
                                             </div>
                                             <div className="d-flex flex-column justify-content-center">
                                                 <h5 className="total">{item?.productId?.product_name}</h5>
-                                                {/* TODO: size??? */}
+                                                {/* TODO: dụt th =))) cái này th cũ ghi vô chơ có quản lí đ mô */}
                                                 <p className="partial mb-0">
-                                                    S | {item?.product_color[0]?.name}
+                                                    {item?.product_color[0]?.name}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="w-25 flex-grow-1 d-flex align-items-center justify-content-end">
-                                            <h5 className="partial-price mb-0">$ {item?.price}</h5>
+                                            <h5 className="partial-price mb-0">{(item?.price).toLocaleString()}₫</h5>
                                         </div>
                                     </div>
                                 );
@@ -363,26 +363,21 @@ const Checkout = () => {
                         <div className="d-flex justify-content-between align-items-center">
                             <p className="partial">Tổng cộng</p>
                             <p className="partial-price">
-                                ${" "}
-                                {userCartState?.data?.cart_products?.reduce(
-                                    (acc, item) => acc + item.price * item.quantity,
-                                    0
-                                )}
+                                {userCartState?.data?.cart_products?.reduce((acc, item) => acc + item.price * item.quantity, 0).toLocaleString()}₫
                             </p>
                         </div>
                         <div className="d-flex justify-content-between align-items-center">
                             <p className="mb-0 partial">Phí vận chuyển</p>
-                            <p className="mb-0 partial-price">$ 34</p>
+                            <p className="mb-0 partial-price">340,000₫</p>
                         </div>
                     </div>
                     <div className="d-flex justify-content-between align-items-center border-bottom py-4">
                         <h4 className="total">Tổng cộng (bao gồm phí vận chuyển)</h4>
                         <h5 className="total-price">
-                            ${" "}
-                            {userCartState?.data?.cart_products?.reduce(
+                            {(userCartState?.data?.cart_products?.reduce(
                                 (acc, item) => acc + item.price * item.quantity,
                                 0
-                            ) + 34}
+                            ) + 340000).toLocaleString()}₫
                         </h5>
                     </div>
                 </div>

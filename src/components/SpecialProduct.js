@@ -9,10 +9,9 @@ const SpecialProduct = (props) => {
             <div className="special-product-card">
                 <div className="d-flex justify-content-between">
                     <div>
-                        <img src={img}
-                            className="img-fluid" alt="watch" />
+                        <img src={img} className="img-fluid" width={300} height={300} alt="watch" />
                     </div>
-                    <div className="special-product-content">
+                    <div className="special-product-content w-75">
                         <h5 className="brand">{brand}</h5>
                         <h6 className="title">{title}</h6>
                         <ReactStars
@@ -23,8 +22,8 @@ const SpecialProduct = (props) => {
                             activeColor="#ffd700"
                         />
                         <p className="price">
-                            <span className="red-p">${price}</span> &nbsp;{" "}
-                            {/* <strike>$ 200.00</strike> */}
+                            <span className="red-p">{price.toLocaleString()}₫</span> &nbsp;{" "}
+                            <strike>{(price * 2).toLocaleString()}₫</strike>
                         </p>
                         {/* <div className="discount-till d-flex align-items-center gap-10">
                             <p className="mb-0">
@@ -46,7 +45,7 @@ const SpecialProduct = (props) => {
                         </div> */}
                         <div className="prod-count my-3">
                             <p>
-                                <b>{quantity}</b> left in stock
+                                <b>{quantity - sold}</b> left in stock
                             </p>
                             <div className="progress">
                                 <div

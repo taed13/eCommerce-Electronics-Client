@@ -77,7 +77,7 @@ const Blog = () => {
                                     className="btn btn-danger mt-3"
                                     onClick={clearFilter}
                                 >
-                                    Clear Filter
+                                    Xóa bộ lọc
                                 </button>
                             </div>
                         </div>

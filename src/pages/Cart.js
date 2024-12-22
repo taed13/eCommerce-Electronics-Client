@@ -45,19 +45,19 @@ const Cart = () => {
                     quantity: Number(quantity),
                 },
             };
-    
+
             // Tính toán subtotal ngay khi số lượng thay đổi
             let newSubTotal = 0;
             userCartState?.data?.cart_products?.forEach((item) => {
                 const updatedQuantity = updatedDetails[item?._id]?.quantity || item?.quantity;
                 newSubTotal += updatedQuantity * item?.price;
             });
-    
+
             setSubTotal(newSubTotal);
             return updatedDetails;
         });
     };
-    
+
     const deleteACartProduct = (id) => {
         dispatch(deleteCartProduct(id));
     };
@@ -83,9 +83,9 @@ const Cart = () => {
                     <div className="col-12">
                         <div className="cart-header py-3 d-flex justify-content-between align-items-center">
                             <h4 className="cart-col-1">Sản phẩm</h4>
-                            <h4 className="cart-col-2">Giá</h4>
+                            <h4 className="cart-col-2">Đơn giá</h4>
                             <h4 className="cart-col-3">Số lượng</h4>
-                            <h4 className="cart-col-4">Tổng</h4>
+                            <h4 className="cart-col-4">Tổng giá</h4>
                         </div>
                         {
                             userCartState && userCartState?.data?.cart_products?.map((item, index) => (
@@ -112,11 +112,10 @@ const Cart = () => {
                                                     ></li>
                                                 </ul>
                                             </div>
-                                            <p>Size: XXL</p>
                                         </div>
                                     </div>
                                     <div className="cart-col-2 d-flex align-items-center">
-                                        <h5 className="price">{item?.price}đ</h5>
+                                        <h5 className="price">{item?.price.toLocaleString()}đ</h5>
                                     </div>
                                     <div className="cart-col-3 d-flex align-items-center gap-15">
                                         <div className="">
@@ -150,7 +149,7 @@ const Cart = () => {
                                     </div>
                                     <div className="cart-col-4 d-flex align-items-center">
                                         <h5 className="price">
-                                        {item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)}đ
+                                        {(item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)).toLocaleString()}đ
                                         </h5>
                                     </div>
                                 </div>
@@ -166,7 +165,7 @@ const Cart = () => {
                                 <></>
                             ) : (
                                 <div className="cart-checkout-info d-flex flex-column align-items-end">
-                                    <h4>Tổng giá đơn hàng: $ {subTotal}</h4>
+                                    <h4>Tổng giá đơn hàng: {subTotal.toLocaleString()}₫</h4>
                                     <p>(Thuế và phí vận chuyển sẽ được tính ở phần thanh toán)</p>
                                     <Link to="/checkout" className="button">
                                         Thanh toán

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import wishlist from "../images/wishlist.svg";
+import { MdContactSupport } from "react-icons/md";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
@@ -215,7 +216,7 @@ const Header = () => {
                                             <span className="badge bg-white text-dark">
                                                 {cartState?.data?.cart_count_product || 0}
                                             </span>
-                                            <p className="mb-0">$ {total == null ? 0 : total}</p>
+                                            <p className="mb-0">{(total == null ? 0 : total).toLocaleString()}₫</p>
                                         </div>
                                     </a>
                                 </div>
@@ -265,43 +266,47 @@ const Header = () => {
                                         </ul>
                                     </div>
                                 </div>
-                                <div className="menu-links">
-                                    <div className="d-flex align-items-center gap-15 text-white">
-                                        <NavLink className="header-navlinks" to="/">
-                                            Trang chủ
-                                        </NavLink>
-                                        |
-                                        <NavLink className="header-navlinks" to="/product">
-                                            Cửa hàng
-                                        </NavLink>
-                                        {(authState?.user !== null || isAuthenticated) && (
-                                            <>
-                                                |
-                                                <NavLink className="header-navlinks" to="/my-orders">
-                                                    Đơn hàng
-                                                </NavLink>
-                                            </>
-                                        )}
-                                        |
-                                        <NavLink className="header-navlinks" to="/blogs">
-                                            Blog
-                                        </NavLink>
-                                        |
+                                <div className="d-flex align-items-center justify-content-between w-100">
+                                    <div className="menu-links">
+                                        <div className="d-flex align-items-center gap-15 text-white">
+                                            <NavLink className="header-navlinks" to="/">
+                                                Trang chủ
+                                            </NavLink>
+                                            |
+                                            <NavLink className="header-navlinks" to="/product">
+                                                Cửa hàng
+                                            </NavLink>
+                                            {(authState?.user !== null || isAuthenticated) && (
+                                                <>
+                                                    |
+                                                    <NavLink className="header-navlinks" to="/my-orders">
+                                                        Đơn hàng
+                                                    </NavLink>
+                                                </>
+                                            )}
+                                            |
+                                            <NavLink className="header-navlinks" to="/blogs">
+                                                Blog
+                                            </NavLink>
+                                            {(authState?.user !== null || isAuthenticated) && (
+                                                <>
+                                                    |
+                                                    <button
+                                                        onClick={handleLogout}
+                                                        className="border border-0 bg-transparent text-white text-uppercase"
+                                                        type="button"
+                                                    >
+                                                        Đăng xuất
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="menu-links">
                                         <NavLink className="header-navlinks" to="/contact">
-                                            Liên hệ
+                                            <MdContactSupport className="fs-2" />
+                                            Liên hệ chúng tôi
                                         </NavLink>
-                                        {(authState?.user !== null || isAuthenticated) && (
-                                            <>
-                                                |
-                                                <button
-                                                    onClick={handleLogout}
-                                                    className="border border-0 bg-transparent text-white text-uppercase"
-                                                    type="button"
-                                                >
-                                                    Đăng xuất
-                                                </button>
-                                            </>
-                                        )}
                                     </div>
                                 </div>
                             </div>

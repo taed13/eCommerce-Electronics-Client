@@ -41,7 +41,7 @@ const SingleProduct = () => {
         zoomWidth: 600,
         img: productState?.product_images[0]?.url
             ? productState?.product_images[0]?.url
-            : "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MT3D3ref_VW_34FR+watch-case-44-aluminum-midnight-cell-se_VW_34FR+watch-face-44-aluminum-midnight-se_VW_34FR?wid=5120&hei=3280&bgc=fafafa&trim=1&fmt=p-jpg&qlt=80&.v=ajJYOEQxYjNlejNwbWNnSU16d0NYaWhSbVIzRFJTYlp1MEk4OWNDaTcvNTlEbzMrd1Z5SUpEd0hiT0ZLRlZGNHVDTzRRaC84T1VMbXJRN05SRldIelBRWnNWZWtLcTZCYVRER3FsWWowaTk5RG8zK3dWeUlKRHdIYk9GS0ZWRjR4cVNUNDJadDNVSmRncE9SalAvZ24wUVN3R3VxZWhYYXgwOHljYmZFMXBocmMyRTN3NCt6QkoxaUdRb0FBay9VYktGTHdENW9lYUFnak5pcy9ReEdDYitVd1NTQTM3UmZlcFMyUUhtajBOOUFTbk5vY3l1VDJCbGQ3QjJZZUd1bQ==",
+            : "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930",
     };
 
     useEffect(() => {
@@ -150,10 +150,10 @@ const SingleProduct = () => {
                     <div className="col-6">
                         <div className="main-product-details">
                             <div className="border-bottom">
-                                <h3 className="title">{productState?.product_name}</h3>
+                                <h3 className="title">{productState ? productState.product_name : 'No product found'}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price">{productState?.product_price} VND</p>
+                                <p className="price">{productState ? productState?.product_price.toLocaleString() + '₫' : 'N/A'}</p>
                                 <div className="d-flex align-items-center gap-10">
                                     <ReactStars
                                         count={5}
@@ -172,73 +172,58 @@ const SingleProduct = () => {
                             </div>
                             <div className="border-bottom py-3">
                                 <div className="d-flex gap-10 align-items-center my-2">
-                                    <h3 className="product-heading">Type: </h3>
-                                    <p className="product-data">Đồng hồ</p>
-                                </div>
-                                <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Hãng: </h3>
                                     <p className="product-data">
-                                        {productState &&
+                                        {productState ?
                                             productState?.product_brand?.map((brand, index) => (
                                                 <span key={brand._id}>
                                                     {brand.title}
                                                     {index < productState.product_brand.length - 1 &&
                                                         " | "}
                                                 </span>
-                                            ))}
+                                            ))
+                                            : 'N/A'}
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Danh mục: </h3>
                                     <p className="product-data">
-                                        {productState &&
+                                        {productState ?
                                             productState?.product_category?.map((category, index) => (
                                                 <span key={category._id}>
                                                     {category.title}
                                                     {index < productState.product_category.length - 1 &&
                                                         " | "}
                                                 </span>
-                                            ))}
+                                            )) : 'N/A'
+                                        }
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Tag sản phẩm: </h3>
                                     <p className="product-data">
-                                        {productState &&
+                                        {productState ?
                                             productState?.product_tags?.map((tags, index) => (
                                                 <span key={tags._id}>
                                                     {tags.name}
                                                     {index < productState.product_tags.length - 1 &&
                                                         " | "}
                                                 </span>
-                                            ))}
+                                            )) : 'N/A'}
                                     </p>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-2">
                                     <h3 className="product-heading">Trạng thái: </h3>
                                     <p className="product-data">
-                                        {productState?.product_quantity > 0
-                                            ? "Còn hàng"
-                                            : "Đã bán hết"}
+                                        {
+                                            productState
+                                                ? productState.product_quantity > 0
+                                                    ? "Còn hàng"
+                                                    : "Đã bán hết"
+                                                : "N/A"
+                                        }
                                     </p>
                                 </div>
-                                {/* <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                                    <h3 className="product-heading">Size: </h3>
-                                    <div className="d-flex flex-wrap gap-15">
-                                        <span className="badge border border-1 bg-white text-dark border-secondary">
-                                            S
-                                        </span>
-                                        <span className="badge border border-1 bg-white text-dark border-secondary">
-                                            M
-                                        </span>
-                                        <span className="badge border border-1 bg-white text-dark border-secondary">
-                                            L
-                                        </span>
-                                        <span className="badge border border-1 bg-white text-dark border-secondary">
-                                            XL
-                                        </span>
-                                    </div>
-                                </div> */}
                                 {alreadyAdded === false && (
                                     <div className="d-flex gap-10 flex-column mt-2 mb-3">
                                         <div className="d-flex flex-wrap gap-2">
@@ -263,60 +248,50 @@ const SingleProduct = () => {
                                                     ></div>
                                                 ))}
                                         </div>
-                                        {!color && (
+                                        {productState && !color && (
                                             <p className="text-danger mt-2">
                                                 Hãy chọn màu sắc sản phẩm!
                                             </p>
                                         )}
                                     </div>
                                 )}
-                                <div className="d-flex align-items-center gap-15 mt-2 mb-3">
-                                    {alreadyAdded === false && (
-                                        <>
-                                            <h3 className="product-heading">Số lượng: </h3>
-                                            <div>
-                                                <input
-                                                    type="number"
-                                                    name=""
-                                                    min={1}
-                                                    max={productState?.product_quantity}
-                                                    className="form-control"
-                                                    style={{ width: "70px" }}
-                                                    id=""
-                                                    onChange={(e) => {
-                                                        let value = parseInt(e.target.value, 10);
-                                                        if (isNaN(value)) value = 1;
-                                                        if (value < 1) value = 1;
-                                                        if (value > productState?.product_quantity) value = productState?.product_quantity; // Giới hạn trên
-                                                        setQuantity(value);
-                                                    }}
-                                                    value={quantity}
-                                                />
+                                {
+                                    productState &&
+                                    <>
+                                        <div className="d-flex align-items-center gap-15 mt-2 mb-3">
+                                            {alreadyAdded === false && (
+                                                <>
+                                                    <h3 className="product-heading">Số lượng: </h3>
+                                                    <div>
+                                                        <input
+                                                            type="number"
+                                                            name=""
+                                                            min={1}
+                                                            max={productState?.product_quantity}
+                                                            className="form-control"
+                                                            style={{ width: "70px" }}
+                                                            id=""
+                                                            onChange={(e) => {
+                                                                let value = parseInt(e.target.value, 10);
+                                                                if (isNaN(value)) value = 1;
+                                                                if (value < 1) value = 1;
+                                                                if (value > productState?.product_quantity) value = productState?.product_quantity; // Giới hạn trên
+                                                                setQuantity(value);
+                                                            }}
+                                                            value={quantity}
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                            <div className={"d-flex align-items-center gap-15" + alreadyAdded ? "ms-0" : "ms-5"}>
+                                                <button type="button" className="button border-0" onClick={() => { alreadyAdded ? navigate("/cart") : uploadCart(productState?._id); }}>
+                                                    {alreadyAdded ? "Đi đến giỏ hàng" : "Thêm vào giỏ hàng"}
+                                                </button>
                                             </div>
-                                        </>
-                                    )}
-                                    <div
-                                        className={
-                                            "d-flex align-items-center gap-15" + alreadyAdded
-                                                ? "ms-0"
-                                                : "ms-5"
-                                        }
-                                    >
-                                        <button
-                                            type="button"
-                                            className="button border-0"
-                                            onClick={() => {
-                                                alreadyAdded
-                                                    ? navigate("/cart")
-                                                    : uploadCart(productState?._id);
-                                            }}
-                                        >
-                                            {alreadyAdded ? "Đi đến giỏ hàng" : "Thêm vào giỏ hàng"}
-                                        </button>
-                                        {/* <Link to="/signup" className="button signup">Buy it now</Link> */}
-                                    </div>
-                                </div>
-                                <div className="d-flex align-items-center gap-15">
+                                        </div>
+                                    </>
+                                }
+                                {/* <div className="d-flex align-items-center gap-15">
                                     <div className="">
                                         <a href="">
                                             <IoHeartOutline className="fs-5 me-2" />
@@ -329,27 +304,34 @@ const SingleProduct = () => {
                                             So sánh sản phẩm
                                         </a>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="d-flex gap-10 flex-column my-3">
                                     <h3 className="product-heading">Vận chuyển & Đổi trả: </h3>
-                                    <p className="product-data">
-                                        Miễn phí vận chuyển và đổi trả cho tất cả các đơn hàng!{" "}
-                                        <br />
-                                        Chúng tôi vận chuyển tất cả các đơn hàng nội địa Việt Nam
-                                        trong vòng <b>5-10 ngày làm việc!</b>
-                                    </p>
+                                    {
+                                        productState
+                                            ? <p className="product-data">
+                                                Miễn phí vận chuyển và đổi trả cho tất cả các đơn hàng!{" "}
+                                                <br />
+                                                Chúng tôi vận chuyển tất cả các đơn hàng nội địa Việt Nam
+                                                trong vòng <b>5-10 ngày làm việc!</b>
+                                            </p>
+                                            : <p className="product-data">N/A</p>
+                                    }
                                 </div>
-                                <div className="d-flex gap-10 align-items-center my-2">
-                                    <h3 className="product-heading">Link sản phẩm: </h3>
-                                    <a
-                                        href="javascript:void(0);"
-                                        onClick={() => {
-                                            copyToClipboard(window.location.href);
-                                        }}
-                                    >
-                                        Sao chép đường dẫn
-                                    </a>
-                                </div>
+                                {
+                                    productState &&
+                                    <div className="d-flex gap-10 align-items-center my-2">
+                                        <h3 className="product-heading">Link sản phẩm: </h3>
+                                        <a
+                                            href="javascript:void(0);"
+                                            onClick={() => {
+                                                copyToClipboard(window.location.href);
+                                            }}
+                                        >
+                                            Sao chép đường dẫn
+                                        </a>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -360,84 +342,86 @@ const SingleProduct = () => {
                     <div className="col-12">
                         <h4>Description</h4>
                         <div className="bg-white p-3">
-                            <p
-                                dangerouslySetInnerHTML={{
-                                    __html: productState?.product_description,
-                                }}
-                            ></p>
+                            {
+                                productState
+                                    ? <p dangerouslySetInnerHTML={{ __html: productState?.product_description, }} ></p>
+                                    : "N/A"
+                            }
                         </div>
                     </div>
                 </div>
             </Container>
-            <Container class1="reviews-wrapper home-wrapper-2">
-                <div className="row">
-                    <div className="col-12">
-                        <h3 id="review">Reviews</h3>
-                        <div className="review-inner-wrapper">
-                            <div className="review-head d-flex justify-content-between align-items-end">
-                                <div>
-                                    <h4 className="mb-2">Đánh giá từ khách hàng</h4>
-                                    <div className="d-flex align-items-center gap-10">
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={+productState?.product_totalRating}
-                                            edit={false}
-                                            activeColor="#ffd700"
-                                        />
-                                        <p className="mb-0">
-                                            Dựa theo {productState?.product_ratings?.length} đánh giá
-                                        </p>
+            {
+                productState &&
+                <Container class1="reviews-wrapper home-wrapper-2">
+                    <div className="row">
+                        <div className="col-12">
+                            <h3 id="review">Reviews</h3>
+                            <div className="review-inner-wrapper">
+                                <div className="review-head d-flex justify-content-between align-items-end">
+                                    <div>
+                                        <h4 className="mb-2">Đánh giá từ khách hàng</h4>
+                                        <div className="d-flex align-items-center gap-10">
+                                            <ReactStars
+                                                count={5}
+                                                size={24}
+                                                value={+productState?.product_totalRating}
+                                                edit={false}
+                                                activeColor="#ffd700"
+                                            />
+                                            <p className="mb-0">
+                                                Dựa theo {productState?.product_ratings?.length} đánh giá
+                                            </p>
+                                        </div>
                                     </div>
+                                    {orderedProducts && (
+                                        <div>
+                                            <a className="text-dark text-decoration-underline" href="">
+                                                Viết đánh giá
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
-                                {orderedProducts && (
-                                    <div>
-                                        <a className="text-dark text-decoration-underline" href="">
-                                            Viết đánh giá
-                                        </a>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="review-form py-4">
-                                <h4>Viết đánh giá</h4>
-                                <form action="" className="d-flex flex-column gap-15">
-                                    <div>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={0}
-                                            edit={true}
-                                            activeColor="#ffd700"
-                                            onChange={(newRating) => {
-                                                setStar(newRating);
-                                            }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            name=""
-                                            id=""
-                                            className="form-control w-100"
-                                            cols="30"
-                                            rows="4"
-                                            placeholder="Write your comment here..."
-                                            onChange={(e) => {
-                                                setComment(e.target.value);
-                                            }}
-                                        ></textarea>
-                                    </div>
-                                    <div className="d-flex justify-content-end mt-3">
-                                        <button
-                                            className="button border-0"
-                                            type="button"
-                                            onClick={addRatingToProduct}
-                                        >
-                                            Gửi đánh giá
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            {/* <div className="reviews mt-4">
+                                <div className="review-form py-4">
+                                    <h4>Viết đánh giá</h4>
+                                    <form action="" className="d-flex flex-column gap-15">
+                                        <div>
+                                            <ReactStars
+                                                count={5}
+                                                size={24}
+                                                value={0}
+                                                edit={true}
+                                                activeColor="#ffd700"
+                                                onChange={(newRating) => {
+                                                    setStar(newRating);
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <textarea
+                                                name=""
+                                                id=""
+                                                className="form-control w-100"
+                                                cols="30"
+                                                rows="4"
+                                                placeholder="Write your comment here..."
+                                                onChange={(e) => {
+                                                    setComment(e.target.value);
+                                                }}
+                                            ></textarea>
+                                        </div>
+                                        <div className="d-flex justify-content-end mt-3">
+                                            <button
+                                                className="button border-0"
+                                                type="button"
+                                                onClick={addRatingToProduct}
+                                            >
+                                                Gửi đánh giá
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                {/* <div className="reviews mt-4">
                                 {
                                     productState?.product_ratings?.map((item, index) => {
                                         return (
@@ -458,10 +442,11 @@ const SingleProduct = () => {
                                     })
                                 }
                             </div> */}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Container>
+                </Container>
+            }
             <Container class1="popular-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
