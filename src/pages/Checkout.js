@@ -8,6 +8,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
 import { createOrderAndCheckOrderBefore } from "../features/user/userSlice";
+import { countries } from "../constants/countries";
 
 const shippingSchema = yup.object({
     order_shipping: yup.object({
@@ -29,20 +30,6 @@ const Checkout = () => {
     const cart_userId = userCartState?.data?.cart_userId;
     const [order, setOrder] = useState(null);
     const [subTotal, setSubTotal] = useState(0);
-    const [countryList, setCountryList] = useState([]);
-
-    useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const response = await axios.get("https://restcountries.com/v3.1/all");
-                setCountryList(response.data);
-            } catch (error) {
-                console.error("Error fetching country list:", error);
-            }
-        };
-
-        fetchCountries();
-    }, []);
 
     console.log("CART STATE:::");
     console.log(userCartState);
@@ -200,9 +187,9 @@ const Checkout = () => {
                                     <option value="" disabled>
                                         Chọn quốc gia
                                     </option>
-                                    {countryList.map((country, index) => (
-                                        <option key={index} value={country.name.common}>
-                                            {country.name.common}
+                                    {countries.map((country, index) => (
+                                        <option key={index} value={country.name}>
+                                            {country.name}
                                         </option>
                                     ))}
                                 </select>
