@@ -10,9 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/user/userSlice";
 
 const signupSchema = yup.object({
-    name: yup.string().required("Name is required"),
-    email: yup.string().nullable().email().required("Email is required"),
-    password: yup.string().required("Password is required"),
+    name: yup.string().required("Vui lòng nhập tên của bạn"),
+    email: yup.string().email("Địa chỉ email không hợp lệ").required("Vui lòng nhập địa chỉ email"),
+    password: yup.string().required("Vui lòng nhập mật khẩu"),
+    confirmPassword: yup.string()
+        .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
+        .required('Vui lòng xác nhận mật khẩu'),
 });
 
 const Signup = () => {
@@ -24,6 +27,7 @@ const Signup = () => {
             name: "",
             email: "",
             password: "",
+            confirmPassword: "",
         },
         validationSchema: signupSchema,
         onSubmit: (values) => {
@@ -58,7 +62,7 @@ const Signup = () => {
                                 <CustomInput
                                     type="text"
                                     name="name"
-                                    placeholder="Name"
+                                    placeholder="Tên tài khoản"
                                     value={formik.values.name}
                                     onChange={formik.handleChange("name")}
                                     onBlur={formik.handleBlur("name")}
@@ -89,6 +93,18 @@ const Signup = () => {
                                 />
                                 <div className="error fail-message">
                                     {formik.touched.password && formik.errors.password}
+                                </div>
+
+                                <CustomInput
+                                    type="password"
+                                    name="confirmPassword"
+                                    placeholder="Xác nhận mật khẩu"
+                                    value={formik.values.confirmPassword}
+                                    onChange={formik.handleChange("confirmPassword")}
+                                    onBlur={formik.handleBlur("confirmPassword")}
+                                />
+                                <div className="error fail-message">
+                                    {formik.touched.confirmPassword && formik.errors.confirmPassword}
                                 </div>
 
                                 <div className="d-flex justify-content-center flex-row align-items-center gap-5 mt-3">

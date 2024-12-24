@@ -8,12 +8,12 @@ const SpecialProduct = (props) => {
         <div className="col-6 mb-3">
             <div className="special-product-card">
                 <div className="d-flex justify-content-between">
-                    <div>
-                        <img src={img} className="img-fluid" width={300} height={300} alt="watch" />
+                    <div className="d-flex align-items-center justify-content-center">
+                        <img src={img} className="img-fluid" width={250} height={250} alt="watch" />
                     </div>
                     <div className="special-product-content w-75">
                         <h5 className="brand">{brand}</h5>
-                        <h6 className="title">{title}</h6>
+                        <h6 className="title text-truncate">{title}</h6>
                         <ReactStars
                             count={5}
                             size={21}
@@ -45,7 +45,7 @@ const SpecialProduct = (props) => {
                         </div> */}
                         <div className="prod-count my-3">
                             <p>
-                                <b>{quantity - sold}</b> left in stock
+                                Chỉ còn <b>{quantity - sold}</b> sản phẩm
                             </p>
                             <div className="progress">
                                 <div
@@ -61,7 +61,7 @@ const SpecialProduct = (props) => {
                             </div>
                         </div>
                         <Link className="button" to={"/product/" + id} onClick={() => (window.scrollTo(0, 0))}>
-                            View
+                            Chi tiết
                         </Link>
                     </div>
                 </div>

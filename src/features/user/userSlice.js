@@ -377,6 +377,7 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
+                console.log("action.payload:::::::::", action.payload);
                 state.updatedUser = action.payload;
                 if (state.isSuccess) {
                     let newUpdatedData = {

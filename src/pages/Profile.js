@@ -6,32 +6,67 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../features/user/userSlice";
 import { Link } from "react-router-dom";
+import Meta from "../components/Meta";
+import $ from "jquery";
 
 const profileSchema = yup.object({
-    firstname: yup.string().required("First name is required"),
-    lastname: yup.string().required("Last name is required"),
-    email: yup.string().email("Invalid email").required("Email is required"),
-    mobile: yup.string().required("Mobile number is required"),
+    name: yup.string().required("Không được để trống tên tài khoản"),
+    email: yup.string().email("Địa chỉ email không hợp lệ").required("Không được để trống địa chỉ email"),
+    addresses: yup.object().shape({
+        mobileNo: yup.string().required("Không được để trống số điện thoại")
+            .matches(
+                /^[0-9]{10}$/,
+                "Số điện thoại không hợp lệ, vui lòng nhập đúng 10 số"
+            ),
+        province: yup.string().required("Chưa chọn tỉnh/thành phố"),
+        district: yup.string().required("Chưa chọn quận/huyện"),
+        ward: yup.string().required("Chưa chọn phường/xã"),
+        street: yup.string().required("Không được để trống địa chỉ"),
+    })
 });
 
 const Profile = () => {
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.auth.user);
+    console.log("userState", userState);
     const userInfoState = useSelector((state) => state.auth?.userInfo?.user);
     const [edit, setEdit] = useState(true);
     const [initialValues, setInitialValues] = useState({
-        firstname: userState?.firstname || "",
-        lastname: userState?.lastname || "",
+        name: userState?.name || "",
         email: userState?.email || userInfoState?.email || "",
-        mobile: userState?.mobile || "",
+        addresses: {
+            mobileNo: userState?.addresses?.[0]?.mobileNo || "",
+            province: userState?.addresses?.[0]?.province?.name || "",
+            district: userState?.addresses?.[0]?.district?.name || "",
+            ward: userState?.addresses?.[0]?.ward?.name || "",
+            street: userState?.addresses?.[0]?.street || "",
+        },
     });
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [wards, setWards] = useState([]);
+    const [selectedProvince, setSelectedProvince] = useState("");
+    const [selectedDistrict, setSelectedDistrict] = useState("");
+    const [selectedWard, setSelectedWard] = useState("");
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: initialValues,
         validationSchema: profileSchema,
         onSubmit: (values) => {
-            dispatch(updateProfile(values));
+            const updatedValues = {
+                ...values,
+                addresses: [
+                    {
+                        mobileNo: values.addresses.mobileNo,
+                        province: values.addresses.province,
+                        district: values.addresses.district,
+                        ward: values.addresses.ward,
+                        street: values.addresses.street,
+                    },
+                ],
+            };
+            dispatch(updateProfile(updatedValues));
             setEdit(true);
         },
     });
@@ -52,8 +87,44 @@ const Profile = () => {
         setEdit(true);
     };
 
+    useEffect(() => {
+        $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm", (response) => {
+            if (response.error === 0) {
+                setProvinces(response.data);
+            } else {
+                console.error("Error fetching provinces:", response.message);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        if (selectedProvince) {
+            $.getJSON(`https://esgoo.net/api-tinhthanh/2/${selectedProvince}.htm`, (response) => {
+                if (response.error === 0) {
+                    setDistricts(response.data);
+                    setWards([]);
+                } else {
+                    console.error("Error fetching districts:", response.message);
+                }
+            });
+        }
+    }, [selectedProvince]);
+
+    useEffect(() => {
+        if (selectedDistrict) {
+            $.getJSON(`https://esgoo.net/api-tinhthanh/3/${selectedDistrict}.htm`, (response) => {
+                if (response.error === 0) {
+                    setWards(response.data);
+                } else {
+                    console.error("Error fetching wards:", response.message);
+                }
+            });
+        }
+    }, [selectedDistrict]);
+
     return (
         <>
+            <Meta title="Tài khoản của tôi" />
             <BreadCrumb title="Tài khoản của tôi" />
             <Container class1="cart-wrapper home-wrapper-2 py-5">
                 <div className="row">
@@ -68,42 +139,22 @@ const Profile = () => {
                     </div>
                     <div className="col-12">
                         <form onSubmit={formik.handleSubmit}>
-                            <div className="d-flex gap-2">
-                                <div className="mb-3 w-50">
-                                    <label htmlFor="firstname" className="form-label">
-                                        Họ
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="firstname"
-                                        className="form-control"
-                                        id="firstname"
-                                        disabled={edit}
-                                        value={formik.values.firstname}
-                                        onChange={formik.handleChange("firstname")}
-                                        onBlur={formik.handleBlur("firstname")}
-                                    />
-                                    <div className="errors fail-message mt-2">
-                                        {formik.touched.firstname && formik.errors.firstname}
-                                    </div>
-                                </div>
-                                <div className="mb-3 w-50">
-                                    <label htmlFor="lastname" className="form-label">
-                                        Tên
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="lastname"
-                                        className="form-control"
-                                        id="lastname"
-                                        disabled={edit}
-                                        value={formik.values.lastname}
-                                        onChange={formik.handleChange("lastname")}
-                                        onBlur={formik.handleBlur("lastname")}
-                                    />
-                                    <div className="errors fail-message mt-2">
-                                        {formik.touched.lastname && formik.errors.lastname}
-                                    </div>
+                            <div className="mb-3">
+                                <label htmlFor="name" className="form-label">
+                                    Tên tài khoản
+                                </label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    className="form-control"
+                                    id="name"
+                                    disabled={edit}
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange("name")}
+                                    onBlur={formik.handleBlur("name")}
+                                />
+                                <div className="errors fail-message mt-2">
+                                    {formik.touched.name && formik.errors.name}
                                 </div>
                             </div>
                             <div className="mb-3">
@@ -125,21 +176,127 @@ const Profile = () => {
                                 </div>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="mobile" className="form-label">
+                                <label htmlFor="mobileNo" className="form-label">
                                     Số điện thoại
                                 </label>
                                 <input
                                     type="text"
-                                    name="mobile"
+                                    name="mobileNo"
                                     className="form-control"
-                                    id="mobile"
+                                    id="mobileNo"
                                     disabled={edit}
-                                    value={formik.values.mobile}
-                                    onChange={formik.handleChange("mobile")}
-                                    onBlur={formik.handleBlur("mobile")}
+                                    value={formik.values.addresses.mobileNo}
+                                    onChange={formik.handleChange("addresses.mobileNo")}
+                                    onBlur={formik.handleBlur("addresses.mobileNo")}
                                 />
                                 <div className="errors fail-message mt-2">
-                                    {formik.touched.mobile && formik.errors.mobile}
+                                    {formik.touched.addresses?.mobileNo && formik.errors.addresses?.mobileNo}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="form-label">
+                                    Địa chỉ giao hàng
+                                </label>
+                                <div className="d-flex gap-3 w-100">
+                                    <div className="mb-3 w-100">
+                                        <select
+                                            name="addresses.province"
+                                            className="form-control form-select"
+                                            value={formik.values.addresses.province}
+                                            disabled={edit}
+                                            onChange={(e) => {
+                                                const selectedProvince = provinces.find(
+                                                    (province) => province.id === e.target.value
+                                                );
+                                                formik.setFieldValue("addresses.province", selectedProvince.name);
+                                                setSelectedProvince(selectedProvince.id);
+                                            }}
+                                            onBlur={formik.handleBlur}
+                                        >
+                                            <option value="" disabled>
+                                                Chọn Tỉnh/Thành
+                                            </option>
+                                            {provinces.map((province) => (
+                                                <option key={province.id} value={province.id}>
+                                                    {province.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.addresses?.province && formik.errors.addresses?.province}
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 w-100">
+                                        <select
+                                            name="addresses.district"
+                                            className="form-control form-select"
+                                            value={formik.values.addresses.district}
+                                            onChange={(e) => {
+                                                const selectedDistrict = districts.find(
+                                                    (district) => district.id === e.target.value
+                                                );
+                                                formik.setFieldValue("addresses.district", selectedDistrict.full_name);
+                                                setSelectedDistrict(selectedDistrict.id);
+                                            }}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!selectedProvince}
+                                        >
+                                            <option value="" disabled>
+                                                Chọn Quận/Huyện
+                                            </option>
+                                            {districts.map((district) => (
+                                                <option key={district.id} value={district.id}>
+                                                    {district.full_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.addresses?.district && formik.errors.addresses?.district}
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 w-100">
+                                        <select
+                                            name="addresses.ward"
+                                            className="form-control form-select"
+                                            value={formik.values.addresses.ward}
+                                            onChange={(e) => {
+                                                const selectedWard = wards.find(
+                                                    (ward) => ward.id === e.target.value
+                                                );
+                                                formik.setFieldValue("addresses.ward", selectedWard.full_name);
+                                                setSelectedWard(selectedWard.id);
+                                            }}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!selectedDistrict}
+                                        >
+                                            <option value="" disabled>
+                                                Chọn Phường/Xã
+                                            </option>
+                                            {wards.map((ward) => (
+                                                <option key={ward.id} value={ward.id}>
+                                                    {ward.full_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.addresses?.ward && formik.errors.addresses?.ward}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-100">
+                                <input
+                                    type="text"
+                                    placeholder="Số nhà, tên đường"
+                                    className="form-control"
+                                    name="addresses.street"
+                                    value={formik.values.addresses.street}
+                                    disabled={edit}
+                                    onChange={formik.handleChange("addresses.street")}
+                                    onBlur={formik.handleBlur("addresses.street")}
+                                />
+                                <div className="error fail-message mt-1">
+                                    {formik.touched.addresses?.street && formik.errors.addresses?.street}
                                 </div>
                             </div>
                             {edit ? (

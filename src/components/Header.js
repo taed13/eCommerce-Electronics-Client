@@ -188,9 +188,7 @@ const Header = () => {
                                         ) : (
                                             authState?.updatedUser ? (
                                                 <p className="mb-0">
-                                                    {
-                                                        authState?.updatedUser?.updatedUser?.firstname + " " + authState?.updatedUser?.updatedUser?.lastname
-                                                    }
+                                                    {authState?.updatedUser?.updatedUser?.name}
                                                 </p>
                                             ) : (
                                                 <p className="mb-0">

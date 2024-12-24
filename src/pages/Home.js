@@ -12,7 +12,6 @@ import ReactStars from "react-rating-stars-component";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import wish from "../images/wish.svg";
 import prodcompare from "../images/prodcompare.svg";
-
 import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
 
 const Home = () => {
@@ -208,33 +207,35 @@ const Home = () => {
                         <h3 className="section-heading">Từ các bộ sưu tập</h3>
                     </div>
                     {productState &&
-                        productState?.map((item, index) => {
-                            if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "featured")) {
-                                return (
-                                    <div key={index} className={"col-3"}>
-                                        <div className="product-card position-relative pointer-cursor" onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
-                                            <div className="product-image d-flex">
-                                                <img
-                                                    src={item?.product_images[0]?.url}
-                                                    className="img-fluid mx-auto w-auto"
-                                                    alt="product"
-                                                // width={160}
-                                                />
-                                                <img
-                                                    src={item?.product_images[1]?.url}
-                                                    className="img-fluid mx-auto w-auto"
-                                                    alt="product"
-                                                // width={160}
-                                                />
-                                            </div>
-                                            <div className="product-details">
-                                                <h6 className="brand">{item?.product_brand?.map((brand, index) => (
-                                                    <span key={brand._id}>
-                                                        {brand.title}
-                                                        {index < item.product_brand.length - 1 && " | "}
-                                                    </span>
-                                                ))}</h6>
-                                                <h5 className="product-title text-truncate">{item?.product_name}</h5>
+                        productState
+                            .filter((item) => item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "featured"))
+                            .slice(0, 4)
+                            .map((item, index) => (
+                                <div key={index} className={"col-3"}>
+                                    <div className="product-card position-relative pointer-cursor" onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
+                                        <div className="product-image d-flex">
+                                            <img
+                                                src={item?.product_images[0]?.url}
+                                                className="img-fluid mx-auto w-auto"
+                                                alt="product"
+                                            // width={160}
+                                            />
+                                            <img
+                                                src={item?.product_images[1]?.url}
+                                                className="img-fluid mx-auto w-auto"
+                                                alt="product"
+                                            // width={160}
+                                            />
+                                        </div>
+                                        <div className="product-details">
+                                            <h6 className="brand">{item?.product_brand?.map((brand, index) => (
+                                                <span key={brand._id}>
+                                                    {brand.title}
+                                                    {index < item.product_brand.length - 1 && " | "}
+                                                </span>
+                                            ))}</h6>
+                                            <h5 className="product-title text-truncate">{item?.product_name}</h5>
+                                            <div className="d-flex align-items-center justify-content-between gap-10">
                                                 <ReactStars
                                                     count={5}
                                                     size={24}
@@ -242,15 +243,17 @@ const Home = () => {
                                                     edit={false}
                                                     activeColor="#ffd700"
                                                 />
-
-                                                <p className="price">{item?.product_price.toLocaleString()}₫</p>
+                                                {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                             </div>
-                                            <div className="action-bar position-absolute">
-                                                <div className="d-flex flex-column gap-15">
-                                                    {/* <button className="border-0 bg-transparent">
+
+                                            <p className="price">{item?.product_price.toLocaleString()}₫</p>
+                                        </div>
+                                        <div className="action-bar position-absolute">
+                                            <div className="d-flex flex-column gap-15">
+                                                {/* <button className="border-0 bg-transparent">
                                                         <img src={prodcompare} alt="prodcompare" />
                                                     </button> */}
-                                                    {/* <button className="border-0 bg-transparent">
+                                                {/* <button className="border-0 bg-transparent">
                                                         <IoEyeOutline
                                                             onClick={() => {
                                                                 navigate("/product/" + item?._id);
@@ -259,17 +262,14 @@ const Home = () => {
                                                             className="product-card-icons"
                                                         />
                                                     </button> */}
-                                                    {/* <button className="border-0 bg-transparent">
+                                                {/* <button className="border-0 bg-transparent">
                                                         <IoCartOutline className="product-card-icons" />
                                                     </button> */}
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                );
-                            }
-                            return null;
-                        })}
+                                </div>
+                            ))}
                 </div>
             </Container>
 
@@ -343,24 +343,22 @@ const Home = () => {
                 </div>
                 <div className="row">
                     {productState &&
-                        productState?.map((item, index) => {
-                            if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "special")) {
-                                return (
-                                    <SpecialProduct
-                                        key={index}
-                                        id={item?._id}
-                                        title={item?.product_name}
-                                        img={item?.product_images[0]?.url}
-                                        brand={item?.brand}
-                                        totalRating={item?.product_totalRating.toString()}
-                                        price={item?.product_price}
-                                        sold={item?.product_sold}
-                                        quantity={item?.product_quantity}
-                                    />
-                                );
-                            }
-                            return null;
-                        })}
+                        productState
+                            .filter((item) => item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "special"))
+                            .slice(0, 4)
+                            .map((item, index) => (
+                                <SpecialProduct
+                                    key={index}
+                                    id={item?._id}
+                                    title={item?.product_name}
+                                    img={item?.product_images[0]?.url}
+                                    brand={item?.brand}
+                                    totalRating={item?.product_totalRating.toString()}
+                                    price={item?.product_price}
+                                    sold={item?.product_sold}
+                                    quantity={item?.product_quantity}
+                                />
+                            ))}
                 </div>
             </Container>
             <Container class1="popular-wrapper py-5 home-wrapper-2">
@@ -371,41 +369,41 @@ const Home = () => {
                 </div>
                 <div className="row">
                     {productState &&
-                        productState?.map((item, index) => {
-                            if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "popular")) {
-                                return (
-                                    <div key={index} className={"col-3 pointer-cursor mb-3"} onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
-                                        <div className="product-card position-relative">
-                                            {/* <div className="wishlist-icon position-absolute">
-                                                <button
-                                                    className="border-0 bg-transparent"
-                                                    onClick={() => addToWish(item?._id)}
-                                                >
-                                                    <img src={wish} alt="wishlist" />
-                                                </button>
-                                            </div> */}
-                                            <div className="product-image d-flex">
-                                                <img
-                                                    src={item?.product_images[0]?.url}
-                                                    className="img-fluid mx-auto w-auto"
-                                                    alt="product"
-                                                // width={160}
-                                                />
-                                                <img
-                                                    src={item?.product_images[1]?.url}
-                                                    className="img-fluid mx-auto w-auto"
-                                                    alt="product"
-                                                // width={160}
-                                                />
-                                            </div>
-                                            <div className="product-details">
-                                                <h6 className="brand">{item?.product_brand?.map((brand, index) => (
-                                                    <span key={brand._id}>
-                                                        {brand.title}
-                                                        {index < item.product_brand.length - 1 && " | "}
-                                                    </span>
-                                                ))}</h6>
-                                                <h5 className="product-title">{item?.product_name}</h5>
+                        productState
+                            .filter((item) => item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "popular"))
+                            .slice(0, 4)
+                            .map((item, index) => (
+                                <div key={index} className={"col-3 pointer-cursor"} onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
+                                    <div className="product-card position-relative">
+                                        {/* <div className="wishlist-icon position-absolute">
+                                            <button
+                                                className="border-0 bg-transparent"
+                                                onClick={() => addToWish(item?._id)}
+                                            >
+                                                <img src={wish} alt="wishlist" />
+                                            </button>
+                                        </div> */}
+                                        <div className="product-image d-flex">
+                                            <img
+                                                src={item?.product_images[0]?.url}
+                                                className="img-fluid mx-auto w-auto"
+                                                alt="product"
+                                            />
+                                            <img
+                                                src={item?.product_images[1]?.url}
+                                                className="img-fluid mx-auto w-auto"
+                                                alt="product"
+                                            />
+                                        </div>
+                                        <div className="product-details">
+                                            <h6 className="brand">{item?.product_brand?.map((brand, index) => (
+                                                <span key={brand._id}>
+                                                    {brand.title}
+                                                    {index < item.product_brand.length - 1 && " | "}
+                                                </span>
+                                            ))}</h6>
+                                            <h5 className="product-title text-truncate">{item?.product_name}</h5>
+                                            <div className="d-flex align-items-center justify-content-between gap-10">
                                                 <ReactStars
                                                     count={5}
                                                     size={24}
@@ -413,34 +411,32 @@ const Home = () => {
                                                     edit={false}
                                                     activeColor="#ffd700"
                                                 />
-
-                                                <p className="price">{item?.product_price.toLocaleString()}₫</p>
+                                                {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                             </div>
-                                            <div className="action-bar position-absolute">
-                                                <div className="d-flex flex-column gap-15">
-                                                    {/* <button className="border-0 bg-transparent">
-                                                        <img src={prodcompare} alt="prodcompare" />
-                                                    </button>
-                                                    <button className="border-0 bg-transparent">
-                                                        <IoEyeOutline
-                                                            onClick={() => {
-                                                                navigate("/product/" + item?._id);
-                                                                window.scrollTo(0, 0);
-                                                            }}
-                                                            className="product-card-icons"
-                                                        />
-                                                    </button>
-                                                    <button className="border-0 bg-transparent">
-                                                        <IoCartOutline className="product-card-icons" />
-                                                    </button> */}
-                                                </div>
+                                            <p className="price">{item?.product_price.toLocaleString()}₫</p>
+                                        </div>
+                                        <div className="action-bar position-absolute">
+                                            <div className="d-flex flex-column gap-15">
+                                                {/* <button className="border-0 bg-transparent">
+                                                    <img src={prodcompare} alt="prodcompare" />
+                                                </button>
+                                                <button className="border-0 bg-transparent">
+                                                    <IoEyeOutline
+                                                        onClick={() => {
+                                                            navigate("/product/" + item?._id);
+                                                            window.scrollTo(0, 0);
+                                                        }}
+                                                        className="product-card-icons"
+                                                    />
+                                                </button>
+                                                <button className="border-0 bg-transparent">
+                                                    <IoCartOutline className="product-card-icons" />
+                                                </button> */}
                                             </div>
                                         </div>
                                     </div>
-                                );
-                            }
-                            return null;
-                        })}
+                                </div>
+                            ))}
                 </div>
             </Container>
             <Container class1="marque-wrapper home-wrapper-2 py-5">

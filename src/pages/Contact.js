@@ -56,11 +56,7 @@ const Contact = () => {
                         <div className="contact-inner-wrapper d-flex justify-content-between">
                             <div>
                                 <h3 className="contact-title mb-4">Liên hệ</h3>
-                                <form
-                                    action=""
-                                    onSubmit={formik.handleSubmit}
-                                    className="d-flex flex-column gap-15"
-                                >
+                                <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15" >
                                     <div>
                                         <input
                                             type="text"

@@ -13,8 +13,8 @@ const loginSchema = yup.object({
     email: yup
         .string()
         .email("Địa chỉ email không hợp lệ")
-        .required("Chưa nhập địa chỉ email"),
-    password: yup.string().required("Chưa nhập mật khẩu"),
+        .required("Vui lòng nhập địa chỉ email"),
+    password: yup.string().required("Vui lòng nhập mật khẩu"),
 });
 
 const getOauthGoogleUrl = () => {
@@ -46,6 +46,7 @@ const Login = () => {
     useEffect(() => {
         if (authState?.isSuccess) {
             navigate("/");
+            window.scrollTo(0, 0);
         }
     }, [authState, navigate]);
 
