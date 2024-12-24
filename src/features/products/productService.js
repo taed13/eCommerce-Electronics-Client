@@ -1,5 +1,5 @@
 import axios from "axios";
-import { authMiddleware, base_url, config } from "../../utils/axiosConfig";
+import { base_url, getConfig } from "../../utils/axiosConfig";
 
 const getProducts = async (data) => {
     const queryParams = new URLSearchParams();
@@ -28,7 +28,7 @@ const getProducts = async (data) => {
 
     const response = await axios.get(
         `${base_url}product?${queryParams.toString()}`,
-        authMiddleware
+        getConfig()
     );
 
     if (response.data) {
@@ -37,7 +37,7 @@ const getProducts = async (data) => {
 };
 
 const getSingleProduct = async (id) => {
-    const response = await axios.get(`${base_url}product/${id}`, authMiddleware);
+    const response = await axios.get(`${base_url}product/${id}`, getConfig());
     if (response.data) {
         return response.data;
     }
@@ -49,8 +49,9 @@ const addToWishlist = async (prodId) => {
         {
             prodId,
         },
-        authMiddleware
+        getConfig()
     );
+
     if (response.data) {
         return response.data;
     }
@@ -60,8 +61,9 @@ const rateProduct = async (data) => {
     const response = await axios.put(
         `${base_url}product/rating`,
         data,
-        authMiddleware
+        getConfig()
     );
+
     if (response.data) {
         return response.data;
     }

@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { authMiddleware, base_url, config } from "../../utils/axiosConfig";
+import { base_url, getConfig } from "../../utils/axiosConfig";
 import axios from '../../utils/axios';
 
 const register = async (userData) => {
@@ -25,7 +25,7 @@ const logout = () => {
 };
 
 const getUserWishList = async () => {
-    const response = await axios.get(`${base_url}user/wishlist`, authMiddleware);
+    const response = await axios.get(`${base_url}user/wishlist`, getConfig());
     if (response.data) {
         return response.data;
     }
@@ -35,7 +35,7 @@ const addToCart = async (cartData) => {
     const response = await axios.post(
         `${base_url}user/cart/add-to-cart`,
         cartData,
-        authMiddleware
+        getConfig()
     );
     if (response.data) {
         return response.data;
@@ -43,8 +43,8 @@ const addToCart = async (cartData) => {
 };
 
 const getCart = async () => {
-    const response = await axios.get(`${base_url}user/cart`, authMiddleware);
-    // const response = await api.get("/user/cart", authMiddleware);
+    const response = await axios.get(`${base_url}user/cart`, getConfig());
+    // const response = await api.get("/user/cart", getConfig());
 
     if (response.data) {
         return response.data;
@@ -54,7 +54,7 @@ const getCart = async () => {
 const removeProductFromCart = async (cartItemId) => {
     const response = await axios.delete(
         `${base_url}user/delete-product-cart/${cartItemId}`,
-        config
+        getConfig()
     );
     if (response.data) {
         return response.data;
@@ -64,7 +64,7 @@ const removeProductFromCart = async (cartItemId) => {
 const updateProductFromCart = async (cartDetails) => {
     const response = await axios.delete(
         `${base_url}user/update-product-cart/${cartDetails.cartItemId}/${cartDetails.quantity}`,
-        config
+        getConfig()
     );
     if (response.data) {
         return response.data;
@@ -75,7 +75,7 @@ const createOrder = async (orderDetail) => {
     const response = await axios.post(
         `${base_url}user/cart/create-order`,
         orderDetail,
-        config
+        getConfig()
     );
     if (response.data) {
         return response.data;
@@ -86,7 +86,7 @@ const createOrderAndCheckOrderBefore = async (orderDetail) => {
     const response = await axios.post(
         `${base_url}order/`,
         orderDetail,
-        config
+        getConfig()
     );
     if (response.data) {
         return response.data;
@@ -94,7 +94,7 @@ const createOrderAndCheckOrderBefore = async (orderDetail) => {
 };
 
 const getUserOrders = async () => {
-    const response = await axios.get(`${base_url}user/getmyorders`, config);
+    const response = await axios.get(`${base_url}user/getmyorders`, getConfig());
     if (response.data) {
         return response.data;
     }

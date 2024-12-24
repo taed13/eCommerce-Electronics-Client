@@ -20,3 +20,19 @@ export const config = {
         Accept: "application/json",
     },
 };
+
+export const getConfig = () => {
+    const getTokenFromLocalStorage = localStorage.getItem("customer")
+        ? JSON.parse(localStorage.getItem("customer"))
+        : null;
+
+    return {
+        headers: {
+            Authorization: `Bearer ${getTokenFromLocalStorage !== null
+                ? getTokenFromLocalStorage.token
+                : ""
+                }`,
+            Accept: "application/json",
+        },
+    };
+};
