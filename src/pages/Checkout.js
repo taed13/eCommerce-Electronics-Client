@@ -41,6 +41,9 @@ const Checkout = () => {
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
+    const [couponCode, setCouponCode] = useState("");
+    const [couponMessage, setCouponMessage] = useState("");
+    const [couponMessageType, setCouponMessageType] = useState("");
 
     const [selectedProvince, setSelectedProvince] = useState({ id: null, name: '' });
     const [selectedDistrict, setSelectedDistrict] = useState({ id: null, name: '' });
@@ -189,6 +192,78 @@ const Checkout = () => {
         }
     }, [selectedDistrict]);
 
+    useEffect(() => {
+        if (userState?.user?.addresses?.[0]) {
+            const address = userState.user.addresses[0];
+
+            const defaultProvince = provinces.find(province => province.name === address.province);
+            const defaultDistrict = districts.find(district => district.full_name === address.district);
+            const defaultWard = wards.find(ward => ward.full_name === address.ward);
+
+            // Đặt giá trị mặc định cho Formik
+            if (defaultProvince) {
+                formik.setFieldValue("order_shipping.province", {
+                    id: defaultProvince.id,
+                    name: defaultProvince.name,
+                });
+                setSelectedProvince(defaultProvince.id);
+            }
+
+            if (defaultDistrict) {
+                formik.setFieldValue("order_shipping.district", {
+                    id: defaultDistrict.id,
+                    full_name: defaultDistrict.full_name,
+                });
+                setSelectedDistrict(defaultDistrict.id);
+            }
+
+            if (defaultWard) {
+                formik.setFieldValue("order_shipping.ward", {
+                    id: defaultWard.id,
+                    full_name: defaultWard.full_name,
+                });
+                setSelectedWard(defaultWard.id);
+            }
+
+            // Đặt giá trị cho các trường khác
+            formik.setFieldValue("order_shipping.street", address.street || "");
+            formik.setFieldValue("order_shipping.mobileNo", address.mobileNo || "");
+            formik.setFieldValue("order_shipping.firstName", address.firstName || "");
+            formik.setFieldValue("order_shipping.lastName", address.lastName || "");
+        }
+    }, [userState, provinces, districts, wards]);
+
+    const handleApplyCoupon = async () => {
+        try {
+            if (!couponCode) {
+                setCouponMessage("Vui lòng nhập mã giảm giá!");
+                setCouponMessageType("danger");
+                return;
+            }
+
+            // Thay thế bằng API của bạn
+            const response = await fetch("/api/discount/apply", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ couponCode }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setCouponMessage("Áp dụng mã giảm giá thành công!");
+                setCouponMessageType("success");
+            } else {
+                setCouponMessage(data.message || "Mã giảm giá không hợp lệ.");
+                setCouponMessageType("danger");
+            }
+        } catch (error) {
+            setCouponMessage("Đã xảy ra lỗi. Vui lòng thử lại.");
+            setCouponMessageType("danger");
+        }
+    };
     return (
         <Container class1="checkout-wrapper py-5 home-wrapper-2">
             <div className="row">
@@ -224,182 +299,217 @@ const Checkout = () => {
                         </nav>
                         <h4 className="title total">Thông tin liên hệ</h4>
                         <p className="user-details">{cart_userId?.name} - {cart_userId?.email}</p>
-                        <h4 className="mb-3">Địa chỉ giao hàng</h4>
-                        <form
-                            onSubmit={formik.handleSubmit}
-                            className="d-flex gap-15 flex-wrap justify-content-between"
-                        >
-                            <div className="flex-grow-1">
-                                <input
-                                    type="text"
-                                    placeholder="Họ"
-                                    className="form-control"
-                                    name="order_shipping.lastName"
-                                    value={formik.values.order_shipping.lastName}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                />
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.lastName &&
-                                        formik.errors.order_shipping?.lastName}
+                        <div className="border rounded p-4 mb-2">
+                            <h4 className="mb-3">Địa chỉ giao hàng</h4>
+                            <form
+                                onSubmit={formik.handleSubmit}
+                                className="d-flex gap-15 flex-wrap justify-content-between"
+                            >
+                                <div className="flex-grow-1">
+                                    <input
+                                        type="text"
+                                        placeholder="Họ"
+                                        className="form-control"
+                                        name="order_shipping.lastName"
+                                        value={formik.values.order_shipping.lastName}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.lastName &&
+                                            formik.errors.order_shipping?.lastName}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex-grow-1">
-                                <input
-                                    type="text"
-                                    placeholder="Tên"
-                                    className="form-control"
-                                    name="order_shipping.firstName"
-                                    value={formik.values.order_shipping.firstName}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                />
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.firstName &&
-                                        formik.errors.order_shipping?.firstName}
+                                <div className="flex-grow-1">
+                                    <input
+                                        type="text"
+                                        placeholder="Tên"
+                                        className="form-control"
+                                        name="order_shipping.firstName"
+                                        value={formik.values.order_shipping.firstName}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.firstName &&
+                                            formik.errors.order_shipping?.firstName}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="w-100">
-                                <input
-                                    type="text"
-                                    placeholder="Số Điện Thoại"
-                                    className="form-control"
-                                    name="order_shipping.mobileNo"
-                                    value={formik.values.order_shipping.mobileNo}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                />
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.mobileNo &&
-                                        formik.errors.order_shipping?.mobileNo}
+                                <div className="w-100">
+                                    <input
+                                        type="text"
+                                        placeholder="Số Điện Thoại"
+                                        className="form-control"
+                                        name="order_shipping.mobileNo"
+                                        value={formik.values.order_shipping.mobileNo}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.mobileNo &&
+                                            formik.errors.order_shipping?.mobileNo}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex-grow-1">
-                                <select
-                                    name="order_shipping.province"
-                                    className="form-control form-select"
-                                    value={formik.values.order_shipping.province.id}
-                                    onChange={(e) => {
-                                        const selectedProvince = provinces.find(
-                                            (province) => province.id === e.target.value
-                                        );
-                                        formik.setFieldValue("order_shipping.province", {
-                                            id: selectedProvince.id,
-                                            name: selectedProvince.name,
-                                        });
-                                        setSelectedProvince(selectedProvince.id);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                >
-                                    <option value="" disabled>
-                                        Chọn Tỉnh/Thành
-                                    </option>
-                                    {provinces.map((province) => (
-                                        <option key={province.id} value={province.id}>
-                                            {province.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.province &&
-                                        formik.errors.order_shipping?.province}
-                                </div>
-                            </div>
-                            <div className="flex-grow-1">
-                                <select
-                                    name="order_shipping.district"
-                                    className="form-control form-select"
-                                    value={formik.values.order_shipping.district.id}
-                                    onChange={(e) => {
-                                        const selectedDistrict = districts.find(
-                                            (district) => district.id === e.target.value
-                                        );
-                                        formik.setFieldValue("order_shipping.district", {
-                                            id: selectedDistrict.id,
-                                            full_name: selectedDistrict.full_name,
-                                        });
-                                        setSelectedDistrict(selectedDistrict.id);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                    disabled={!selectedProvince.length}
-                                >
-                                    <option value="" disabled>
-                                        Chọn Quận/Huyện
-                                    </option>
-                                    {districts.map((district) => (
-                                        <option key={district.id} value={district.id}>
-                                            {district.full_name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.district &&
-                                        formik.errors.order_shipping?.district}
-                                </div>
-                            </div>
-                            <div className="flex-grow-1">
-                                <select
-                                    name="order_shipping.ward"
-                                    className="form-control form-select"
-                                    value={formik.values.order_shipping.ward.id}
-                                    onChange={(e) => {
-                                        const selectedWard = wards.find(
-                                            (ward) => ward.id === e.target.value
-                                        );
-                                        formik.setFieldValue("order_shipping.ward", {
-                                            id: selectedWard.id,
-                                            full_name: selectedWard.full_name,
-                                        });
-                                        setSelectedWard(selectedWard.id);
-                                    }
-                                    }
-                                    onBlur={formik.handleBlur}
-                                    disabled={!selectedDistrict.length}
-                                >
-                                    <option value="" disabled>
-                                        Chọn Phường/Xã
-                                    </option>
-                                    {wards.map((ward) => (
-                                        <option key={ward.id} value={ward.id}>
-                                            {ward.full_name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.ward &&
-                                        formik.errors.order_shipping?.ward}
-                                </div>
-                            </div>
-                            <div className="w-100">
-                                <input
-                                    type="text"
-                                    placeholder="Số nhà, tên đường"
-                                    className="form-control"
-                                    name="order_shipping.street"
-                                    value={formik.values.order_shipping.street}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                />
-                                <div className="error fail-message mt-1">
-                                    {formik.touched.order_shipping?.street &&
-                                        formik.errors.order_shipping?.street}
-                                </div>
-                            </div>
-                            <div className="w-100">
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <Link
-                                        to="/cart"
-                                        className="text-dark d-flex align-items-center hover-underline"
+                                <div className="flex-grow-1">
+                                    <select
+                                        name="order_shipping.province"
+                                        className="form-control form-select"
+                                        value={formik.values.order_shipping.province.id}
+                                        onChange={(e) => {
+                                            const selectedProvince = provinces.find(
+                                                (province) => province.id === e.target.value
+                                            );
+                                            formik.setFieldValue("order_shipping.province", {
+                                                id: selectedProvince.id,
+                                                name: selectedProvince.name,
+                                            });
+                                            setSelectedProvince(selectedProvince.id);
+                                        }}
+                                        onBlur={formik.handleBlur}
                                     >
-                                        <IoIosArrowBack className="fs-5 me-1" />
-                                        Quay lại giỏ hàng
-                                    </Link>
-                                    <button className="button" type="submit">
-                                        Đặt hàng
-                                    </button>
+                                        <option value="" disabled>
+                                            Chọn Tỉnh/Thành
+                                        </option>
+                                        {provinces.map((province) => (
+                                            <option key={province.id} value={province.id}>
+                                                {province.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.province &&
+                                            formik.errors.order_shipping?.province}
+                                    </div>
                                 </div>
+                                <div className="flex-grow-1">
+                                    <select
+                                        name="order_shipping.district"
+                                        className="form-control form-select"
+                                        value={formik.values.order_shipping.district.id}
+                                        onChange={(e) => {
+                                            const selectedDistrict = districts.find(
+                                                (district) => district.id === e.target.value
+                                            );
+                                            formik.setFieldValue("order_shipping.district", {
+                                                id: selectedDistrict.id,
+                                                full_name: selectedDistrict.full_name,
+                                            });
+                                            setSelectedDistrict(selectedDistrict.id);
+                                        }}
+                                        onBlur={formik.handleBlur}
+                                        disabled={!selectedProvince.length}
+                                    >
+                                        <option value="" disabled>
+                                            Chọn Quận/Huyện
+                                        </option>
+                                        {districts.map((district) => (
+                                            <option key={district.id} value={district.id}>
+                                                {district.full_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.district &&
+                                            formik.errors.order_shipping?.district}
+                                    </div>
+                                </div>
+                                <div className="flex-grow-1">
+                                    <select
+                                        name="order_shipping.ward"
+                                        className="form-control form-select"
+                                        value={formik.values.order_shipping.ward.id}
+                                        onChange={(e) => {
+                                            const selectedWard = wards.find(
+                                                (ward) => ward.id === e.target.value
+                                            );
+                                            formik.setFieldValue("order_shipping.ward", {
+                                                id: selectedWard.id,
+                                                full_name: selectedWard.full_name,
+                                            });
+                                            setSelectedWard(selectedWard.id);
+                                        }
+                                        }
+                                        onBlur={formik.handleBlur}
+                                        disabled={!selectedDistrict.length}
+                                    >
+                                        <option value="" disabled>
+                                            Chọn Phường/Xã
+                                        </option>
+                                        {wards.map((ward) => (
+                                            <option key={ward.id} value={ward.id}>
+                                                {ward.full_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.ward &&
+                                            formik.errors.order_shipping?.ward}
+                                    </div>
+                                </div>
+                                <div className="w-100">
+                                    <input
+                                        type="text"
+                                        placeholder="Số nhà, tên đường"
+                                        className="form-control"
+                                        name="order_shipping.street"
+                                        value={formik.values.order_shipping.street}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    <div className="error fail-message mt-1">
+                                        {formik.touched.order_shipping?.street &&
+                                            formik.errors.order_shipping?.street}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="border rounded p-4 mb-2">
+                            <h4 className="mb-3">Nhập mã giảm giá</h4>
+                            <form className="d-flex flex-column gap-3">
+                                <div className="mb-3">
+                                    <label htmlFor="couponCode" className="form-label fw-bold">
+                                        Mã giảm giá
+                                    </label>
+                                    <div className="input-group">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="couponCode"
+                                            placeholder="Nhập mã giảm giá"
+                                            value={couponCode}
+                                            onChange={(e) => setCouponCode(e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="button"
+                                            onClick={handleApplyCoupon}
+                                        >
+                                            Áp dụng
+                                        </button>
+                                    </div>
+                                </div>
+                                {couponMessage && (
+                                    <p className={`text-${couponMessageType === 'success' ? 'success' : 'danger'} fw-semibold`}>
+                                        {couponMessage}
+                                    </p>
+                                )}
+                            </form>
+                        </div>
+
+                        <div className="w-100">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <Link
+                                    to="/cart"
+                                    className="text-dark d-flex align-items-center hover-underline"
+                                >
+                                    <IoIosArrowBack className="fs-5 me-1" />
+                                    Quay lại giỏ hàng
+                                </Link>
+                                <button className="button" type="submit">
+                                    Đặt hàng
+                                </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div className="col-5">
