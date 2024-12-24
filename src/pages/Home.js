@@ -212,19 +212,19 @@ const Home = () => {
                             if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "featured")) {
                                 return (
                                     <div key={index} className={"col-3"}>
-                                        <div className="product-card position-relative pointer-cursor" onClick={() => {navigate("/product/" + item?._id);window.scrollTo(0, 0);}}>
+                                        <div className="product-card position-relative pointer-cursor" onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
                                             <div className="product-image d-flex">
                                                 <img
                                                     src={item?.product_images[0]?.url}
                                                     className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    // width={160}
+                                                // width={160}
                                                 />
                                                 <img
                                                     src={item?.product_images[1]?.url}
                                                     className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    // width={160}
+                                                // width={160}
                                                 />
                                             </div>
                                             <div className="product-details">
@@ -234,7 +234,7 @@ const Home = () => {
                                                         {index < item.product_brand.length - 1 && " | "}
                                                     </span>
                                                 ))}</h6>
-                                                <h5 className="product-title">{item?.product_name}</h5>
+                                                <h5 className="product-title text-truncate">{item?.product_name}</h5>
                                                 <ReactStars
                                                     count={5}
                                                     size={24}
@@ -374,7 +374,7 @@ const Home = () => {
                         productState?.map((item, index) => {
                             if (item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "popular")) {
                                 return (
-                                    <div key={index} className={"col-3 pointer-cursor"} onClick={() => {navigate("/product/" + item?._id);window.scrollTo(0, 0);}}>
+                                    <div key={index} className={"col-3 pointer-cursor mb-3"} onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
                                         <div className="product-card position-relative">
                                             {/* <div className="wishlist-icon position-absolute">
                                                 <button
@@ -389,13 +389,13 @@ const Home = () => {
                                                     src={item?.product_images[0]?.url}
                                                     className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    // width={160}
+                                                // width={160}
                                                 />
                                                 <img
                                                     src={item?.product_images[1]?.url}
                                                     className="img-fluid mx-auto w-auto"
                                                     alt="product"
-                                                    // width={160}
+                                                // width={160}
                                                 />
                                             </div>
                                             <div className="product-details">

@@ -21,7 +21,7 @@ const ProductCard = (props) => {
             {
                 data && data?.map((item, index) => {
                     return (
-                        <div key={index} className={`${location.pathname === "/product" ? `gr-${grid}` : "col-3"} pointer-cursor`} onClick={() => {navigate("/product/" + item?._id);window.scrollTo(0, 0);}}>
+                        <div key={index} className={`${location.pathname === "/product" ? `gr-${grid}` : "col-3"} pointer-cursor mb-3`} onClick={() => {navigate("/product/" + item?._id);window.scrollTo(0, 0);}}>
                             <div className="product-card position-relative">
                                 {/* <div className="wishlist-icon position-absolute">
                                     <button className="border-0 bg-transparent" onClick={() => addToWish(item?._id)}>
