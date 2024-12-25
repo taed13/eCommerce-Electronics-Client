@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import BlogCard from "../components/BlogCard";
 import SpecialProduct from "../components/SpecialProduct";
@@ -35,8 +35,36 @@ const Home = () => {
     const addToWish = (prodId) => {
         dispatch(addToWishlist(prodId));
     };
+
     console.log(blogState);
     console.log(productState);
+    const [prodCategoryCount, setProdCategoryCount] = useState([]);
+
+    useEffect(() => {
+        const categoryCount = {};
+
+        productState && productState.forEach((product) => {
+            const category = product.product_category[0].title;
+            if (categoryCount[category]) {
+                categoryCount[category]++;
+            } else {
+                categoryCount[category] = 1;
+            }
+        });
+
+        const categoryCountArray = Object.keys(categoryCount).map((category) => ({
+            category: category,
+            count: categoryCount[category],
+        }));
+
+        setProdCategoryCount(categoryCountArray);
+    }, [productState]);
+
+    const handleCategoryClick = (categoryQuery) => {
+        dispatch(getAllProducts({ product_category: categoryQuery, sort: "manual" }));
+        navigate(`/product?product_category=${categoryQuery}&sort=manual`);
+    };
+
     return (
         <>
             <Container class1="home-wrapper-1 py-5">
@@ -51,14 +79,14 @@ const Home = () => {
                             <div className="main-banner-content position-absolute">
                                 <h4>SUPERCHARGED CHO PROS.</h4>
                                 <h5>iPad S13+ Pro.</h5>
-                                <p>Từ 36,990,000₫ <br /> hoặc 3,080,000₫/tháng</p>
+                                <p>Thỏa sức sáng tạo<br />Chỉ với giá 36,990,000₫</p>
                                 <Link to="/product/6768452d9e52a08d38d2f0aa" className="button">ĐẶT NGAY</Link>
                             </div>
                         </div>
                     </div>
                     <div className="col-6">
                         <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
-                            <div className="small-banner position-relative">
+                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/676bee88f20dc5b91d7c2bad"); window.scrollTo(0, 0); }}>
                                 <img
                                     src="images/catbanner-01.jpg"
                                     className="img-fluid rounded-3"
@@ -66,51 +94,51 @@ const Home = () => {
                                 />
                                 <div className="small-banner-content position-absolute">
                                     <h4>BEST SELLER</h4>
-                                    <h5>Laptops Max</h5>
+                                    <h5>Apple MacBook Air</h5>
                                     <p>
-                                        Từ 43,000,000₫ <br /> hoặc 1,600,000₫/tháng
+                                        Làm việc mọi lúc<br />Chỉ từ 24,290,000₫
                                     </p>
                                 </div>
                             </div>
-                            <div className="small-banner position-relative">
+                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/676bed3ef20dc5b91d7c2b3f"); window.scrollTo(0, 0); }}>
                                 <img
                                     src="images/catbanner-02.jpg"
                                     className="img-fluid rounded-3"
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>Sản phẩm mới</h4>
-                                    <h5>iPad Air</h5>
+                                    <h4>NEW ARRIVALS</h4>
+                                    <h5>Apple Watch SE 2</h5>
                                     <p>
-                                        Từ 15,000,000₫<br /> hoặc 1,270,000₫/tháng *
+                                        Phụ kiện lên trình<br />Giá chỉ từ 5,790,000₫
                                     </p>
                                 </div>
                             </div>
-                            <div className="small-banner position-relative">
+                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/676befc5f20dc5b91d7c2be2"); window.scrollTo(0, 0); }}>
                                 <img
                                     src="images/catbanner-03.jpg"
                                     className="img-fluid rounded-3"
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>Sản phẩm mới</h4>
-                                    <h5>iPad Air</h5>
+                                    <h4>NEW ARRIVALS</h4>
+                                    <h5>iPad Air 6 M2</h5>
                                     <p>
-                                        Từ 15,000,000₫ <br /> hoặc 1,270,000₫/tháng *
+                                        Giá khuyến mãi còn <br /> 14,890,000₫
                                     </p>
                                 </div>
                             </div>
-                            <div className="small-banner position-relative">
+                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/6747b698570ba79897eae89d"); window.scrollTo(0, 0); }}>
                                 <img
                                     src="images/catbanner-04.jpg"
                                     className="img-fluid rounded-3"
                                     alt="cat-banner-1"
                                 />
                                 <div className="small-banner-content position-absolute">
-                                    <h4>Sản phẩm mới</h4>
-                                    <h5>iPad Air</h5>
+                                    <h4>NEW ARRIVALS</h4>
+                                    <h5>AirPods Max</h5>
                                     <p>
-                                        Từ 15,000,000₫ <br /> hoặc 1,270,000₫/tháng *
+                                        Giá khuyến mãi còn <br /> 12,990,000₫
                                     </p>
                                 </div>
                             </div>
@@ -141,62 +169,28 @@ const Home = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className="categories d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Smartphones</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/smartphones.png" alt="smartphones" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Laptops</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/laptop.jpg" alt="laptops" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Tablets</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/tablets.png" alt="tablets" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Headphones</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/headphone.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Airpods</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/airpods.png" alt="airpods" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">TV</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/tv.jpg" alt="tv" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Smartwatches</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/smartwatches.png" alt="smartwatches" />
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="">
-                                    <h6 className="fw-bold">Đồ Gia Dụng</h6>
-                                    <p>10 items</p>
-                                </div>
-                                <img src="images/househoulds.jpg" alt="households" />
-                            </div>
+                            {
+                                prodCategoryCount.slice(0, 8).map((category, index) => {
+                                    return (
+                                        <>
+                                            <div className="d-flex align-items-center pointer-cursor"
+                                                onClick={() => {
+                                                    handleCategoryClick(category.category);
+                                                    window.scrollTo(0, 0);
+                                                }}
+                                                key={index}>
+                                                <div className="">
+                                                    <h6 className="fw-bold">{category.category}</h6>
+                                                    <p>{category.count} items</p>
+                                                </div>
+                                                <div className="" style={{ width: "100px", height: "100px" }}>
+                                                    <img src={`images/${category.category.toLowerCase()}.png`} className="img-fluid" alt={category.category.toLowerCase()} />
+                                                </div>
+                                            </div>
+                                        </>
+                                    );
+                                })
+                            }
                         </div>
                     </div>
                 </div>
@@ -218,13 +212,11 @@ const Home = () => {
                                                 src={item?.product_images[0]?.url}
                                                 className="img-fluid mx-auto w-auto"
                                                 alt="product"
-                                            // width={160}
                                             />
                                             <img
                                                 src={item?.product_images[1]?.url}
                                                 className="img-fluid mx-auto w-auto"
                                                 alt="product"
-                                            // width={160}
                                             />
                                         </div>
                                         <div className="product-details">
@@ -248,25 +240,6 @@ const Home = () => {
 
                                             <p className="price">{item?.product_price.toLocaleString()}₫</p>
                                         </div>
-                                        <div className="action-bar position-absolute">
-                                            <div className="d-flex flex-column gap-15">
-                                                {/* <button className="border-0 bg-transparent">
-                                                        <img src={prodcompare} alt="prodcompare" />
-                                                    </button> */}
-                                                {/* <button className="border-0 bg-transparent">
-                                                        <IoEyeOutline
-                                                            onClick={() => {
-                                                                navigate("/product/" + item?._id);
-                                                                window.scrollTo(0, 0);
-                                                            }}
-                                                            className="product-card-icons"
-                                                        />
-                                                    </button> */}
-                                                {/* <button className="border-0 bg-transparent">
-                                                        <IoCartOutline className="product-card-icons" />
-                                                    </button> */}
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -275,7 +248,7 @@ const Home = () => {
 
             <Container class1="famous-wrapper py-5 home-wrapper-2">
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-3 pointer-cursor" onClick={() => { navigate("/product/676bcabc3a7e698cd33561c7"); window.scrollTo(0, 0); }}>
                         <div className="famous-card position-relative">
                             <img
                                 src="images/famous-01.webp"
@@ -285,11 +258,11 @@ const Home = () => {
                             <div className="famous-content position-absolute">
                                 <h5>Màn hình rộng</h5>
                                 <h6>Smart Watch Series 7</h6>
-                                <p>Từ 10,000,000₫ hoặc 422,000₫/tháng trong 24 tháng *</p>
+                                <p>Giá chỉ từ 4,790,000₫</p>
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 pointer-cursor" onClick={() => { navigate("/product/676bee88f20dc5b91d7c2bad"); window.scrollTo(0, 0); }}>
                         <div className="famous-card position-relative">
                             <img
                                 src="images/famous-02.webp"
@@ -303,7 +276,7 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 pointer-cursor" onClick={() => { navigate("/product/6742cfe1f8ee98c191f60bfc"); window.scrollTo(0, 0); }}>
                         <div className="famous-card position-relative">
                             <img
                                 src="images/famous-03.webp"
@@ -314,12 +287,12 @@ const Home = () => {
                                 <h5 className="text-dark">smartphones</h5>
                                 <h6 className="text-dark">Iphone 16 Pro.</h6>
                                 <p className="text-dark">
-                                    Từ 25.167.000₫ hoặc 1,058,000₫/tháng trong 24 tháng
+                                    Giá chỉ từ 33,890,000₫
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 pointer-cursor" onClick={() => { navigate("/product/676bf1c1f20dc5b91d7c2d29"); window.scrollTo(0, 0); }}>
                         <div className="famous-card position-relative">
                             <img
                                 src="images/famous-04.webp"
@@ -329,7 +302,7 @@ const Home = () => {
                             <div className="famous-content position-absolute">
                                 <h5 className="text-dark">home speakers</h5>
                                 <h6 className="text-dark">Room-filling sounds.</h6>
-                                <p className="text-dark">Từ 17,770,000₫ hoặc 2,964,000₫/tháng trong 12 tháng*</p>
+                                <p className="text-dark">Giá chỉ từ 3,990,000₫</p>
                             </div>
                         </div>
                     </div>
@@ -375,14 +348,6 @@ const Home = () => {
                             .map((item, index) => (
                                 <div key={index} className={"col-3 pointer-cursor"} onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
                                     <div className="product-card position-relative">
-                                        {/* <div className="wishlist-icon position-absolute">
-                                            <button
-                                                className="border-0 bg-transparent"
-                                                onClick={() => addToWish(item?._id)}
-                                            >
-                                                <img src={wish} alt="wishlist" />
-                                            </button>
-                                        </div> */}
                                         <div className="product-image d-flex">
                                             <img
                                                 src={item?.product_images[0]?.url}
@@ -417,21 +382,6 @@ const Home = () => {
                                         </div>
                                         <div className="action-bar position-absolute">
                                             <div className="d-flex flex-column gap-15">
-                                                {/* <button className="border-0 bg-transparent">
-                                                    <img src={prodcompare} alt="prodcompare" />
-                                                </button>
-                                                <button className="border-0 bg-transparent">
-                                                    <IoEyeOutline
-                                                        onClick={() => {
-                                                            navigate("/product/" + item?._id);
-                                                            window.scrollTo(0, 0);
-                                                        }}
-                                                        className="product-card-icons"
-                                                    />
-                                                </button>
-                                                <button className="border-0 bg-transparent">
-                                                    <IoCartOutline className="product-card-icons" />
-                                                </button> */}
                                             </div>
                                         </div>
                                     </div>

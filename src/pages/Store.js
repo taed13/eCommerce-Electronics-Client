@@ -7,8 +7,10 @@ import Color from "../components/Color";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
+import { useSearchParams } from "react-router-dom";
 
 const Store = () => {
+    const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
 
     const [grid, setGrid] = useState(4);
@@ -34,16 +36,28 @@ const Store = () => {
     });
 
     const productState = useSelector((state) => state?.product?.product);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+
 
     useEffect(() => {
-        getProducts();
-    }, [brand, category, tag, color, minPrice, maxPrice, sort]);
+        const categoryFromParams = searchParams.get("product_category") || "";
+        const sortFromParams = searchParams.get("sort") || "manual";
 
-    const getProducts = () => {
-        dispatch(
-            getAllProducts({ sort, brand, category, tag, minPrice, maxPrice, color })
-        );
-    };
+        if (isFirstLoad) {
+            dispatch(getAllProducts({ category: categoryFromParams, sort: sortFromParams }));
+            setIsFirstLoad(false);
+        }
+    }, [searchParams, dispatch, isFirstLoad]);
+
+    useEffect(() => {
+        console.log('isFirstLoad', isFirstLoad);
+        if (!isFirstLoad) {
+            console.log("Filtering products");
+            dispatch(
+                getAllProducts({ sort, brand, category, tag, minPrice, maxPrice, color })
+            );
+        }
+    }, [brand, category, tag, color, minPrice, maxPrice, sort]);
 
     const clearFilter = () => {
         setBrand([]);
@@ -139,33 +153,6 @@ const Store = () => {
                                     Xóa bộ lọc
                                 </button>
                             </div>
-                            {/* <div>
-                                <h5 className="sub-title">Availability</h5>
-                                <div>
-                                    <div className="form-check">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            value=""
-                                            id=""
-                                        />
-                                        <label className="form-check-label" htmlFor="">
-                                            In stock (1)
-                                        </label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            value=""
-                                            id=""
-                                        />
-                                        <label className="form-check-label" htmlFor="">
-                                            Out of stock (0)
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> */}
                             <h5 className="sub-title">Giá sản phẩm</h5>
                             <div className="d-flex align-items-center gap-10">
                                 <div className="form-floating">
@@ -197,45 +184,8 @@ const Store = () => {
                             </div>
                             <h5 className="sub-title">Màu sắc</h5>
                             <div>
-                                {/* <Color /> */}
                                 <Color setColor={setColor} colorData={colors} />
                             </div>
-                            {/* <h5 className="sub-title">Size</h5>
-                            <div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value=""
-                                        id="size-1"
-                                    />
-                                    <label className="form-check-label" htmlFor="size-1">
-                                        S (2)
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value=""
-                                        id="size-2"
-                                    />
-                                    <label className="form-check-label" htmlFor="size-2">
-                                        M (2)
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value=""
-                                        id="size-3"
-                                    />
-                                    <label className="form-check-label" htmlFor="size-3">
-                                        L (2)
-                                    </label>
-                                </div>
-                            </div> */}
                             <div className="mb-3 mt-4">
                                 <h3 className="sub-title">Tag sản phẩm</h3>
                                 <div>

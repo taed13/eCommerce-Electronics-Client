@@ -8,7 +8,7 @@ const Color = (props) => {
             {
                 colorData.map((item, index) => {
                     return (
-                        <li onClick={() => setColor(item?._id)} key={index} style={{ backgroundColor: item?.code }}></li>
+                        <li onClick={() => setColor(item?._id)} key={index} style={{ backgroundColor: item?.code, border: '1px solid #ccc' }}></li>
                     )
                 })
             }
