@@ -153,6 +153,16 @@ const getUserInfoByEmail = async (email) => {
     }
 };
 
+const getUserInfoById = async (id) => {
+    const response = await axios.get(
+        `${base_url}user/${id}`,
+        getConfig()
+    );
+    if (response.data) {
+        return response.data;
+    }
+}
+
 export const authService = {
     register,
     login,
@@ -168,5 +178,6 @@ export const authService = {
     resetPass,
     logout,
     getUserInfoByEmail,
-    createOrderAndCheckOrderBefore
+    createOrderAndCheckOrderBefore,
+    getUserInfoById
 };

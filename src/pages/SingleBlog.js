@@ -35,7 +35,7 @@ const SingleBlog = () => {
                                 <HiOutlineArrowLeft className="fs-4" />
                                 Quay lại trang blog
                             </Link>
-                            <h3 className="title">{blogState?.data?.blog_title}</h3>
+                            <h3 className="title text-center">{blogState?.data?.blog_title}</h3>
                             <img
                                 src={
                                     blogState?.data?.blog_images[0]?.url
@@ -45,18 +45,17 @@ const SingleBlog = () => {
                                 className="img-fluid my-4"
                                 alt="blog"
                                 style={{
-                                    width: "250px",
+                                    width: "600px",
                                     maxWidth: "100%",
                                     margin: "0 auto",
                                     display: "block",
                                     borderRadius: "10px",
                                 }}
                             />
-                            <p
-                                dangerouslySetInnerHTML={{
-                                    __html: blogState?.data?.blog_description,
-                                }}
-                            ></p>
+                            <span className="">{blogState?.data?.createdAt}</span>
+                            <div className="d-flex justify-content-center align-items-center w-100">
+                                <div className="w-75 fs-3" dangerouslySetInnerHTML={{ __html: blogState?.data?.blog_description, }}></div>
+                            </div>
                         </div>
                     </div>
                 </div>

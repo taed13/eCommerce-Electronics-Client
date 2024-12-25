@@ -490,7 +490,7 @@ const Home = () => {
                                                 description={item?.blog_description}
                                                 image={item?.blog_images[0]?.url}
                                                 date={moment(item?.createdAt).format(
-                                                    "MMMM DD YYYY, H:mm a"
+                                                    "DD/MM/YYYY, HH:mm"
                                                 )}
                                             />
                                         </div>

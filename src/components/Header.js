@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
-import { getInfoByEmailAddress, getUserCart } from "../features/user/userSlice";
+import { getInfoByEmailAddress, getUserCart, getUserInfoById } from "../features/user/userSlice";
 import { toast } from "react-toastify";
 
 const Header = () => {
@@ -35,6 +35,7 @@ const Header = () => {
             try {
                 const decoded = JSON.parse(atob(token.split(".")[1]));
                 dispatch(getInfoByEmailAddress(decoded.email));
+                dispatch(getUserInfoById(decoded.id));
             } catch (error) {
                 console.error("Token decoding error:", error);
             }

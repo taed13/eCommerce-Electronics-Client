@@ -162,8 +162,20 @@ export const createOrderAndCheckOrderBefore = createAsyncThunk(
 
 export const resetCart = createAction("user/cart/reset");
 
+export const getUserInfoById = createAsyncThunk(
+    "user/id/get",
+    async (userId, thunkAPI) => {
+        try {
+            return await authService.getUserInfoById(userId);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+)
+
 const initialState = {
     user: getCustomerFromLocalStorage,
+    userInfo: {},
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -462,6 +474,21 @@ export const authSlice = createSlice({
             })
             .addCase(resetCart, (state) => {
                 state.cartProducts = null;
+            })
+            .addCase(getUserInfoById.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getUserInfoById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.userInfo = action.payload.data;
+            })
+            .addCase(getUserInfoById.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
             });
     },
 });

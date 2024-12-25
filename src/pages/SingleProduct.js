@@ -334,7 +334,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
             </Container>
-            <Container class1="description-wrapper py-5 home-wrapper-2">
+            <Container class1="description-wrapper pb-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <h4>Mô tả sản phẩm</h4>

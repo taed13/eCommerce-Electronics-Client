@@ -166,7 +166,7 @@ const Cart = () => {
                             ) : (
                                 <div className="cart-checkout-info d-flex flex-column align-items-end">
                                     <h4>Tổng giá đơn hàng: {subTotal.toLocaleString()}₫</h4>
-                                    <p>(Thuế và phí vận chuyển sẽ được tính ở phần thanh toán)</p>
+                                    <p>(Phí vận chuyển sẽ được tính ở phần thanh toán)</p>
                                     <Link to="/checkout" className="button">
                                         Thanh toán
                                     </Link>

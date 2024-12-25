@@ -27,25 +27,22 @@ const profileSchema = yup.object({
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const userState = useSelector((state) => state.auth.user);
-    console.log("userState", userState);
-    const userInfoState = useSelector((state) => state.auth?.userInfo?.user);
+    const userInfoState = useSelector((state) => state.auth?.userInfo);
     const [edit, setEdit] = useState(true);
     const [initialValues, setInitialValues] = useState({
-        name: userState?.name || "",
-        email: userState?.email || userInfoState?.email || "",
+        name: "",
+        email: "",
         addresses: {
-            mobileNo: userState?.addresses?.[0]?.mobileNo || "",
-            province: userState?.addresses?.[0]?.province?.name || "",
-            district: userState?.addresses?.[0]?.district?.name || "",
-            ward: userState?.addresses?.[0]?.ward?.name || "",
-            street: userState?.addresses?.[0]?.street || "",
-        },
-    });
+            mobileNo: "",
+            province: "",
+            district: "",
+            ward: "",
+            street: "",
+        },});
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
-    const [selectedProvince, setSelectedProvince] = useState("");
+    const [selectedProvince, setSelectedProvince] = useState(initialValues.addresses.province);
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [selectedWard, setSelectedWard] = useState("");
 
@@ -70,6 +67,8 @@ const Profile = () => {
             setEdit(true);
         },
     });
+
+    console.log('formik:::', formik);
 
     useEffect(() => {
         if (!edit) {
@@ -121,6 +120,20 @@ const Profile = () => {
             });
         }
     }, [selectedDistrict]);
+
+    useEffect(() => {
+        setInitialValues({
+            name: userInfoState?.name || "",
+            email: userInfoState?.email || userInfoState?.email || "",
+            addresses: {
+                mobileNo: userInfoState?.addresses?.[0]?.mobileNo || "",
+                province: userInfoState?.addresses?.[0]?.province?.name || "",
+                district: userInfoState?.addresses?.[0]?.district?.name || "",
+                ward: userInfoState?.addresses?.[0]?.ward?.name || "",
+                street: userInfoState?.addresses?.[0]?.street || "",
+            },
+        });
+    }, [userInfoState]);
 
     return (
         <>
@@ -206,18 +219,16 @@ const Profile = () => {
                                             disabled={edit}
                                             onChange={(e) => {
                                                 const selectedProvince = provinces.find(
-                                                    (province) => province.id === e.target.value
+                                                    (province) => province.name === e.target.value
                                                 );
                                                 formik.setFieldValue("addresses.province", selectedProvince.name);
                                                 setSelectedProvince(selectedProvince.id);
                                             }}
                                             onBlur={formik.handleBlur}
                                         >
-                                            <option value="" disabled>
-                                                Chọn Tỉnh/Thành
-                                            </option>
+                                            <option value="" disabled>Chọn Tỉnh/Thành</option>
                                             {provinces.map((province) => (
-                                                <option key={province.id} value={province.id}>
+                                                <option key={province.id} value={province.name}>
                                                     {province.name}
                                                 </option>
                                             ))}
