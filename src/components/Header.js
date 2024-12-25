@@ -30,6 +30,10 @@ const Header = () => {
     const token = localStorage.getItem("token");
 
     useEffect(() => {
+        dispatch(getUserCart());
+    }, [dispatch]);
+
+    useEffect(() => {
         // Decode token and fetch user info
         if (token) {
             try {

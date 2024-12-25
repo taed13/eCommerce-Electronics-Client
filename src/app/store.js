@@ -6,6 +6,7 @@ import blogReducer from "../features/blogs/blogSlice";
 import contactReducer from "../features/contact/contactSlice";
 import bCategoryReducer from "../features/bCategory/bCategorySlice";
 import pCategoryReducer from "../features/pCategory/pCategorySlice";
+import discountReducer from "../features/discount/discountSlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         counter: counterReducer,
         bCategory: bCategoryReducer,
         pCategory: pCategoryReducer,
+        discount: discountReducer,
     },
 });

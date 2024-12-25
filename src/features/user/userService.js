@@ -84,7 +84,7 @@ const createOrder = async (orderDetail) => {
 
 const createOrderAndCheckOrderBefore = async (orderDetail) => {
     const response = await axios.post(
-        `${base_url}order/`,
+        `${base_url}order/create-order-with-discount`,
         orderDetail,
         getConfig()
     );

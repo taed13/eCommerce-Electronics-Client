@@ -40,7 +40,7 @@ const ProductCard = (props) => {
                                         <img src={wish} alt="wishlist" />
                                     </button>
                                 </div>
-                                <div className={`product-image d-flex ${grid === 12 && "w-25"}`}>
+                                <div className={`product-image d-flex ${grid === 12 && "w-25"}`} style={{ height: "200px" }}>
                                     <img
                                         src={item?.product_images[0]?.url}
                                         className="img-fluid mx-auto"
@@ -62,7 +62,7 @@ const ProductCard = (props) => {
                                     <div className="d-flex align-items-center justify-content-between gap-10">
                                         <ReactStars
                                             count={5}
-                                            size={24}
+                                            size={18}
                                             value={+item?.product_totalRating}
                                             edit={false}
                                             activeColor="#ffd700"

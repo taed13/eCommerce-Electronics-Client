@@ -15,13 +15,15 @@ import "./style.css";
 import axios from "axios";
 import { config } from "../../utils/axiosConfig";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { resetCart } from "../../features/user/userSlice";
 
 const OrderSuccess = () => {
+    const dispatch = useDispatch();
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
 
     useEffect(() => {
         const fetchSessionDetails = async () => {
@@ -54,7 +56,7 @@ const OrderSuccess = () => {
     useEffect(() => {
         if (orderData?.session?.payment_status === "paid") {
             toast.success("Payment successful");
-            resetCart();
+            dispatch(resetCart());
         }
     }, [orderData]);
 
@@ -186,41 +188,45 @@ const OrderSuccess = () => {
                                     </div>
                                 </div>
                             </MDBCardHeader>
-                            <MDBCardBody className="p-3">
-                                {orderData.products.map((product, index) => (
-                                    <div className="d-flex flex-row mb-2" key={index}>
-                                        <div>
-                                            <MDBCardImage
-                                                fluid
-                                                className="align-self-center"
-                                                src={product.image}
-                                                width="100"
-                                            />
+                            <MDBCardBody className="p-3 d-flex flex-column justify-content-between">
+                                <div>
+                                    {orderData.products.map((product, index) => (
+                                        <div className="d-flex flex-row mb-2" key={index}>
+                                            <div>
+                                                <MDBCardImage
+                                                    fluid
+                                                    className="align-self-center"
+                                                    src={product.image}
+                                                    width="100"
+                                                />
+                                            </div>
+                                            <div className="flex-fill ms-3">
+                                                <MDBTypography tag="h5" className="bold">
+                                                    {product.name}
+                                                </MDBTypography>
+                                                <p className="text-muted">Qty: {product.quantity}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex-fill ms-3">
-                                            <MDBTypography tag="h5" className="bold">
-                                                {product.name}
-                                            </MDBTypography>
-                                            <p className="text-muted">Qty: {product.quantity}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                                <ul
-                                    id="progressbar-1"
-                                    className="mx-0 mt-0 mb-5 px-0 pt-0 pb-4"
-                                >
-                                    <li className="step0 active" id="step1">
-                                        <span style={{ marginLeft: "22px", marginTop: "12px" }}>
-                                            PLACED
-                                        </span>
-                                    </li>
-                                    <li className="step0 active text-center" id="step2">
-                                        <span>SHIPPED</span>
-                                    </li>
-                                    <li className="step0 text-muted text-end" id="step3">
-                                        <span style={{ marginRight: "22px" }}>DELIVERED</span>
-                                    </li>
-                                </ul>
+                                    ))}
+                                </div>
+                                <div>
+                                    <ul
+                                        id="progressbar-1"
+                                        className="mx-0 mt-0 px-0 pt-0 pb-4"
+                                    >
+                                        <li className="step0 active" id="step1">
+                                            <span style={{ marginLeft: "22px", marginTop: "12px" }}>
+                                                PLACED
+                                            </span>
+                                        </li>
+                                        <li className="step0 active text-center" id="step2">
+                                            <span>SHIPPED</span>
+                                        </li>
+                                        <li className="step0 text-muted text-end" id="step3">
+                                            <span style={{ marginRight: "22px" }}>DELIVERED</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </MDBCardBody>
                             {/* <MDBCardFooter className="p-2">
                                 <div className="d-flex justify-content-between">
