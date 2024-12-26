@@ -150,7 +150,7 @@ const OrderSuccess = () => {
                                             className="text-muted fw-normal mb-0"
                                         >
                                             Tiền đã thanh toán{" "}
-                                            {(orderData.session.amount_total / 100).toLocaleString()}{" "}
+                                            {(orderData.session.amount_total).toLocaleString()}{" "}
                                             {orderData.session.currency.toUpperCase()}
                                         </MDBTypography>
                                     </div>

@@ -8,7 +8,19 @@ export const applyDiscount = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await discountService.applyDiscount(data);
-            return response; // API trả về dữ liệu giảm giá
+            return response;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
+
+export const calculateShippingFee = createAsyncThunk(
+    "discount/calculate-fee",
+    async (data, thunkAPI) => {
+        try {
+            const response = await discountService.calculateShippingFee(data);
+            return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data || error.message);
         }
@@ -20,7 +32,8 @@ export const resetState = createAction("discount/reset");
 
 // Initial State
 const initialState = {
-    appliedDiscount: null, // Dữ liệu giảm giá áp dụng
+    appliedDiscount: null,
+    shippingFee: null,
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -56,9 +69,31 @@ export const discountSlice = createSlice({
                 state.message = action.payload || "Có lỗi xảy ra khi áp dụng mã giảm giá.";
                 toast.error(action.payload.message);
             })
+            .addCase(calculateShippingFee.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.isSuccess = false;
+                state.message = "";
+            })
+            .addCase(calculateShippingFee.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.shippingFee = action.payload.data;
+                state.message = action.payload.message || "Phí vận chuyển đã được tính thành công.";
+                toast.success(state.message);
+            })
+            .addCase(calculateShippingFee.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.shippingFee = null;
+                state.message = action.payload || "Error calculating shipping fee.";
+                toast.error(state.message);
+            })
             // Reset State
             .addCase(resetState, () => initialState);
-    },
+},
 });
 
 export default discountSlice.reducer;

@@ -58,13 +58,14 @@ const Header = () => {
     }, [authState?.userInfo?.user]);
 
     useEffect(() => {
-        if (cartState?.data?.cart_products) {
-            const sum = cartState?.data?.cart_products?.reduce(
-                (acc, item) => acc + (item?.price * item?.quantity || 0),
+        if (cartState?.data?.cart_products?.length > 0) {
+            const sum = cartState.data.cart_products.reduce(
+                (acc, item) => acc + (item.price * item.quantity || 0),
                 0
             );
-
             setTotal(sum);
+        } else {
+            setTotal(0);
         }
     }, [cartState]);
 

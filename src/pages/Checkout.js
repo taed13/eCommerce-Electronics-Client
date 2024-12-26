@@ -8,7 +8,10 @@ import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
 import { createOrderAndCheckOrderBefore } from "../features/user/userSlice";
-import { applyDiscount } from "../features/discount/discountSlice";
+import {
+    applyDiscount,
+    calculateShippingFee,
+} from "../features/discount/discountSlice";
 import $ from "jquery";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -37,6 +40,7 @@ const shippingSchema = yup.object({
 const Checkout = () => {
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth?.cartProducts);
+    const cartProducts = userCartState?.data?.cart_products || [];
     const userState = useSelector((state) => state.auth);
     const userInfoState = useSelector((state) => state.auth?.userInfo);
     const cart_userId = userCartState?.data?.cart_userId;
@@ -62,7 +66,6 @@ const Checkout = () => {
             street: "",
         },
     });
-
     const [selectedProvince, setSelectedProvince] = useState({
         id: null,
         name: "",
@@ -73,9 +76,7 @@ const Checkout = () => {
     });
     const [selectedWard, setSelectedWard] = useState({ id: null, full_name: "" });
     const [isEditable, setIsEditable] = useState(false);
-
-    console.log("CART STATE:::");
-    console.log(userCartState);
+    const [shippingFee, setShippingFee] = useState(0);
 
     useEffect(() => {
         const calculateSubTotal = () => {
@@ -94,6 +95,38 @@ const Checkout = () => {
         onSubmit: (values) => handleSubmit(values),
     });
 
+    useEffect(() => {
+        const FREE_SHIPPING_THRESHOLD = 9990000;
+
+        if (subTotal >= FREE_SHIPPING_THRESHOLD) {
+            setShippingFee(0);
+        } else {
+            if (
+                formik.values.order_shipping.province.name &&
+                formik.values.order_shipping.district.full_name &&
+                formik.values.order_shipping.ward.full_name
+            ) {
+                const shippingData = {
+                    provinceName: formik.values.order_shipping.province.name,
+                    districtName: formik.values.order_shipping.district.full_name,
+                    wardName: formik.values.order_shipping.ward.full_name,
+                };
+
+                dispatch(calculateShippingFee(shippingData)).then((res) => {
+                    if (res.payload && res.payload.data) {
+                        setShippingFee(res.payload.data.total);
+                    }
+                });
+            }
+        }
+    }, [
+        subTotal,
+        formik.values.order_shipping.province.name,
+        formik.values.order_shipping.district.full_name,
+        formik.values.order_shipping.ward.full_name,
+        dispatch,
+    ]);
+
     const formattedCartProducts =
         userCartState?.data?.cart_products?.map((item) => ({
             productId: item.productId._id,
@@ -110,7 +143,7 @@ const Checkout = () => {
         })) || [];
 
     const prepareOrderData = {
-        discountCode: discountCode.trim() ? discountCode : null,
+        discountCode: discountCode.trim() || null,
         cartTotal: subTotal,
         order_shipping: {
             firstname: formik.values.order_shipping.firstname,
@@ -128,15 +161,16 @@ const Checkout = () => {
         },
         checkoutInfo: {
             totalPrice: subTotal,
-            totalPriceAfterDiscount: appliedDiscount
-                ? subTotal - appliedDiscount.discountAmount
-                : subTotal,
-            feeShip: 340000,
+            totalPriceAfterDiscount:
+                appliedDiscount?.discountAmount
+                    ? Math.max(0, subTotal - appliedDiscount.discountAmount)
+                    : subTotal,
+            feeShip: shippingFee ?? 0,
             discountApplied: appliedDiscount?.discount_id || null,
         },
         estimatedDeliveryDate: new Date(),
         order_status: "Ordered",
-        trackingNumber: "TRK123456",
+        trackingNumber: `TRK${Math.floor(Math.random() * 1000000)}`,
     };
 
     const handleSubmit = (values) => {
@@ -150,10 +184,6 @@ const Checkout = () => {
     }, [userState?.createdOrder?.order]);
 
     useEffect(() => {
-        console.log('userinfor:::', userState?.userInfo);
-    }, [userState?.userInfo]);
-
-    useEffect(() => {
         if (order) {
             checkOutHandler();
         }
@@ -161,10 +191,9 @@ const Checkout = () => {
 
     useEffect(() => {
         if (initialValues) {
-            formik.setValues(initialValues); // Cập nhật giá trị khi initialValues thay đổi
+            formik.setValues(initialValues);
         }
     }, [initialValues]);
-
 
     const checkOutHandler = async () => {
         if (!order || !order._id) {
@@ -210,7 +239,9 @@ const Checkout = () => {
                         setDistricts(response.data);
                         // Nếu đã có district trong `initialValues`, thiết lập lại
                         const defaultDistrict = response.data.find(
-                            (district) => district.full_name === initialValues.order_shipping.district.full_name
+                            (district) =>
+                                district.full_name ===
+                                initialValues.order_shipping.district.full_name
                         );
                         if (defaultDistrict) {
                             setSelectedDistrict({
@@ -257,7 +288,8 @@ const Checkout = () => {
                         setWards(response.data);
                         // Nếu đã có ward trong `initialValues`, thiết lập lại
                         const defaultWard = response.data.find(
-                            (ward) => ward.full_name === initialValues.order_shipping.ward.full_name
+                            (ward) =>
+                                ward.full_name === initialValues.order_shipping.ward.full_name
                         );
                         if (defaultWard) {
                             setSelectedWard({
@@ -277,7 +309,7 @@ const Checkout = () => {
         if (userInfoState?.addresses?.[0]) {
             const address = userInfoState.addresses[0];
 
-            console.log('address', address);
+            console.log("address", address);
 
             const defaultProvince = provinces.find(
                 (province) => province.name === address.province
@@ -320,11 +352,27 @@ const Checkout = () => {
         }
     }, [userState, provinces, districts, wards]);
 
+    const categoryIds = [
+        ...new Set(
+            cartProducts.flatMap((product) =>
+                product.productId?.product_category?.map((category) => category._id) || []
+            )
+        ),
+    ];
+
+    const brandIds = [
+        ...new Set(
+            cartProducts.flatMap((product) =>
+                product.productId?.product_brand?.map((brand) => brand._id) || []
+            )
+        ),
+    ];
+
     const prepareApplyDiscountData = {
         discountCode: discountCode,
         cartTotal: subTotal,
-        categoryIds: ["6742bb3707599b21b46d375c"],
-        brandIds: ["64b2f2e1ea7e3b52f488d10d"],
+        categoryIds,
+        brandIds,
     };
 
     const handleApplyCoupon = async () => {
@@ -377,7 +425,13 @@ const Checkout = () => {
         }
     }, [userInfoState, provinces]);
 
-    console.log(123, initialValues);
+    const onHandleClickEditAddress = () => {
+        setIsEditable(false);
+    };
+
+    const onHandleClickCheckAddress = () => {
+        setIsEditable(true);
+    };
 
     return (
         <Container class1="checkout-wrapper py-5 home-wrapper-2">
@@ -425,13 +479,13 @@ const Checkout = () => {
                                     <FaCheck
                                         className="fs-4 cursor-pointer"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => setIsEditable(false)}
+                                        onClick={onHandleClickEditAddress}
                                     />
                                 ) : (
                                     <FaEdit
                                         className="fs-4 cursor-pointer"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => setIsEditable(true)}
+                                        onClick={onHandleClickCheckAddress}
                                     />
                                 )}
                             </div>
@@ -506,6 +560,18 @@ const Checkout = () => {
                                                     id: selectedProvince.id,
                                                     name: selectedProvince.name,
                                                 });
+
+                                                formik.setFieldValue("order_shipping.district", {
+                                                    id: "",
+                                                    full_name: "",
+                                                });
+                                                formik.setFieldValue("order_shipping.ward", {
+                                                    id: "",
+                                                    full_name: "",
+                                                });
+
+                                                setDistricts([]);
+                                                setWards([]);
                                             }
                                         }}
                                         onBlur={formik.handleBlur}
@@ -545,9 +611,10 @@ const Checkout = () => {
                                                     id: selectedDistrict.id,
                                                     full_name: selectedDistrict.full_name,
                                                 });
-
-                                                // Reset ward field and options when district changes
-                                                formik.setFieldValue("order_shipping.ward", { id: "", full_name: "" });
+                                                formik.setFieldValue("order_shipping.ward", {
+                                                    id: "",
+                                                    full_name: "",
+                                                });
                                                 setWards([]);
                                             }
                                         }}
@@ -576,7 +643,9 @@ const Checkout = () => {
                                         className="form-control form-select"
                                         value={formik.values.order_shipping.ward.id}
                                         onChange={(e) => {
-                                            const selectedWard = wards.find((ward) => ward.id === e.target.value);
+                                            const selectedWard = wards.find(
+                                                (ward) => ward.id === e.target.value
+                                            );
 
                                             if (selectedWard) {
                                                 formik.setFieldValue("order_shipping.ward", {
@@ -747,7 +816,11 @@ const Checkout = () => {
                         </div>
                         <div className="d-flex justify-content-between align-items-center">
                             <p className="mb-0 partial">Phí vận chuyển</p>
-                            <p className="mb-0 partial-price">340,000₫</p>
+                            <p className="mb-0 partial-price">
+                                {subTotal >= 9990000
+                                    ? "Miễn phí"
+                                    : `${shippingFee.toLocaleString()}₫`}
+                            </p>
                         </div>
                         {appliedDiscount?.discountAmount && (
                             <div className="d-flex justify-content-between align-items-center">
@@ -772,7 +845,9 @@ const Checkout = () => {
                                 userCartState?.data?.cart_products?.reduce(
                                     (acc, item) => acc + item.price * item.quantity,
                                     0
-                                ) + 340000
+                                ) +
+                                shippingFee -
+                                (appliedDiscount?.discountAmount || 0)
                             ).toLocaleString()}
                             ₫
                         </h5>
