@@ -1073,3 +1073,25 @@ footer .input-group-text {
 .color-box:hover {
     transform: scale(1.1);
 }
+
+.to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ABB8CE;
+    color: #354057;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.to-top-btn:hover {
+    background-color: #354057;
+    color: white;
+    transition: all 0.2s ease;
+}

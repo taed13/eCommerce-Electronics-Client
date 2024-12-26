@@ -124,7 +124,7 @@ const SingleProduct = () => {
     const scrollToReviewForm = () => {
         if (textAreaRef.current) {
             textAreaRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-            textAreaRef.current.focus(); // Đặt focus vào textarea
+            textAreaRef.current.focus();
         }
     };
 
@@ -300,7 +300,6 @@ const SingleProduct = () => {
                                         >
                                             {alreadyAdded ? "Đi đến giỏ hàng" : "Thêm vào giỏ hàng"}
                                         </button>
-                                        {/* <Link to="/signup" className="button signup">Buy it now</Link> */}
                                     </div>
                                 </div>
 
@@ -456,7 +455,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <ProductCard data={popularProducts} />
+                    <ProductCard data={popularProducts ? popularProducts.slice(0, 4) : []} />
                 </div>
             </Container>
         </>

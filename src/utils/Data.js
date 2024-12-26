@@ -1,7 +1,7 @@
 export const services = [
     {
         title: "Miễn phí vận chuyển",
-        tagline: "Cho toàn bộ đơn hàng trên 500k",
+        tagline: "Cho toàn bộ đơn hàng trên 10tr",
         image: "images/service.png",
     },
     {

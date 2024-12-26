@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BsFacebook, BsGithub, BsTwitterX, BsInstagram } from "react-icons/bs";
 import newsletter from "../images/newsletter.png";
+import { FaChevronUp } from "react-icons/fa";
 
 const Footer = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    const scrollToTop = (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const toggleVisibility = () => {
+        if (window.pageYOffset > 300) {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', toggleVisibility);
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+        };
+    }, []);
+
     return (
         <>
             <footer className="py-4">
@@ -107,6 +130,11 @@ const Footer = () => {
                                 <Link className="text-white py-2 mb-1">Đồng hồ</Link>
                             </div>
                         </div>
+                        {isVisible && (
+                            <div className="to-top-btn" onClick={scrollToTop}>
+                                <FaChevronUp />
+                            </div>
+                        )}
                     </div>
                 </div>
             </footer>
