@@ -175,7 +175,7 @@ export const getUserInfoById = createAsyncThunk(
 
 const initialState = {
     user: getCustomerFromLocalStorage,
-    userInfo: {},
+    userInfo: null,
     isError: false,
     isSuccess: false,
     isLoading: false,

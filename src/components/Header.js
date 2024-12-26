@@ -182,30 +182,32 @@ const Header = () => {
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img src={user} alt="user" />
-                                        {authState?.user === null ? (
-                                            <p className="mb-0">
-                                                {
-                                                    authState?.userInfo
-                                                        ? authState?.userInfo?.user?.name
-                                                        : "Đăng nhập"
-                                                }
-                                            </p>
-                                        ) : (
-                                            authState?.updatedUser ? (
-                                                <p className="mb-0">
-                                                    {authState?.updatedUser?.updatedUser?.name}
-                                                </p>
-                                            ) : (
+                                        {
+                                            authState?.user === null ? (
                                                 <p className="mb-0">
                                                     {
-                                                        authState?.user?.name ?
-                                                            (authState?.user?.name) : (
-                                                                authState?.userInfo?.user?.name
-                                                            )
+                                                        authState?.userInfo
+                                                            ? authState?.userInfo?.user?.name
+                                                            : "Đăng nhập"
                                                     }
                                                 </p>
+                                            ) : (
+                                                authState?.updatedUser ? (
+                                                    <p className="mb-0">
+                                                        {authState?.updatedUser?.updatedUser?.name}
+                                                    </p>
+                                                ) : (
+                                                    <p className="mb-0">
+                                                        {
+                                                            authState?.user?.name ?
+                                                                (authState?.user?.name) : (
+                                                                    authState?.userInfo?.user?.name
+                                                                )
+                                                        }
+                                                    </p>
+                                                )
                                             )
-                                        )}
+                                        }
                                     </Link>
                                 </div>
                                 <div>
