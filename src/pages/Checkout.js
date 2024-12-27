@@ -789,7 +789,6 @@ const Checkout = () => {
                                                 <h5 className="total">
                                                     {item?.productId?.product_name}
                                                 </h5>
-                                                {/* TODO: dụt th =))) cái này th cũ ghi vô chơ có quản lí đ mô */}
                                                 <p className="partial mb-0">
                                                     {item?.product_color[0]?.name}
                                                 </p>
