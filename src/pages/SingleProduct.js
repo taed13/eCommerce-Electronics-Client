@@ -5,9 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import ReactStars from "react-rating-stars-component";
 import ReactImageZoom from "react-image-zoom";
-import Color from "../components/Color";
-import { IoShuffleOutline, IoHeartOutline } from "react-icons/io5";
-import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addRating,
@@ -16,6 +13,9 @@ import {
 } from "../features/products/productSlice";
 import { toast } from "react-toastify";
 import { addProdToCart, getUserCart } from "../features/user/userSlice";
+import Container from "../components/Container";
+import Splide from "@splidejs/splide";
+import "@splidejs/splide/dist/css/splide.min.css";
 
 const SingleProduct = () => {
     const textAreaRef = useRef(null);
@@ -32,24 +32,28 @@ const SingleProduct = () => {
     const [comment, setComment] = useState("");
 
     const getProductId = location.pathname.split("/")[2];
+    const splideId = "splide-product-images";
     const productState = useSelector((state) => state?.product?.singleproduct);
     const productsState = useSelector((state) => state?.product?.product);
     const cartState = useSelector((state) => state?.auth?.cartProducts);
+
+    const [mainImage, setMainImage] = useState(
+        productState?.product_images?.[0]?.url ||
+        "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"
+    );
 
     const props = {
         width: 600,
         height: 500,
         zoomWidth: 600,
-        img: productState?.product_images[0]?.url
-            ? productState?.product_images[0]?.url
-            : "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930",
+        img: mainImage,
     };
 
     useEffect(() => {
         dispatch(getAProduct(getProductId));
         dispatch(getUserCart());
         dispatch(getAllProducts());
-    }, [dispatch]);
+    }, [dispatch, getProductId]);
 
     useEffect(() => {
         for (let index = 0; index < cartState?.length; index++) {
@@ -57,7 +61,7 @@ const SingleProduct = () => {
                 setAlreadyAdded(true);
             }
         }
-    }, []);
+    }, [cartState, getProductId]);
 
     const uploadCart = () => {
         if (color === null) {
@@ -100,9 +104,13 @@ const SingleProduct = () => {
                     (tag) => tag.name.toLowerCase() === "popular"
                 )
             );
-
         setPopularProducts(data);
     }, [productsState]);
+
+    useEffect(() => {
+        setMainImage(productState?.product_images?.[0]?.url ||
+            "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930");
+    }, [productState]);
 
     const addRatingToProduct = () => {
         if (star === 0) {
@@ -130,6 +138,31 @@ const SingleProduct = () => {
 
     console.log('productState:::', productState);
 
+    useEffect(() => {
+        if (productState?.product_images?.length > 0) {
+            const splide = new Splide(`#${splideId}`, {
+                perPage: 3,
+                perMove: 1,
+                autoplay: true,
+                interval: 3000,
+                pagination: false,
+                arrows: true,
+                breakpoints: {
+                    768: {
+                        perPage: 2,
+                    },
+                    480: {
+                        perPage: 1,
+                    },
+                },
+            }).mount();
+
+            return () => {
+                splide.destroy();
+            };
+        }
+    }, [productState]);
+
     return (
         <>
             <Meta title={productState?.product_name} />
@@ -142,15 +175,23 @@ const SingleProduct = () => {
                                 <ReactImageZoom {...props} />
                             </div>
                         </div>
-                        <div className="other-product-images d-flex flex-wrap gap-15">
-                            {productState &&
-                                productState?.product_images?.map((item, index) => {
-                                    return (
-                                        <div>
-                                            <img src={item?.url} className="img-fluid" alt="" />
-                                        </div>
-                                    );
-                                })}
+                        <div className="other-product-images">
+                            <div id={splideId} className="splide">
+                                <div className="splide__track">
+                                    <ul className="splide__list">
+                                        {productState?.product_images?.map((item, index) => (
+                                            <li key={index} className="splide__slide d-flex align-items-center justify-content-center p-4">
+                                                <img
+                                                    src={item?.url}
+                                                    className="img-fluid pointer-cursor"
+                                                    alt={`Product ${index}`}
+                                                    onClick={() => setMainImage(item?.url)}
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-6">
@@ -282,13 +323,7 @@ const SingleProduct = () => {
                                             </div>
                                         </>
                                     )}
-                                    <div
-                                        className={
-                                            "d-flex align-items-center gap-15" + alreadyAdded
-                                                ? "ms-0"
-                                                : "ms-5"
-                                        }
-                                    >
+                                    <div className={alreadyAdded ? "ms-0" : "ms-5"}>
                                         <button
                                             type="button"
                                             className="button border-0"

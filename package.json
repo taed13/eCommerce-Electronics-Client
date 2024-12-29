@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.7",
+        "@splidejs/react-splide": "^0.7.12",
         "@stripe/react-stripe-js": "^2.8.1",
         "@stripe/stripe-js": "^4.8.0",
         "@testing-library/jest-dom": "^5.17.0",
