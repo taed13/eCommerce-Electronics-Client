@@ -143,8 +143,6 @@ const SingleProduct = () => {
             const splide = new Splide(`#${splideId}`, {
                 perPage: 3,
                 perMove: 1,
-                autoplay: true,
-                interval: 3000,
                 pagination: false,
                 arrows: true,
                 breakpoints: {
@@ -292,9 +290,9 @@ const SingleProduct = () => {
                                                 ))}
                                         </div>
                                         {productState && !color && (
-                                            <p className="text-danger mt-2">
+                                            <span className="product-data text-danger">
                                                 Hãy chọn màu sắc sản phẩm!
-                                            </p>
+                                            </span>
                                         )}
                                     </div>
                                 )}
@@ -370,12 +368,12 @@ const SingleProduct = () => {
             </Container>
             <Container class1="description-wrapper pb-5 home-wrapper-2">
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-9">
                         <h4>Mô tả sản phẩm</h4>
                         <div className="bg-white p-3">
                             {
                                 productState
-                                    ? <p dangerouslySetInnerHTML={{ __html: productState?.product_description, }} ></p>
+                                    ? <p dangerouslySetInnerHTML={{ __html: productState?.product_description, }}></p>
                                     : "N/A"
                             }
                         </div>

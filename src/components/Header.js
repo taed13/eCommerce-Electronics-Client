@@ -44,7 +44,7 @@ const Header = () => {
                 console.error("Token decoding error:", error);
             }
         }
-    }, [dispatch]);
+    }, [dispatch, token]);
 
     useEffect(() => {
         if (authState?.userInfo?.user) {
