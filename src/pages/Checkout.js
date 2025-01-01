@@ -202,7 +202,7 @@ const Checkout = () => {
         }
         try {
             const response = await axios.post(
-                "http://127.0.0.1:5001/api/user/order/purchase",
+                "https://e-commerce-electronics-server-ruddy.vercel.app/api/user/order/purchase",
                 {
                     items: userCartState,
                     shippingInfo: formik.values.order_shipping,

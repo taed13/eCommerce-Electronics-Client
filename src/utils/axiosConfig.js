@@ -1,5 +1,5 @@
-export const base_url = "http://localhost:5001/api/";
-// export const base_url = "https://e-commerce-electronics-server.vercel.app/api/";
+// export const base_url = "http://localhost:5001/api/";
+export const base_url = "https://e-commerce-electronics-server-ruddy.vercel.app/api/";
 
 const getTokenFromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))

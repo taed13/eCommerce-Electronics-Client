@@ -38,7 +38,7 @@ const OrderSuccess = () => {
 
             try {
                 const response = await axios.post(
-                    `http://127.0.0.1:5001/api/order/stripe-webhook/${sessionId}`,
+                    `https://e-commerce-electronics-server-ruddy.vercel.app/api/order/stripe-webhook/${sessionId}`,
                     {},
                     config
                 );
