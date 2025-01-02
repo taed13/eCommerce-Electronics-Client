@@ -298,6 +298,10 @@ const Header = () => {
                                             {(authState?.user !== null || isAuthenticated) && (
                                                 <>
                                                     |
+                                                    <NavLink className="header-chat" to="/chat">
+                                                        Chat với chúng tôi
+                                                    </NavLink>
+                                                    |
                                                     <button
                                                         onClick={handleLogout}
                                                         className="border border-0 bg-transparent text-white text-uppercase"

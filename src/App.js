@@ -26,6 +26,8 @@ import { OpenRoutes } from "./routing/OpenRoutes";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import OrderSuccess from "./pages/OrderSuccess/OrderSuccess";
+import Chat from "./pages/Chat/Chat";
+import SetAvatar from "./pages/SetAvatar";
 
 function App() {
     return (
@@ -102,6 +104,22 @@ function App() {
                             <OpenRoutes>
                                 <Signup />
                             </OpenRoutes>
+                        }
+                    />
+                    <Route
+                        path="chat"
+                        element={
+                            <PrivateRoutes>
+                                <Chat />
+                            </PrivateRoutes>
+                        }
+                    />
+                    <Route
+                        path="setAvatar"
+                        element={
+                            <PrivateRoutes>
+                                <SetAvatar />
+                            </PrivateRoutes>
                         }
                     />
                     <Route path="forgot-password" element={<ForgotPassword />} />

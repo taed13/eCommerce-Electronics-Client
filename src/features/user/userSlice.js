@@ -223,6 +223,7 @@ export const authSlice = createSlice({
                 state.user = action.payload.findUser;
                 localStorage.setItem("token", action.payload.findUser.token);
                 localStorage.setItem("customer", JSON.stringify(action.payload.findUser));
+                localStorage.setItem("chat-app-user", JSON.stringify(action.payload.findUser));
                 if (state.isSuccess === true) {
                     toast.info(action.payload.message);
                 }
