@@ -71,20 +71,18 @@ const Contact = () => {
             if (productIdFromLink) {
                 dispatch(getAProduct(productIdFromLink));
             } else {
-                console.error("Invalid product ID");
-                setProductLinkMessage("Invalid product ID.");
+                setProductLinkMessage("Sản phẩm không tồn tại.");
                 setProductLinkMessageType("danger");
             }
         } else {
-            console.error("Invalid product link");
-            setProductLinkMessage("Invalid product link.");
+            setProductLinkMessage("Đường dẫn sản phẩm không hợp lệ.");
             setProductLinkMessageType("danger");
         }
     };
 
     return (
         <>
-            <Meta title={"Liên hệ chúng tôi"} />
+            <Meta title={"Electronics | Liên hệ chúng tôi"} />
             <BreadCrumb title="Liên hệ chúng tôi" />
             <Container class1="contact-wrapper home-wrapper-2 py-5">
                 <div className="row">

@@ -15,7 +15,7 @@ const SingleBlog = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         getBlog();
-    }, []);
+    }, [blogId]);
 
     const getBlog = () => {
         dispatch(getBlogById(blogId));
@@ -25,7 +25,7 @@ const SingleBlog = () => {
 
     return (
         <>
-            <Meta title={blogState?.data?.blog_title} />
+            <Meta title={"Electronics | " + blogState?.data?.blog_title} />
             <BreadCrumb title={blogState?.data?.blog_title} />
             <Container class1="blog-wrapper home-wrapper-2 py-5">
                 <div className="row">

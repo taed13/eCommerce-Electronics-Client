@@ -1,6 +1,7 @@
 import React from "react";
-import ReactStars from "react-rating-stars-component";
 import { Link } from "react-router-dom";
+import Rating from 'react-rating';
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const SpecialProduct = (props) => {
     const { id, title, img, brand, totalRating, price, sold, quantity } = props;
@@ -14,12 +15,12 @@ const SpecialProduct = (props) => {
                     <div className="special-product-content w-75">
                         <h5 className="brand">{brand}</h5>
                         <h6 className="title text-truncate">{title}</h6>
-                        <ReactStars
-                            count={5}
-                            size={21}
-                            value={Number(totalRating)}
-                            edit={false}
-                            activeColor="#ffd700"
+                        <Rating
+                            className="mb-2"
+                            initialRating={Number(totalRating)}
+                            readonly
+                            emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                            fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
                         />
                         <p className="price">
                             <span className="red-p">{price.toLocaleString()}₫</span> &nbsp;{" "}

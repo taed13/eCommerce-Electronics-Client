@@ -3,6 +3,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../features/user/userSlice";
+import Meta from "../components/Meta";
 
 const Orders = () => {
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const Orders = () => {
 
     return (
         <>
+            <Meta title={"Electronics | Đơn hàng của tôi"} />
             <BreadCrumb title="Đơn hàng của tôi" />
             <Container class1="cart-wrapper home-wrapper-2 py-5">
                 <div className="row">

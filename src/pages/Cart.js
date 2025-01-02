@@ -76,7 +76,7 @@ const Cart = () => {
 
     return (
         <>
-            <Meta title={"Giỏ hàng của tôi"} />
+            <Meta title={"Electronics | Giỏ hàng của tôi"} />
             <BreadCrumb title="Giỏ hàng của tôi" />
             <Container class1="cart-wrapper home-wrapper-2 py-md-5">
                 <div className="row">
@@ -115,7 +115,7 @@ const Cart = () => {
                                         </div>
                                     </div>
                                     <div className="cart-col-2 d-flex align-items-center">
-                                        <h5 className="price">{item?.price.toLocaleString()}đ</h5>
+                                        <h5 className="price">{item?.price.toLocaleString()}₫</h5>
                                     </div>
                                     <div className="cart-col-3 d-flex align-items-center gap-15">
                                         <div className="">
@@ -149,7 +149,7 @@ const Cart = () => {
                                     </div>
                                     <div className="cart-col-4 d-flex align-items-center">
                                         <h5 className="price">
-                                        {(item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)).toLocaleString()}đ
+                                        {(item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)).toLocaleString()}₫
                                         </h5>
                                     </div>
                                 </div>

@@ -8,6 +8,8 @@ import { updateProfile } from "../features/user/userSlice";
 import { Link } from "react-router-dom";
 import Meta from "../components/Meta";
 import $ from "jquery";
+import { FaUserEdit } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 
 const profileSchema = yup.object({
     name: yup.string().required("Không được để trống tên tài khoản"),
@@ -167,7 +169,7 @@ const Profile = () => {
 
     return (
         <>
-            <Meta title="Tài khoản của tôi" />
+            <Meta title="Electronics | Tài khoản của tôi" />
             <BreadCrumb title="Tài khoản của tôi" />
             <Container class1="cart-wrapper home-wrapper-2 py-5">
                 <div className="row">
@@ -218,7 +220,7 @@ const Profile = () => {
                                     {formik.touched.email && formik.errors.email}
                                 </div>
                             </div>
-                            <div className="p-4 border border-1 rounded-3" style={{marginTop: "30px"}}>
+                            <div className="p-4 border border-1 rounded-3" style={{ marginTop: "30px" }}>
                                 <h5 className="mb-3 fw-bold">Thông tin địa chỉ giao hàng</h5>
                                 <div className="d-flex col-12 mb-2">
                                     <div className="col-6" style={{ paddingRight: "20px" }}>
@@ -382,15 +384,13 @@ const Profile = () => {
                                 </div>
                             </div>
                             {edit ? (
-                                <div className="d-flex align-items-center gap-2">
-                                    <Link onClick={() => setEdit(false)} className="button border-0 mt-2">
+                                <div className="d-flex align-items-center gap-2 mt-4">
+                                    <Link onClick={() => setEdit(false)} className="button border-0 mt-2 d-flex align-items-center gap-2">
+                                        <FaUserEdit className="fs-5" />
                                         <span>Chỉnh sửa tài khoản</span>
                                     </Link>
-                                    <Link
-                                        onClick={() => {
-                                            handleLogout();
-                                        }}
-                                        className="button border-0 mt-2">
+                                    <Link onClick={() => { handleLogout(); }} className="button border-0 mt-2 d-flex align-items-center gap-2">
+                                        <IoLogOut className="fs-5" />
                                         <span>Đăng xuất</span>
                                     </Link>
                                 </div>

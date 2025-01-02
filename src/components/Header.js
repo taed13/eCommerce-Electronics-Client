@@ -22,7 +22,6 @@ const Header = () => {
     const userState = useSelector((state) => state?.auth?.user?.findUser);
     const productState = useSelector((state) => state?.product?.product);
     const authState = useSelector((state) => state?.auth);
-    // const userState = useSelector((state) => state?.user);
 
     const [productOtp, setProductOtp] = useState([]);
     const [total, setTotal] = useState(0);
@@ -103,25 +102,6 @@ const Header = () => {
 
     return (
         <>
-            <header className="header-top-strip py-3">
-                <div className="container-xxl">
-                    <div className="row">
-                        <div className="col-6">
-                            <p className="text-white mb-0">
-                                Miễn phí vận chuyển cho đơn hàng trên 9,990,000đ
-                            </p>
-                        </div>
-                        <div className="col-6">
-                            <p className="text-end text-white mb-0">
-                                Đường dây nóng: &nbsp;
-                                <Link className="text-white" to="tel: +84 989 112 223">
-                                    +84 989 112 223
-                                </Link>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </header>
             <header className="header-upper py-3">
                 <div className="container-xxl">
                     <div className="row align-items-center">

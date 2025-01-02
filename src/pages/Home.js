@@ -8,11 +8,13 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../features/blogs/blogSlice";
 import { getAllProducts, addToWishlist } from "../features/products/productSlice";
-import ReactStars from "react-rating-stars-component";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import wish from "../images/wish.svg";
 import prodcompare from "../images/prodcompare.svg";
 import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
+import Meta from "../components/Meta";
+import Rating from 'react-rating';
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const Home = () => {
     const blogState = useSelector((state) => state?.blog?.blog);
@@ -67,6 +69,7 @@ const Home = () => {
 
     return (
         <>
+            <Meta title={"Electronics | Trang chủ"} />
             <Container class1="home-wrapper-1 py-5">
                 <div className="row">
                     <div className="col-6">
@@ -78,8 +81,9 @@ const Home = () => {
                             />
                             <div className="main-banner-content position-absolute">
                                 <h4>SUPERCHARGED CHO PROS.</h4>
-                                <h5>iPad S13+ Pro.</h5>
-                                <p>Thỏa sức sáng tạo<br />Chỉ với giá 36,990,000₫</p>
+                                <h5>iPad Pro M4</h5>
+                                <h5>13 inch - 256GB</h5>
+                                <p>Thỏa sức sáng tạo<br />Chỉ với giá 36,790,000₫</p>
                                 <Link to="/product/6768452d9e52a08d38d2f0aa" className="button">ĐẶT NGAY</Link>
                             </div>
                         </div>
@@ -228,12 +232,12 @@ const Home = () => {
                                             ))}</h6>
                                             <h5 className="product-title text-truncate">{item?.product_name}</h5>
                                             <div className="d-flex align-items-center justify-content-between gap-10">
-                                                <ReactStars
-                                                    count={5}
-                                                    size={24}
-                                                    value={+item?.product_totalRating}
-                                                    edit={false}
-                                                    activeColor="#ffd700"
+                                                <Rating
+                                                    className="mb-2"
+                                                    initialRating={+item?.product_totalRating}
+                                                    readonly
+                                                    emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                    fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
                                                 />
                                                 {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                             </div>
@@ -369,12 +373,12 @@ const Home = () => {
                                             ))}</h6>
                                             <h5 className="product-title text-truncate">{item?.product_name}</h5>
                                             <div className="d-flex align-items-center justify-content-between gap-10">
-                                                <ReactStars
-                                                    count={5}
-                                                    size={24}
-                                                    value={+item?.product_totalRating}
-                                                    edit={false}
-                                                    activeColor="#ffd700"
+                                                <Rating
+                                                    className="mb-2"
+                                                    initialRating={+item?.product_totalRating}
+                                                    readonly
+                                                    emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                    fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
                                                 />
                                                 {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                             </div>

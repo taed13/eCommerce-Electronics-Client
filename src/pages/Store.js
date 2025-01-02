@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumb from "../components/BreadCrumb";
-import ReactStars from "react-rating-stars-component";
 import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
 import Color from "../components/Color";
@@ -117,7 +116,7 @@ const Store = () => {
 
     return (
         <>
-            <Meta title={"Cửa hàng"} />
+            <Meta title={"Electronics | Cửa hàng"} />
             <BreadCrumb title="Cửa hàng" />
             <Container class1="store-wrapper home-wrapper-2 py-5">
                 <div className="row">

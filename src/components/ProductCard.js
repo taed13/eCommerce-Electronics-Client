@@ -1,11 +1,12 @@
 import React from "react";
-import ReactStars from "react-rating-stars-component";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import wish from "../images/wish.svg";
 import prodcompare from "../images/prodcompare.svg";
 import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { addToWishlist } from "../features/products/productSlice";
+import Rating from 'react-rating';
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const ProductCard = (props) => {
     const { grid, data } = props;
@@ -60,12 +61,11 @@ const ProductCard = (props) => {
                                         {item?.product_name}
                                     </h5>
                                     <div className="d-flex align-items-center justify-content-between gap-10">
-                                        <ReactStars
-                                            count={5}
-                                            size={18}
-                                            value={+item?.product_totalRating}
-                                            edit={false}
-                                            activeColor="#ffd700"
+                                        <Rating
+                                            initialRating={+item?.product_totalRating}
+                                            readonly
+                                            emptySymbol={<FaRegStar className="fs-6" style={{ color: '#f59e0b' }} />}
+                                            fullSymbol={<FaStar className="fs-6" style={{ color: '#f59e0b' }} />}
                                         />
                                         {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                     </div>

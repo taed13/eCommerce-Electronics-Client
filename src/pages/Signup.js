@@ -44,7 +44,7 @@ const Signup = () => {
 
     return (
         <>
-            <Meta title={"Đăng ký tài khoản"} />
+            <Meta title={"Electronics | Đăng ký tài khoản"} />
             <BreadCrumb title="Đăng ký tài khoản" />
             <Container class1="login-wrapper py-5 home-wrapper-2">
                 <div className="row">

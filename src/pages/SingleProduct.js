@@ -3,7 +3,6 @@ import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import ReactStars from "react-rating-stars-component";
 import ReactImageZoom from "react-image-zoom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,10 +11,12 @@ import {
     getAProduct,
 } from "../features/products/productSlice";
 import { toast } from "react-toastify";
-import { addProdToCart, getUserCart } from "../features/user/userSlice";
+import { addProdToCart, getOrders, getUserCart } from "../features/user/userSlice";
 import Container from "../components/Container";
 import Splide from "@splidejs/splide";
 import "@splidejs/splide/dist/css/splide.min.css";
+import Rating from 'react-rating';
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const SingleProduct = () => {
     const textAreaRef = useRef(null);
@@ -27,15 +28,17 @@ const SingleProduct = () => {
     const [quantity, setQuantity] = useState(1);
     const [alreadyAdded, setAlreadyAdded] = useState(false);
     const [popularProducts, setPopularProducts] = useState([]);
-    const [orderedProducts, setOrderedProducts] = useState(true);
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState("");
+    const [canRate, setCanRate] = useState(false);
 
     const getProductId = location.pathname.split("/")[2];
     const splideId = "splide-product-images";
     const productState = useSelector((state) => state?.product?.singleproduct);
     const productsState = useSelector((state) => state?.product?.product);
     const cartState = useSelector((state) => state?.auth?.cartProducts);
+    const userState = useSelector((state) => state?.auth?.user);
+    const orderState = useSelector((state) => state?.auth?.getOrderedProduct);
 
     const [mainImage, setMainImage] = useState(
         productState?.product_images?.[0]?.url ||
@@ -53,6 +56,7 @@ const SingleProduct = () => {
         dispatch(getAProduct(getProductId));
         dispatch(getUserCart());
         dispatch(getAllProducts());
+        dispatch(getOrders());
     }, [dispatch, getProductId]);
 
     useEffect(() => {
@@ -136,8 +140,6 @@ const SingleProduct = () => {
         }
     };
 
-    console.log('productState:::', productState);
-
     useEffect(() => {
         if (productState?.product_images?.length > 0) {
             const splide = new Splide(`#${splideId}`, {
@@ -161,9 +163,18 @@ const SingleProduct = () => {
         }
     }, [productState]);
 
+    useEffect(() => {
+        if (userState && orderState) {
+            const orderedProducts = orderState.flatMap(order => order.order_items);
+            setCanRate(orderedProducts.some(item => item.productId._id === getProductId));
+        } else {
+            setCanRate(false);
+        }
+    }, [userState, orderState, getProductId]);
+
     return (
         <>
-            <Meta title={productState?.product_name} />
+            <Meta title={"Electronics | " + productState?.product_name} />
             <BreadCrumb title={productState?.product_name} />
             <Container class1="main-product-wrapper py-5 home-wrapper-2">
                 <div className="row">
@@ -195,25 +206,28 @@ const SingleProduct = () => {
                     <div className="col-6">
                         <div className="main-product-details">
                             <div className="border-bottom">
-                                <h3 className="title">{productState ? productState.product_name : 'No product found'}</h3>
+                                <h3 className="title" style={{fontSize: '24px'}}>{productState ? productState.product_name : 'No product found'}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price">{productState ? productState?.product_price.toLocaleString() + '₫' : 'N/A'}</p>
-                                <div className="d-flex align-items-center gap-10">
-                                    <ReactStars
-                                        count={5}
-                                        size={24}
-                                        value={+productState?.product_totalRating}
-                                        edit={false}
-                                        activeColor="#ffd700"
+                                <p className="price my-3 fw-light" style={{fontSize: '28px'}}>{productState ? '₫' + productState?.product_price.toLocaleString()  : 'N/A'}</p>
+                                <div className="d-flex align-items-end gap-1">
+                                    <p className="mb-0 t-review fs-6" style={{lineHeight: '20px'}}>{productState?.product_totalRating || 0}</p>
+                                    <Rating
+                                        initialRating={+productState?.product_totalRating || 0}
+                                        readonly
+                                        emptySymbol={<FaRegStar className="fs-6" style={{ color: '#f59e0b' }} />}
+                                        fullSymbol={<FaStar className="fs-6" style={{ color: '#f59e0b' }} />}
                                     />
-                                    <p className="mb-0 t-review">
+                                    <p className="mb-0 t-review text-primary">
                                         ({productState?.product_ratings?.length} đánh giá)
                                     </p>
                                 </div>
-                                <a className="review-btn" href="#review">
-                                    Viết đánh giá
-                                </a>
+                                {
+                                    canRate &&
+                                    <a className="review-btn mt-2 hover-underline" href="#review">
+                                        Viết đánh giá
+                                    </a>
+                                }
                             </div>
                             <div className="border-bottom py-3">
                                 <div className="d-flex gap-10 align-items-center my-2">
@@ -387,21 +401,23 @@ const SingleProduct = () => {
                         <div className="review-inner-wrapper">
                             <div className="review-head d-flex justify-content-between align-items-end">
                                 <div>
-                                    <h4 className="mb-2">Đánh giá từ khách hàng</h4>
-                                    <div className="d-flex align-items-center gap-10">
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={+productState?.product_totalRating}
-                                            edit={false}
-                                            activeColor="#ffd700"
+                                    <h4 className="mb-2 fw-bold">Khách hàng đánh giá</h4>
+                                    <div className="d-flex flex-col align-items-end gap-10 mt-3">
+                                        <Rating
+                                            initialRating={+productState?.product_totalRating || 0}
+                                            readonly
+                                            emptySymbol={<FaRegStar className="fs-2" style={{ color: '#f59e0b' }} />}
+                                            fullSymbol={<FaStar className="fs-2" style={{ color: '#f59e0b' }} />}
                                         />
-                                        <p className="mb-0">
-                                            Dựa theo {productState?.product_ratings?.length} đánh giá
-                                        </p>
+                                        <span className="mb-0">
+                                            {+productState?.product_totalRating || 0} out of 5
+                                        </span>
                                     </div>
+                                    <p className="mt-2 mb-0">
+                                        (Dựa trên {productState?.product_ratings?.length} đánh giá)
+                                    </p>
                                 </div>
-                                {orderedProducts && (
+                                {canRate && (
                                     <div>
                                         <a
                                             className="text-dark text-decoration-underline"
@@ -416,61 +432,62 @@ const SingleProduct = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className="review-form py-4">
-                                <h4>Viết đánh giá</h4>
-                                <form action="" className="d-flex flex-column gap-15">
-                                    <div>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={0}
-                                            edit={true}
-                                            activeColor="#ffd700"
-                                            onChange={(newRating) => {
-                                                setStar(newRating);
-                                            }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            name=""
-                                            id=""
-                                            className="form-control w-100"
-                                            cols="30"
-                                            rows="4"
-                                            ref={textAreaRef}
-                                            placeholder="Write your comment here..."
-                                            onChange={(e) => {
-                                                setComment(e.target.value);
-                                            }}
-                                        ></textarea>
-                                    </div>
-                                    <div className="d-flex justify-content-end mt-3">
-                                        <button
-                                            className="button border-0"
-                                            type="button"
-                                            onClick={addRatingToProduct}
-                                        >
-                                            Gửi đánh giá
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                            {
+                                canRate &&
+                                <div className="review-form py-4">
+                                    <h4>Viết đánh giá</h4>
+                                    <form action="" className="d-flex flex-column gap-15">
+                                        <div>
+                                            <Rating
+                                                initialRating={star}
+                                                emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                onChange={(newRating) => {
+                                                    setStar(newRating);
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <textarea
+                                                name=""
+                                                id=""
+                                                className="form-control w-100"
+                                                cols="30"
+                                                rows="4"
+                                                ref={textAreaRef}
+                                                placeholder="Write your comment here..."
+                                                onChange={(e) => {
+                                                    setComment(e.target.value);
+                                                }}
+                                            ></textarea>
+                                        </div>
+                                        <div className="d-flex justify-content-end mt-3">
+                                            <button
+                                                className="button border-0"
+                                                type="button"
+                                                onClick={addRatingToProduct}
+                                            >
+                                                Gửi đánh giá
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
                             <div className="reviews mt-4">
                                 {
                                     productState?.product_ratings?.map((item, index) => {
                                         return (
                                             <div className="review" key={index}>
-                                                <div className="d-flex align-items-center gap-10">
-                                                    <ReactStars
-                                                        count={5}
-                                                        size={24}
-                                                        value={item?.star}
-                                                        edit={false}
-                                                        activeColor="#ffd700"
-                                                    />
-                                                    <p className="mb-0">Dựa trên 2 đánh giá</p>
+                                                <div className="d-flex align-items-end gap-10">
+                                                    <span className="mb-0">Khach hang than thiet</span>
                                                 </div>
+                                                <Rating
+                                                    className="mt-2"
+                                                    initialRating={item?.star}
+                                                    readonly
+                                                    emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                    fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                />
                                                 <p className="mt-3">{item?.comment}</p>
                                             </div>
                                         );

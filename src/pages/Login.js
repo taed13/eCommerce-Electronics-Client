@@ -84,7 +84,7 @@ const Login = () => {
 
     return (
         <>
-            <Meta title={"Đăng nhập"} />
+            <Meta title={"Electronics | Đăng nhập"} />
             <BreadCrumb title="Đăng nhập" />
             <Container class1="login-wrapper py-5 home-wrapper-2">
                 <div className="row">

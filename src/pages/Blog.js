@@ -52,7 +52,7 @@ const Blog = () => {
 
     return (
         <>
-            <Meta title={"Blog"} />
+            <Meta title={"Electronics | Blogs"} />
             <BreadCrumb title="Blog" />
             <Container class1="blog-wrapper home-wrapper-2 py-5">
                 <div className="row">

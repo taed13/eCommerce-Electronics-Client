@@ -15,6 +15,7 @@ import {
 import $ from "jquery";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Meta from "../components/Meta";
 
 const shippingSchema = yup.object({
     order_shipping: yup.object({
@@ -434,426 +435,429 @@ const Checkout = () => {
     };
 
     return (
-        <Container class1="checkout-wrapper py-5 home-wrapper-2">
-            <div className="row">
-                <div className="col-7">
-                    <div className="checkout-left-data">
-                        <h3 className="website-name">Electronics</h3>
-                        <nav
-                            style={{ "--bs-breadcrumb-divider": ">" }}
-                            aria-label="breadcrumb"
-                        >
-                            <ol className="breadcrumb">
-                                <li className="breadcrumb-item">
-                                    <Link className="text-dark" to="/cart">
-                                        Giỏ hàng
-                                    </Link>
-                                </li>
-                                &nbsp; /
-                                <li className="breadcrumb-item partial-price active">
-                                    Thông tin
-                                </li>
-                                &nbsp; /
-                                <li className="breadcrumb-item partial-price active">
-                                    Giao hàng
-                                </li>
-                                &nbsp; /
-                                <li
-                                    className="breadcrumb-item partial-price active"
-                                    aria-current="page"
-                                >
-                                    Thanh toán
-                                </li>
-                            </ol>
-                        </nav>
-                        <h4 className="title total">Thông tin liên hệ</h4>
-                        <p className="user-details">
-                            {cart_userId?.name} - {cart_userId?.email}
-                        </p>
-                        <div className="border rounded p-4 mb-2 row align-items-center">
-                            <div className="col">
-                                <h4 className="mb-0">Địa chỉ giao hàng</h4>
-                            </div>
-                            <div className="col-auto">
-                                {isEditable ? (
-                                    <FaCheck
-                                        className="fs-4 cursor-pointer"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={onHandleClickEditAddress}
-                                    />
-                                ) : (
-                                    <FaEdit
-                                        className="fs-4 cursor-pointer"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={onHandleClickCheckAddress}
-                                    />
-                                )}
-                            </div>
-                            <form
-                                onSubmit={formik.handleSubmit}
-                                className="d-flex gap-15 flex-wrap justify-content-between mt-2"
+        <>
+            <Meta title={"Electronics | Thanh toán"} />
+            <Container class1="checkout-wrapper py-5 home-wrapper-2">
+                <div className="row">
+                    <div className="col-7">
+                        <div className="checkout-left-data">
+                            <h3 className="website-name">Electronics</h3>
+                            <nav
+                                style={{ "--bs-breadcrumb-divider": ">" }}
+                                aria-label="breadcrumb"
                             >
-                                <div className="flex-grow-1">
-                                    <input
-                                        type="text"
-                                        placeholder="Họ"
-                                        className="form-control"
-                                        name="order_shipping.lastname"
-                                        value={formik.values.order_shipping.lastname}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable}
-                                    />
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.lastname &&
-                                            formik.errors.order_shipping?.lastname}
-                                    </div>
-                                </div>
-                                <div className="flex-grow-1">
-                                    <input
-                                        type="text"
-                                        placeholder="Tên"
-                                        className="form-control"
-                                        name="order_shipping.firstname"
-                                        value={formik.values.order_shipping.firstname}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable}
-                                    />
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.firstname &&
-                                            formik.errors.order_shipping?.firstname}
-                                    </div>
-                                </div>
-                                <div className="w-100">
-                                    <input
-                                        type="text"
-                                        placeholder="Số Điện Thoại"
-                                        className="form-control"
-                                        name="order_shipping.mobileNo"
-                                        value={formik.values.order_shipping.mobileNo}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable}
-                                    />
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.mobileNo &&
-                                            formik.errors.order_shipping?.mobileNo}
-                                    </div>
-                                </div>
-                                <div className="flex-grow-1">
-                                    <select
-                                        name="order_shipping.province"
-                                        className="form-control form-select"
-                                        value={formik.values.order_shipping.province.id}
-                                        onChange={(e) => {
-                                            const selectedProvince = provinces.find(
-                                                (province) => province.id === e.target.value
-                                            );
-
-                                            if (selectedProvince) {
-                                                formik.setFieldValue("order_shipping.province", {
-                                                    id: selectedProvince.id,
-                                                    name: selectedProvince.name,
-                                                });
-                                                setSelectedProvince({
-                                                    id: selectedProvince.id,
-                                                    name: selectedProvince.name,
-                                                });
-
-                                                formik.setFieldValue("order_shipping.district", {
-                                                    id: "",
-                                                    full_name: "",
-                                                });
-                                                formik.setFieldValue("order_shipping.ward", {
-                                                    id: "",
-                                                    full_name: "",
-                                                });
-
-                                                setDistricts([]);
-                                                setWards([]);
-                                            }
-                                        }}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable}
+                                <ol className="breadcrumb">
+                                    <li className="breadcrumb-item">
+                                        <Link className="text-dark" to="/cart">
+                                            Giỏ hàng
+                                        </Link>
+                                    </li>
+                                    &nbsp; /
+                                    <li className="breadcrumb-item partial-price active">
+                                        Thông tin
+                                    </li>
+                                    &nbsp; /
+                                    <li className="breadcrumb-item partial-price active">
+                                        Giao hàng
+                                    </li>
+                                    &nbsp; /
+                                    <li
+                                        className="breadcrumb-item partial-price active"
+                                        aria-current="page"
                                     >
-                                        <option value="" disabled>
-                                            Chọn Tỉnh/Thành
-                                        </option>
-                                        {provinces.map((province) => (
-                                            <option key={province.id} value={province.id}>
-                                                {province.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.province &&
-                                            formik.errors.order_shipping?.province?.name &&
-                                            formik.errors.order_shipping.province.name}
-                                    </div>
+                                        Thanh toán
+                                    </li>
+                                </ol>
+                            </nav>
+                            <h4 className="title total">Thông tin liên hệ</h4>
+                            <p className="user-details">
+                                {cart_userId?.name} - {cart_userId?.email}
+                            </p>
+                            <div className="border rounded p-4 mb-2 row align-items-center">
+                                <div className="col">
+                                    <h4 className="mb-0">Địa chỉ giao hàng</h4>
                                 </div>
-                                <div className="flex-grow-1">
-                                    <select
-                                        name="order_shipping.district"
-                                        className="form-control form-select"
-                                        value={formik.values.order_shipping.district.id}
-                                        onChange={(e) => {
-                                            const selectedDistrict = districts.find(
-                                                (district) => district.id === e.target.value
-                                            );
-
-                                            if (selectedDistrict) {
-                                                formik.setFieldValue("order_shipping.district", {
-                                                    id: selectedDistrict.id,
-                                                    full_name: selectedDistrict.full_name,
-                                                });
-                                                setSelectedDistrict({
-                                                    id: selectedDistrict.id,
-                                                    full_name: selectedDistrict.full_name,
-                                                });
-                                                formik.setFieldValue("order_shipping.ward", {
-                                                    id: "",
-                                                    full_name: "",
-                                                });
-                                                setWards([]);
-                                            }
-                                        }}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable || !selectedProvince.id}
-                                    >
-                                        <option value="" disabled>
-                                            Chọn Quận/Huyện
-                                        </option>
-                                        {districts.map((district) => (
-                                            <option key={district.id} value={district.id}>
-                                                {district.full_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.district &&
-                                            formik.errors.order_shipping?.district?.full_name &&
-                                            formik.errors.order_shipping.district.full_name}
-                                    </div>
+                                <div className="col-auto">
+                                    {isEditable ? (
+                                        <FaCheck
+                                            className="fs-4 cursor-pointer"
+                                            style={{ cursor: "pointer" }}
+                                            onClick={onHandleClickEditAddress}
+                                        />
+                                    ) : (
+                                        <FaEdit
+                                            className="fs-4 cursor-pointer"
+                                            style={{ cursor: "pointer" }}
+                                            onClick={onHandleClickCheckAddress}
+                                        />
+                                    )}
                                 </div>
-
-                                <div className="flex-grow-1">
-                                    <select
-                                        name="order_shipping.ward"
-                                        className="form-control form-select"
-                                        value={formik.values.order_shipping.ward.id}
-                                        onChange={(e) => {
-                                            const selectedWard = wards.find(
-                                                (ward) => ward.id === e.target.value
-                                            );
-
-                                            if (selectedWard) {
-                                                formik.setFieldValue("order_shipping.ward", {
-                                                    id: selectedWard.id,
-                                                    full_name: selectedWard.full_name,
-                                                });
-                                                setSelectedWard({
-                                                    id: selectedWard.id,
-                                                    full_name: selectedWard.full_name,
-                                                });
-                                            }
-                                        }}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable || !selectedDistrict.id}
-                                    >
-                                        <option value="" disabled>
-                                            Chọn Phường/Xã
-                                        </option>
-                                        {wards.map((ward) => (
-                                            <option key={ward.id} value={ward.id}>
-                                                {ward.full_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.ward &&
-                                            formik.errors.order_shipping?.ward?.full_name &&
-                                            formik.errors.order_shipping.ward.full_name}
-                                    </div>
-                                </div>
-
-                                <div className="w-100">
-                                    <input
-                                        type="text"
-                                        placeholder="Số nhà, tên đường"
-                                        className="form-control"
-                                        name="order_shipping.street"
-                                        value={formik.values.order_shipping.street}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        disabled={!isEditable}
-                                    />
-                                    <div className="error fail-message mt-1">
-                                        {formik.touched.order_shipping?.street &&
-                                            formik.errors.order_shipping?.street}
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="border rounded p-4 mb-2 row">
-                            <h4 className="mb-2">Nhập mã giảm giá</h4>
-                            <form className="d-flex flex-column gap-2">
-                                <div className="">
-                                    <label htmlFor="couponCode" className="form-label fw-bold">
-                                        Mã giảm giá
-                                    </label>
-                                    <div className="input-group">
+                                <form
+                                    onSubmit={formik.handleSubmit}
+                                    className="d-flex gap-15 flex-wrap justify-content-between mt-2"
+                                >
+                                    <div className="flex-grow-1">
                                         <input
                                             type="text"
+                                            placeholder="Họ"
                                             className="form-control"
-                                            id="couponCode"
-                                            placeholder="Nhập mã giảm giá"
-                                            value={discountCode}
-                                            onChange={(e) => {
-                                                setDiscountCode(e.target.value);
-
-                                                if (e.target.value.trim()) {
-                                                    setCouponMessage("");
-                                                }
-                                            }}
+                                            name="order_shipping.lastname"
+                                            value={formik.values.order_shipping.lastname}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable}
                                         />
-                                        <button
-                                            type="button"
-                                            className="button"
-                                            onClick={() => {
-                                                if (!discountCode.trim()) {
-                                                    setCouponMessage("Vui lòng nhập mã giảm giá.");
-                                                    setCouponMessageType("danger");
-                                                    return;
-                                                }
-                                                handleApplyCoupon();
-                                            }}
-                                        >
-                                            Áp dụng
-                                        </button>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.lastname &&
+                                                formik.errors.order_shipping?.lastname}
+                                        </div>
                                     </div>
-                                </div>
-                                {couponMessage && (
-                                    <p
-                                        className={`text-${couponMessageType === "success" ? "success" : "danger"
-                                            } fw-semibold`}
-                                    >
-                                        {couponMessage}
-                                    </p>
-                                )}
-                            </form>
-                        </div>
+                                    <div className="flex-grow-1">
+                                        <input
+                                            type="text"
+                                            placeholder="Tên"
+                                            className="form-control"
+                                            name="order_shipping.firstname"
+                                            value={formik.values.order_shipping.firstname}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable}
+                                        />
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.firstname &&
+                                                formik.errors.order_shipping?.firstname}
+                                        </div>
+                                    </div>
+                                    <div className="w-100">
+                                        <input
+                                            type="text"
+                                            placeholder="Số Điện Thoại"
+                                            className="form-control"
+                                            name="order_shipping.mobileNo"
+                                            value={formik.values.order_shipping.mobileNo}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable}
+                                        />
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.mobileNo &&
+                                                formik.errors.order_shipping?.mobileNo}
+                                        </div>
+                                    </div>
+                                    <div className="flex-grow-1">
+                                        <select
+                                            name="order_shipping.province"
+                                            className="form-control form-select"
+                                            value={formik.values.order_shipping.province.id}
+                                            onChange={(e) => {
+                                                const selectedProvince = provinces.find(
+                                                    (province) => province.id === e.target.value
+                                                );
 
-                        <div className="w-100">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <Link
-                                    to="/cart"
-                                    className="text-dark d-flex align-items-center hover-underline"
-                                >
-                                    <IoIosArrowBack className="fs-5 me-1" />
-                                    Quay lại giỏ hàng
-                                </Link>
-                                <button
-                                    className="button"
-                                    onClick={() => {
-                                        formik.handleSubmit();
-                                    }}
-                                >
-                                    Đặt hàng
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-5">
-                    <div className="border-bottom py-4 d-flex flex-column gap-30">
-                        {userCartState &&
-                            userCartState?.data?.cart_products?.map((item, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="d-flex justify-content-between gap-10 align-items-center"
-                                    >
-                                        <div className="w-75 d-flex gap-15">
-                                            <div className="w-25 position-relative">
-                                                <span className="checkout-product-number-badge badge">
-                                                    {item?.quantity}
-                                                </span>
-                                                <img
-                                                    src={item?.productId?.product_images[0]?.url}
-                                                    className="img-fluid"
-                                                    alt="product"
-                                                />
-                                            </div>
-                                            <div className="d-flex flex-column justify-content-center">
-                                                <h5 className="total">
-                                                    {item?.productId?.product_name}
-                                                </h5>
-                                                <p className="partial mb-0">
-                                                    {item?.product_color[0]?.name}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="w-25 flex-grow-1 d-flex align-items-center justify-content-end">
-                                            <h5 className="partial-price mb-0">
-                                                {(item?.price).toLocaleString()}₫
-                                            </h5>
+                                                if (selectedProvince) {
+                                                    formik.setFieldValue("order_shipping.province", {
+                                                        id: selectedProvince.id,
+                                                        name: selectedProvince.name,
+                                                    });
+                                                    setSelectedProvince({
+                                                        id: selectedProvince.id,
+                                                        name: selectedProvince.name,
+                                                    });
+
+                                                    formik.setFieldValue("order_shipping.district", {
+                                                        id: "",
+                                                        full_name: "",
+                                                    });
+                                                    formik.setFieldValue("order_shipping.ward", {
+                                                        id: "",
+                                                        full_name: "",
+                                                    });
+
+                                                    setDistricts([]);
+                                                    setWards([]);
+                                                }
+                                            }}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable}
+                                        >
+                                            <option value="" disabled>
+                                                Chọn Tỉnh/Thành
+                                            </option>
+                                            {provinces.map((province) => (
+                                                <option key={province.id} value={province.id}>
+                                                    {province.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.province &&
+                                                formik.errors.order_shipping?.province?.name &&
+                                                formik.errors.order_shipping.province.name}
                                         </div>
                                     </div>
-                                );
-                            })}
+                                    <div className="flex-grow-1">
+                                        <select
+                                            name="order_shipping.district"
+                                            className="form-control form-select"
+                                            value={formik.values.order_shipping.district.id}
+                                            onChange={(e) => {
+                                                const selectedDistrict = districts.find(
+                                                    (district) => district.id === e.target.value
+                                                );
+
+                                                if (selectedDistrict) {
+                                                    formik.setFieldValue("order_shipping.district", {
+                                                        id: selectedDistrict.id,
+                                                        full_name: selectedDistrict.full_name,
+                                                    });
+                                                    setSelectedDistrict({
+                                                        id: selectedDistrict.id,
+                                                        full_name: selectedDistrict.full_name,
+                                                    });
+                                                    formik.setFieldValue("order_shipping.ward", {
+                                                        id: "",
+                                                        full_name: "",
+                                                    });
+                                                    setWards([]);
+                                                }
+                                            }}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable || !selectedProvince.id}
+                                        >
+                                            <option value="" disabled>
+                                                Chọn Quận/Huyện
+                                            </option>
+                                            {districts.map((district) => (
+                                                <option key={district.id} value={district.id}>
+                                                    {district.full_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.district &&
+                                                formik.errors.order_shipping?.district?.full_name &&
+                                                formik.errors.order_shipping.district.full_name}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-grow-1">
+                                        <select
+                                            name="order_shipping.ward"
+                                            className="form-control form-select"
+                                            value={formik.values.order_shipping.ward.id}
+                                            onChange={(e) => {
+                                                const selectedWard = wards.find(
+                                                    (ward) => ward.id === e.target.value
+                                                );
+
+                                                if (selectedWard) {
+                                                    formik.setFieldValue("order_shipping.ward", {
+                                                        id: selectedWard.id,
+                                                        full_name: selectedWard.full_name,
+                                                    });
+                                                    setSelectedWard({
+                                                        id: selectedWard.id,
+                                                        full_name: selectedWard.full_name,
+                                                    });
+                                                }
+                                            }}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable || !selectedDistrict.id}
+                                        >
+                                            <option value="" disabled>
+                                                Chọn Phường/Xã
+                                            </option>
+                                            {wards.map((ward) => (
+                                                <option key={ward.id} value={ward.id}>
+                                                    {ward.full_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.ward &&
+                                                formik.errors.order_shipping?.ward?.full_name &&
+                                                formik.errors.order_shipping.ward.full_name}
+                                        </div>
+                                    </div>
+
+                                    <div className="w-100">
+                                        <input
+                                            type="text"
+                                            placeholder="Số nhà, tên đường"
+                                            className="form-control"
+                                            name="order_shipping.street"
+                                            value={formik.values.order_shipping.street}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            disabled={!isEditable}
+                                        />
+                                        <div className="error fail-message mt-1">
+                                            {formik.touched.order_shipping?.street &&
+                                                formik.errors.order_shipping?.street}
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="border rounded p-4 mb-2 row">
+                                <h4 className="mb-2">Nhập mã giảm giá</h4>
+                                <form className="d-flex flex-column gap-2">
+                                    <div className="">
+                                        <label htmlFor="couponCode" className="form-label fw-bold">
+                                            Mã giảm giá
+                                        </label>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="couponCode"
+                                                placeholder="Nhập mã giảm giá"
+                                                value={discountCode}
+                                                onChange={(e) => {
+                                                    setDiscountCode(e.target.value);
+
+                                                    if (e.target.value.trim()) {
+                                                        setCouponMessage("");
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                className="button"
+                                                onClick={() => {
+                                                    if (!discountCode.trim()) {
+                                                        setCouponMessage("Vui lòng nhập mã giảm giá.");
+                                                        setCouponMessageType("danger");
+                                                        return;
+                                                    }
+                                                    handleApplyCoupon();
+                                                }}
+                                            >
+                                                Áp dụng
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {couponMessage && (
+                                        <p
+                                            className={`text-${couponMessageType === "success" ? "success" : "danger"
+                                                } fw-semibold`}
+                                        >
+                                            {couponMessage}
+                                        </p>
+                                    )}
+                                </form>
+                            </div>
+
+                            <div className="w-100">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <Link
+                                        to="/cart"
+                                        className="text-dark d-flex align-items-center hover-underline"
+                                    >
+                                        <IoIosArrowBack className="fs-5 me-1" />
+                                        Quay lại giỏ hàng
+                                    </Link>
+                                    <button
+                                        className="button"
+                                        onClick={() => {
+                                            formik.handleSubmit();
+                                        }}
+                                    >
+                                        Đặt hàng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="border-bottom py-4">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <p className="partial">Tổng cộng</p>
-                            <p className="partial-price">
-                                {userCartState?.data?.cart_products
-                                    ?.reduce((acc, item) => acc + item.price * item.quantity, 0)
-                                    .toLocaleString()}
-                                ₫
-                            </p>
+                    <div className="col-5">
+                        <div className="border-bottom py-4 d-flex flex-column gap-30">
+                            {userCartState &&
+                                userCartState?.data?.cart_products?.map((item, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="d-flex justify-content-between gap-10 align-items-center"
+                                        >
+                                            <div className="w-75 d-flex gap-15">
+                                                <div className="w-25 position-relative">
+                                                    <span className="checkout-product-number-badge badge">
+                                                        {item?.quantity}
+                                                    </span>
+                                                    <img
+                                                        src={item?.productId?.product_images[0]?.url}
+                                                        className="img-fluid"
+                                                        alt="product"
+                                                    />
+                                                </div>
+                                                <div className="d-flex flex-column justify-content-center">
+                                                    <h5 className="total">
+                                                        {item?.productId?.product_name}
+                                                    </h5>
+                                                    <p className="partial mb-0">
+                                                        {item?.product_color[0]?.name}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="w-25 flex-grow-1 d-flex align-items-center justify-content-end">
+                                                <h5 className="partial-price mb-0">
+                                                    {(item?.price).toLocaleString()}₫
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                         </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <p className="mb-0 partial">Phí vận chuyển</p>
-                            <p className="mb-0 partial-price">
-                                {subTotal >= 9990000
-                                    ? "Miễn phí"
-                                    : `${shippingFee.toLocaleString()}₫`}
-                            </p>
-                        </div>
-                        {appliedDiscount?.discountAmount && (
+                        <div className="border-bottom py-4">
                             <div className="d-flex justify-content-between align-items-center">
-                                <p className="mb-0 partial">
-                                    Voucher giảm giá{" "}
-                                    <span style={{ color: "#26a99a" }}>
-                                        {appliedDiscount?.discount_type === "percentage"
-                                            ? `(${appliedDiscount?.discount_value}%)`
-                                            : `(${appliedDiscount?.discount_value.toLocaleString()}₫)`}
-                                    </span>
-                                </p>
-                                <p className="mb-0 partial-price" style={{ color: "#26a99a" }}>
-                                    -{appliedDiscount?.discountAmount.toLocaleString()}₫
+                                <p className="partial">Tổng cộng</p>
+                                <p className="partial-price">
+                                    {userCartState?.data?.cart_products
+                                        ?.reduce((acc, item) => acc + item.price * item.quantity, 0)
+                                        .toLocaleString()}
+                                    ₫
                                 </p>
                             </div>
-                        )}
-                    </div>
-                    <div className="d-flex justify-content-between align-items-center border-bottom py-4">
-                        <h4 className="total">Tổng cộng (bao gồm phí vận chuyển và VAT)</h4>
-                        <h5 className="total-price">
-                            {(
-                                userCartState?.data?.cart_products?.reduce(
-                                    (acc, item) => acc + item.price * item.quantity,
-                                    0
-                                ) +
-                                shippingFee -
-                                (appliedDiscount?.discountAmount || 0)
-                            ).toLocaleString()}
-                            ₫
-                        </h5>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <p className="mb-0 partial">Phí vận chuyển</p>
+                                <p className="mb-0 partial-price">
+                                    {subTotal >= 9990000
+                                        ? "Miễn phí"
+                                        : `${shippingFee.toLocaleString()}₫`}
+                                </p>
+                            </div>
+                            {appliedDiscount?.discountAmount && (
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <p className="mb-0 partial">
+                                        Voucher giảm giá{" "}
+                                        <span style={{ color: "#26a99a" }}>
+                                            {appliedDiscount?.discount_type === "percentage"
+                                                ? `(${appliedDiscount?.discount_value}%)`
+                                                : `(${appliedDiscount?.discount_value.toLocaleString()}₫)`}
+                                        </span>
+                                    </p>
+                                    <p className="mb-0 partial-price" style={{ color: "#26a99a" }}>
+                                        -{appliedDiscount?.discountAmount.toLocaleString()}₫
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center border-bottom py-4">
+                            <h4 className="total">Tổng cộng (bao gồm phí vận chuyển và VAT)</h4>
+                            <h5 className="total-price">
+                                {(
+                                    userCartState?.data?.cart_products?.reduce(
+                                        (acc, item) => acc + item.price * item.quantity,
+                                        0
+                                    ) +
+                                    shippingFee -
+                                    (appliedDiscount?.discountAmount || 0)
+                                ).toLocaleString()}
+                                ₫
+                            </h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Container>
+            </Container>
+        </>
     );
 };
 
