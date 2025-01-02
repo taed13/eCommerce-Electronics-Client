@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
-import { IoMdSend } from "react-icons/io";
 import { BsEmojiSmileFill } from "react-icons/bs";
+import { IoIosSend } from "react-icons/io";
 
 export default function ChatInput({ handleSendMsg }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -60,7 +60,10 @@ export default function ChatInput({ handleSendMsg }) {
           onChange={(e) => setMsg(e.target.value)}
         />
         <button className="submit">
-          <IoMdSend />
+          <span>
+            <IoIosSend className="fs-5"/>
+          </span>
+          <span className="text-white">Gửi</span>
         </button>
       </form>
     </Container>
@@ -71,7 +74,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 5% 95%;
   align-items: center;
-  background-color: #080420;
+  background-color: #f2f2f2;
   padding: 0 2rem;
   padding-bottom: 0.3rem;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
@@ -87,21 +90,20 @@ const Container = styled.div`
       position: relative;
       svg {
         font-size: 1.5rem;
-        color: #ffff00c8;
+        color: #232f3e;
         cursor: pointer;
       }
       .emoji-picker-react {
         position: absolute;
         top: -460px;
-        background-color: #080420;
-        box-shadow: 0 5px 10px #9a86f3;
-        border-color: #9186f3;
+        background-color: #white;
+        border-radius: 10px;
+        border: 1px solid #232f3e;
+        box-shadow: 0 5px 10px #cccccc;
+        border-color: #232f3e;
         .emoji-scroll-wrapper::-webkit-scrollbar {
-          background-color: #080420;
+          background-color: #232f3e;
           width: 5px;
-          &-thumb {
-            background-color: #9186f3;
-          }
         }
         .emoji-categories {
           button {
@@ -110,10 +112,9 @@ const Container = styled.div`
         }
         .emoji-search {
           background-color: transparent;
-          border-color: #9186f3;
         }
         .emoji-group:before {
-          background-color: #080420;
+          background-color: #232f3e;
         }
       }
     }
@@ -124,35 +125,37 @@ const Container = styled.div`
     display: flex;
     align-content: center;
     gap: 2rem;
-    background-color: #ffffff34;
+    background-color: white;
     input {
       width: 90%;
       height: 60%;
       background-color: transparent;
-      color: white;
+      color: black;
       border: none;
       padding: 0.6rem;
       padding-left: 1rem;
       font-size: 1rem;
       &::selection {
-        background-color: #9186f3;
+        background-color: #384b64;
       }
       &:focus {
         outline: none;
       }
     }
     button {
-      padding: 0.3rem 2rem;
-      border-radius: 2rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #9a86f3;
-      border: none;
+      padding: 0.5rem 1.5rem;
+      gap: 5px;
+      border-radius: 0 10px 10px 0;
+      background-color: #232f3e;
+      border: 1px solid #232f3e;
       @media screen and (min-width: 720px) and (max-width: 1080px) {
         padding: 0.3rem 1rem;
         svg {
           font-size: 1rem;
+          color: white;
         }
       }
       svg {

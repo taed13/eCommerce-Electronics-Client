@@ -100,6 +100,10 @@ const Header = () => {
         }
     };
 
+    const handleOpenChat = () => {
+        window.open("/chat", "_blank");
+    }
+
     return (
         <>
             <header className="header-upper py-3">
@@ -278,7 +282,7 @@ const Header = () => {
                                             {(authState?.user !== null || isAuthenticated) && (
                                                 <>
                                                     |
-                                                    <NavLink className="header-chat" to="/chat">
+                                                    <NavLink className="header-chat" onClick={() => handleOpenChat()}>
                                                         Chat với chúng tôi
                                                     </NavLink>
                                                     |

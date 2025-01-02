@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import { BiPowerOff } from "react-icons/bi";
+import { VscSignOut } from "react-icons/vsc";
 
 export default function Logout() {
   const navigate = useNavigate();
@@ -13,7 +13,10 @@ export default function Logout() {
   return (
     <>
       <Button onClick={handleClick}>
-        <BiPowerOff />
+        <span>
+          <VscSignOut />
+        </span>
+        <span>Thoát</span>
       </Button>
     </>
   );
@@ -23,10 +26,12 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
+  color: white;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  background-color: #9a86f3;
-  border: none;
+  background-color: #232f3e;
+  border: 1px solid white;
   cursor: pointer;
   svg {
     font-size: 1.3rem;

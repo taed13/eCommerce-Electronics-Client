@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Logo from "../assets/logo.svg";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 const Contacts = ({ contacts, currentUser, changeChat }) => {
   console.log("contacts:::", contacts);
@@ -27,7 +28,10 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
       {currentUserImage && currentUserName && (
         <Container>
           <div className="brand">
-            <h3>Chat Với Admin</h3>
+            <span>
+              <IoChatbubblesOutline className="fs-3" />
+            </span>
+            <span>Electronics Talks</span>
           </div>
 
           <div className="contacts">
@@ -42,14 +46,17 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
                   }}
                 >
                   <div className="avatar">
-                    <img
-                      src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                      alt="avatar"
-                    />
+                    {
+                      contact.avatarImage ?
+                        <img
+                          src={`data:image/svg+xml;base64,${contact.avatarImage}`}
+                          alt="avatar"
+                        /> : <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' className="avatar-not-found" alt="avatar" />
+                    }
                   </div>
 
                   <div className="username">
-                    <h3>{contact.name}</h3>
+                    <span className="text-white">{contact.name}</span>
                   </div>
                 </div>
               );
@@ -63,9 +70,8 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
                 alt="avatar"
               />
             </div>
-
             <div className="username">
-              <h2>{currentUserName}</h2>
+              <span className="fs-5 text-white">{currentUserName}</span>
             </div>
           </div>
         </Container>
@@ -78,21 +84,25 @@ export default Contacts;
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 10% 75% 15%;
+  grid-template-rows: 10% 78% 12%;
   overflow: hidden;
-  background-color: #080420;
-
+  background-color: #384b64;
+  border-radius: 10px;
+  border-radius: 1rem;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 0 5px 5px #dddddd;
   .brand {
+    margin-left: 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    justify-content: start;
+    gap: 10px;
     img {
       height: 2rem;
     }
-    h3 {
+    span {
+      font-size: 1.5rem;
       color: white;
-      text-transform: uppercase;
     }
   }
   .contacts {
@@ -114,8 +124,8 @@ const Container = styled.div`
       min-height: 5rem;
       width: 90%;
       cursor: pointer;
-      border-radius: 0.2rem;
-      padding: 0.4rem;
+      border-radius: 5px;
+      padding: 1rem;
       gap: 1rem;
       align-items: center;
       display: flex;
@@ -132,30 +142,34 @@ const Container = styled.div`
       }
     }
     .selected {
-      background-color: #9186f3;
+      background-color: #232f3e;
     }
   }
+  .avatar-not-found {
+    border-radius: 50%;
+  }
   .current-user {
-    background-color: #0d0d30;
+    padding-left: 1rem;
+    background-color: #232f3e;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     gap: 2rem;
     .avatar {
       img {
-        height: 4rem;
+        height: 3rem;
         max-inline-size: 100%;
       }
     }
     .username {
-      h2 {
+      span {
         color: white;
       }
     }
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       gap: 0.5rem;
       .username {
-        h2 {
+        span {
           font-size: 1rem;
         }
       }

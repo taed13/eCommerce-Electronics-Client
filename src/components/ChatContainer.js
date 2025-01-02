@@ -74,16 +74,18 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
           <div className="chat-header">
             <div className="user-details">
               <div className="avatar">
-                <img
-                  src={`data:image/svg+xml;base64,${currentChat.avatarImage}`}
-                  alt="avatar"
-                />
+                {
+                  currentChat.avatarImage ?
+                    <img
+                      src={`data:image/svg+xml;base64,${currentChat.avatarImage}`}
+                      alt="avatar"
+                    /> : <></>
+                }
               </div>
               <div className="username">
-                <h3>{currentChat?.name}</h3>
+                <span className="fs-5 text-white">{currentChat?.name}</span>
               </div>
             </div>
-            <Logout />
           </div>
           <div className="chat-messages">
             {messages.map((message) => {
@@ -110,11 +112,14 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
 }
 
 const Container = styled.div`
-  padding-top: 1rem;
   display: grid;
   grid-template-rows: 10% 78% 12%;
   gap: 0.1rem;
   overflow: hidden;
+  border-radius: 10px;
+  border-radius: 1rem;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 0 5px 5px #dddddd;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     grid-template-rows: 15% 70% 15%;
   }
@@ -122,6 +127,7 @@ const Container = styled.div`
   .chat-header {
     display: flex;
     justify-content: space-between;
+    background-color: #232f3e;
     align-items: center;
     padding: 0 2rem;
     .user-details {
@@ -163,19 +169,19 @@ const Container = styled.div`
         padding: 1rem;
         font-size: 1.1rem;
         border-radius: 1rem;
-        color: #d1d1d1;
+        color: #2c2c2c;
       }
     }
     .sended {
       justify-content: flex-end;
       .content {
-        background-color: #4f04ff21;
+        background-color: #abcdef;
       }
     }
     .received {
       justify-content: flex-start;
       .content {
-        background-color: #9900ff20;
+        background-color: #ededed;
       }
     }
   }

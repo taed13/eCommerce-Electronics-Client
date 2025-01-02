@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Robot from "../assets/robot.gif";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 export default function Welcome({ currentUser }) {
   return (
     <>
       <Container>
-        <img src={Robot} alt="robot" />
-        <h1>
-          Welcome, <span>{currentUser?.username}!</span>
-        </h1>
-        <h3>Please select a chat to Start Message.</h3>
+        <IoChatbubblesOutline className="logo-chat" />
+        {
+          currentUser?.username ? <h1>Xin chào, <span>{currentUser?.username}!</span></h1> : <h1>Xin chào!</h1>
+        }
       </Container>
     </>
   );
@@ -22,10 +22,17 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   color: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 15px;
+  box-shadow: 0 0 5px 5px #dddddd;
+  background-color: #384b64;
   img {
     height: 20rem;
   }
-  span {
-    color: #4e00ff;
+  h1 {
+    color: #white;
+  }
+  .logo-chat {
+    font-size: 10rem;
   }
 `;

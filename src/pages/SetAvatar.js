@@ -31,7 +31,7 @@ export default function SetAvatar() {
 
     const setProfilePicture = async () => {
         if (selectedAvatar === undefined) {
-            toast.error("Please select an avatar", toastOptions);
+            toast.error("Vui lòng chọn ảnh đại diện", toastOptions);
         } else {
             const user = await JSON.parse(localStorage.getItem("chat-app-user"));
             const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
@@ -45,7 +45,7 @@ export default function SetAvatar() {
                 notify();
                 navigate("/chat");
             } else {
-                toast.error("Error setting avatar. Please try again", toastOptions);
+                toast.error("Có lỗi khi lưu ảnh đại diện. Vui lòng thử lại sau!", toastOptions);
             }
         }
     };
@@ -74,7 +74,7 @@ export default function SetAvatar() {
     }, []);
 
     const notify = () => {
-        toast.success("Avatar selected!", toastOptions);
+        toast.success("Đã đặt ảnh đại diện!", toastOptions);
     };
 
     return (
@@ -86,7 +86,7 @@ export default function SetAvatar() {
             ) : (
                 <Container>
                     <div className="title-container">
-                        <h1>Pick an avatar as your profile picture</h1>
+                        <h1>Hãy chọn ảnh đại diện của bạn</h1>
                     </div>
                     <div className="avatars">
                         {avatars.map((avatar, index) => (
@@ -106,7 +106,7 @@ export default function SetAvatar() {
                         ))}
                     </div>
                     <button className="submit-btn" onClick={setProfilePicture}>
-                        Set as Profile Picture
+                        Đặt làm ảnh đại diện
                     </button>
                 </Container>
             )}
