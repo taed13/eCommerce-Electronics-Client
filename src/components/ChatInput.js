@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Picker from "emoji-picker-react";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoIosSend } from "react-icons/io";
+import { toast } from "react-toastify";
 
 export default function ChatInput({ handleSendMsg }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -19,6 +20,13 @@ export default function ChatInput({ handleSendMsg }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!msg.trim()) {
+      toast.error("Vui lòng nhập tin nhắn trước khi gửi!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
     handleSendMsg(msg);
     setMsg("");
   };
@@ -61,7 +69,7 @@ export default function ChatInput({ handleSendMsg }) {
         />
         <button className="submit">
           <span>
-            <IoIosSend className="fs-5"/>
+            <IoIosSend className="fs-5" />
           </span>
           <span className="text-white">Gửi</span>
         </button>
@@ -96,7 +104,7 @@ const Container = styled.div`
       .emoji-picker-react {
         position: absolute;
         top: -460px;
-        background-color: #white;
+        background-color: white;
         border-radius: 10px;
         border: 1px solid #232f3e;
         box-shadow: 0 5px 10px #cccccc;

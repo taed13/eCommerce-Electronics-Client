@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { base_url, host } from "../../utils/axiosConfig";
-import { allUsersRoute } from "../../utils/APIRoutes";
+import { allAdminsRoute } from "../../utils/APIRoutes";
 import Contacts from "../../components/Contacts";
 import Welcome from "../../components/Welcome";
 import ChatContainer from "../../components/ChatContainer";
@@ -41,7 +41,7 @@ const Chat = () => {
             if (currentUser) {
                 if (currentUser.isAvatarImageSet) {
                     try {
-                        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+                        const data = await axios.get(`${allAdminsRoute}/${currentUser._id}`);
                         console.log('data:::', data.data);
                         setContacts(data.data);
                     } catch (error) {
@@ -68,6 +68,7 @@ const Chat = () => {
                     contacts={contacts}
                     currentUser={currentUser}
                     changeChat={handleChatChange}
+                    socket={socket}
                 />
                 {isLoaded && currentChat === undefined ? (
                     <Welcome currentUser={currentUser} />

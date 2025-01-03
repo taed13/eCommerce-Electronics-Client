@@ -3,13 +3,23 @@ import styled from "styled-components";
 import Logo from "../assets/logo.svg";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
-const Contacts = ({ contacts, currentUser, changeChat }) => {
+const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
   console.log("contacts:::", contacts);
   console.log("currentUser:::", currentUser);
   console.log("changeChat:::", changeChat);
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
+  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [updatedContacts, setUpdatedContacts] = useState(contacts);
+
+  useEffect(() => {
+    if (!socket.current) {
+      console.error("Socket not initialized!");
+      return;
+    }
+    console.log("Socket connected: ", socket.current.id);
+  }, [socket]);
 
   useEffect(() => {
     if (currentUser) {
@@ -18,11 +28,73 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    setUpdatedContacts(contacts);
+  }, [contacts]);
+
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("contact-updated", (data) => {
+        console.log("Real-time update received:", data);
+  
+        setUpdatedContacts((prevContacts) => {
+          const updatedList = prevContacts.map((contact) =>
+            contact._id === data.userId
+              ? { ...contact, lastUpdatedMessage: data.lastUpdatedMessage, lastMessage: data.lastMessage }
+              : contact
+          );
+  
+          console.log("Updated contacts:", updatedList);
+          return updatedList;
+        });
+      });
+  
+      // Cleanup to remove event listener on component unmount
+      return () => {
+        socket.current.off("contact-updated");
+      };
+    }
+  }, [socket]); // Không cần phụ thuộc vào `contacts`, chỉ cần lắng nghe socket 
+    
+
+  const formatTimeAgo = (lastUpdated) => {
+    try {
+      const date = new Date(lastUpdated);
+
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+
+      const diffInMs = currentTime - date;
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+      const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+      if (diffInMinutes < 1) return "Vừa xong";
+      if (diffInMinutes < 60) return `${diffInMinutes} phút`;
+      if (diffInHours < 24) return `${diffInHours} giờ`;
+      return `${diffInDays} ngày`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Error formatting date";
+    }
+  };
+
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);
   };
 
+  console.log('contacts:::', contacts);
   return (
     <>
       {currentUserImage && currentUserName && (
@@ -35,7 +107,8 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
           </div>
 
           <div className="contacts">
-            {contacts.map((contact, index) => {
+            {updatedContacts.map((contact, index) => {
+
               return (
                 <div
                   className={`contact ${index === currentSelected ? "selected" : ""
@@ -57,6 +130,12 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
 
                   <div className="username">
                     <span className="text-white">{contact.name}</span>
+                    <span className="last-message">
+                      {contact.lastMessage ? `${contact.lastMessage.slice(0, 20)}` : "No messages yet"}
+                    </span>
+                    <span className="last-updated">
+                      {contact.lastUpdatedMessage ? formatTimeAgo(contact.lastUpdatedMessage) : "No activity"}
+                    </span>
                   </div>
                 </div>
               );
@@ -136,8 +215,26 @@ const Container = styled.div`
         }
       }
       .username {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
         h3 {
           color: white;
+          margin: 0;
+        }
+        .last-message {
+          font-size: 0.9rem;
+          color: #a9a9a9;
+          font-weight: normal;
+          max-width: 200px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .last-updated {
+          font-size: 0.8rem;
+          color: #d1d1d1;
+          font-weight: normal;
         }
       }
     }

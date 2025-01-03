@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Logout from "./Logout";
 import ChatInput from "./ChatInput";
 // import Messages from "./Messages";
-import { getAllMessageRoute, sendMessageRoute } from "../utils/APIRoutes";
+import { getAllMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { getConfig } from "../utils/axiosConfig";
@@ -17,7 +17,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
   useEffect(() => {
     const fetchData = async () => {
       if (currentUser && currentChat) {
-        const response = await axios.post(getAllMessageRoute, {
+        const response = await axios.post(getAllMessagesRoute, {
           from: currentUser?._id,
           to: currentChat?._id,
         }, getConfig());
@@ -29,6 +29,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
   }, [currentUser, currentChat]);
 
   const handleSendMsg = async (msg) => {
+    const timestamp = new Date();
     await axios.post(sendMessageRoute, {
       from: currentUser._id,
       to: currentChat._id,
@@ -38,22 +39,25 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
       to: currentChat._id,
       from: currentUser._id,
       message: msg,
+      timestamp: timestamp,
     });
 
     const msgs = [...messages];
     msgs.push({
       fromSelf: true,
       message: msg,
+      createdAt: timestamp,
     });
     setMessages(msgs);
   };
 
   useEffect(() => {
     if (socket.current) {
-      socket.current.on("msg-receive", (msg) => {
+      socket.current.on("msg-receive", (data) => {
         setArrivalMessage({
           fromSelf: false,
-          message: msg,
+          message: data.message,
+          createdAt: data.lastUpdatedMessage,
         });
       });
     }
@@ -64,8 +68,12 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
   }, [arrivalMessage]);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages]);
+
+  console.log("currentChat:::", currentChat);
 
   return (
     <>
@@ -83,25 +91,21 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
                 }
               </div>
               <div className="username">
-                <span className="fs-5 text-white">{currentChat?.name}</span>
+                <span className="fs-5 text-white">{currentChat?.name} - {currentChat?.email}</span>
               </div>
             </div>
           </div>
-          <div className="chat-messages">
-            {messages.map((message) => {
-              return (
-                <div ref={scrollRef} key={uuidv4()}>
-                  <div
-                    className={`message ${message.fromSelf ? "sended" : "received"
-                      }`}
-                  >
-                    <div className="content">
-                      <p>{message.message}</p>
-                    </div>
-                  </div>
+          <div className="chat-messages" ref={scrollRef}>
+            {messages.map((message, index) => (
+              <div key={uuidv4()} className={`message ${message.fromSelf ? "sended" : "received"}`}>
+                <div className="content">
+                  <p>{message.message}</p>
+                  <span className="timestamp">
+                    {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
           {/* <Messages /> */}
           <ChatInput handleSendMsg={handleSendMsg} />
@@ -170,6 +174,11 @@ const Container = styled.div`
         font-size: 1.1rem;
         border-radius: 1rem;
         color: #2c2c2c;
+        .timestamp {
+          font-size: 0.8rem;
+          color: gray;
+          text-align: right;
+        }
       }
     }
     .sended {
