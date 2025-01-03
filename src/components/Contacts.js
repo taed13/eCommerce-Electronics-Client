@@ -45,26 +45,26 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
     if (socket.current) {
       socket.current.on("contact-updated", (data) => {
         console.log("Real-time update received:", data);
-  
+
         setUpdatedContacts((prevContacts) => {
           const updatedList = prevContacts.map((contact) =>
             contact._id === data.userId
               ? { ...contact, lastUpdatedMessage: data.lastUpdatedMessage, lastMessage: data.lastMessage }
               : contact
           );
-  
+
           console.log("Updated contacts:", updatedList);
           return updatedList;
         });
       });
-  
+
       // Cleanup to remove event listener on component unmount
       return () => {
         socket.current.off("contact-updated");
       };
     }
   }, [socket]); // Không cần phụ thuộc vào `contacts`, chỉ cần lắng nghe socket 
-    
+
 
   const formatTimeAgo = (lastUpdated) => {
     try {

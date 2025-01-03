@@ -453,14 +453,14 @@ const Checkout = () => {
                                         </Link>
                                     </li>
                                     &nbsp; /
-                                    <li className="breadcrumb-item partial-price active">
+                                    {/* <li className="breadcrumb-item partial-price active">
                                         Thông tin
                                     </li>
                                     &nbsp; /
                                     <li className="breadcrumb-item partial-price active">
                                         Giao hàng
                                     </li>
-                                    &nbsp; /
+                                    &nbsp; / */}
                                     <li
                                         className="breadcrumb-item partial-price active"
                                         aria-current="page"
@@ -792,9 +792,16 @@ const Checkout = () => {
                                                     <h5 className="total">
                                                         {item?.productId?.product_name}
                                                     </h5>
-                                                    <p className="partial mb-0">
+                                                    {/* <p className="partial mb-0">
                                                         {item?.product_color[0]?.name}
-                                                    </p>
+                                                    </p> */}
+                                                    <div className="d-flex align-items-start gap-1">
+                                                        <ul className="colors ps-0">
+                                                            <li
+                                                                style={{ backgroundColor: item?.product_color[0]?.code }}
+                                                            ></li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="w-25 flex-grow-1 d-flex align-items-center justify-content-end">

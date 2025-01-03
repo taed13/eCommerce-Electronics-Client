@@ -206,12 +206,12 @@ const SingleProduct = () => {
                     <div className="col-6">
                         <div className="main-product-details">
                             <div className="border-bottom">
-                                <h3 className="title" style={{fontSize: '24px'}}>{productState ? productState.product_name : 'No product found'}</h3>
+                                <h3 className="title" style={{ fontSize: '24px' }}>{productState ? productState.product_name : 'No product found'}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price my-3 fw-light" style={{fontSize: '28px'}}>{productState ? '₫' + productState?.product_price.toLocaleString()  : 'N/A'}</p>
+                                <p className="price my-3 fw-light" style={{ fontSize: '28px' }}>{productState ? '₫' + productState?.product_price.toLocaleString() : 'N/A'}</p>
                                 <div className="d-flex align-items-end gap-1">
-                                    <p className="mb-0 t-review fs-6" style={{lineHeight: '20px'}}>{productState?.product_totalRating || 0}</p>
+                                    <p className="mb-0 t-review fs-6" style={{ lineHeight: '20px' }}>{productState?.product_totalRating || 0}</p>
                                     <Rating
                                         initialRating={+productState?.product_totalRating || 0}
                                         readonly
