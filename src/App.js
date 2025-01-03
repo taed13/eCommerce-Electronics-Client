@@ -28,6 +28,7 @@ import Profile from "./pages/Profile";
 import OrderSuccess from "./pages/OrderSuccess/OrderSuccess";
 import Chat from "./pages/Chat/Chat";
 import SetAvatar from "./pages/SetAvatar";
+import OrderDetails from "./pages/OrderDetails";
 
 function App() {
     return (
@@ -54,6 +55,14 @@ function App() {
                         element={
                             <PrivateRoutes>
                                 <Orders />
+                            </PrivateRoutes>
+                        }
+                    />
+                    <Route
+                        path="order/:id"
+                        element={
+                            <PrivateRoutes>
+                                <OrderDetails />
                             </PrivateRoutes>
                         }
                     />

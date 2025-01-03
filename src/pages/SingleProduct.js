@@ -7,6 +7,7 @@ import ReactImageZoom from "react-image-zoom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addRating,
+    checkProductRatingPossibility,
     getAllProducts,
     getAProduct,
 } from "../features/products/productSlice";
@@ -30,7 +31,7 @@ const SingleProduct = () => {
     const [popularProducts, setPopularProducts] = useState([]);
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState("");
-    const [canRate, setCanRate] = useState(false);
+    const [isRated, setIsRated] = useState(false);
 
     const getProductId = location.pathname.split("/")[2];
     const splideId = "splide-product-images";
@@ -39,6 +40,7 @@ const SingleProduct = () => {
     const cartState = useSelector((state) => state?.auth?.cartProducts);
     const userState = useSelector((state) => state?.auth?.user);
     const orderState = useSelector((state) => state?.auth?.getOrderedProduct);
+    const checkRated = useSelector((state) => state?.product?.canReview);
 
     const [mainImage, setMainImage] = useState(
         productState?.product_images?.[0]?.url ||
@@ -57,6 +59,7 @@ const SingleProduct = () => {
         dispatch(getUserCart());
         dispatch(getAllProducts());
         dispatch(getOrders());
+        dispatch(checkProductRatingPossibility(getProductId));
     }, [dispatch, getProductId]);
 
     useEffect(() => {
@@ -127,6 +130,9 @@ const SingleProduct = () => {
             dispatch(
                 addRating({ star: star, comment: comment, prodId: getProductId })
             );
+            setStar(0);
+            setComment('');
+            setIsRated(true);
             setTimeout(() => {
                 dispatch(getAProduct(getProductId));
             }, 1000);
@@ -162,15 +168,6 @@ const SingleProduct = () => {
             };
         }
     }, [productState]);
-
-    useEffect(() => {
-        if (userState && orderState) {
-            const orderedProducts = orderState.flatMap(order => order.order_items);
-            setCanRate(orderedProducts.some(item => item.productId._id === getProductId));
-        } else {
-            setCanRate(false);
-        }
-    }, [userState, orderState, getProductId]);
 
     return (
         <>
@@ -223,7 +220,7 @@ const SingleProduct = () => {
                                     </p>
                                 </div>
                                 {
-                                    canRate &&
+                                    checkRated && !isRated &&
                                     <a className="review-btn mt-2 hover-underline" href="#review">
                                         Viết đánh giá
                                     </a>
@@ -410,30 +407,16 @@ const SingleProduct = () => {
                                             fullSymbol={<FaStar className="fs-2" style={{ color: '#f59e0b' }} />}
                                         />
                                         <span className="mb-0">
-                                            {+productState?.product_totalRating || 0} out of 5
+                                            {+productState?.product_totalRating || 0} trên 5
                                         </span>
                                     </div>
                                     <p className="mt-2 mb-0">
                                         (Dựa trên {productState?.product_ratings?.length} đánh giá)
                                     </p>
                                 </div>
-                                {canRate && (
-                                    <div>
-                                        <a
-                                            className="text-dark text-decoration-underline"
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                scrollToReviewForm();
-                                            }}
-                                        >
-                                            Viết đánh giá
-                                        </a>
-                                    </div>
-                                )}
                             </div>
                             {
-                                canRate &&
+                                checkRated && !isRated &&
                                 <div className="review-form py-4">
                                     <h4>Viết đánh giá</h4>
                                     <form action="" className="d-flex flex-column gap-15">
@@ -455,13 +438,13 @@ const SingleProduct = () => {
                                                 cols="30"
                                                 rows="4"
                                                 ref={textAreaRef}
-                                                placeholder="Write your comment here..."
+                                                placeholder="Viết bình luận..."
                                                 onChange={(e) => {
                                                     setComment(e.target.value);
                                                 }}
                                             ></textarea>
                                         </div>
-                                        <div className="d-flex justify-content-end mt-3">
+                                        <div className="d-flex justify-content-end mt-2">
                                             <button
                                                 className="button border-0"
                                                 type="button"
@@ -477,17 +460,22 @@ const SingleProduct = () => {
                                 {
                                     productState?.product_ratings?.map((item, index) => {
                                         return (
-                                            <div className="review" key={index}>
+                                            <div className="review mb-4" key={index}>
                                                 <div className="d-flex align-items-end gap-10">
-                                                    <span className="mb-0">Khach hang than thiet</span>
+                                                    <span className="mb-0">{item?.postedBy.name}</span>
                                                 </div>
                                                 <Rating
-                                                    className="mt-2"
+                                                    className="mt-0"
                                                     initialRating={item?.star}
                                                     readonly
                                                     emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
                                                     fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
                                                 />
+                                                <p className="mt-1 text-dark">
+                                                    <small>
+                                                        Đã viết vào {new Date(item?.postedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                                    </small>
+                                                </p>
                                                 <p className="mt-3">{item?.comment}</p>
                                             </div>
                                         );

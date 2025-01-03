@@ -46,6 +46,17 @@ export const addRating = createAsyncThunk(
     }
 );
 
+export const checkProductRatingPossibility = createAsyncThunk(
+    "product/checkRating",
+    async (prodId, thunkAPI) => {
+        try {
+            return await productService.checkProductRatingPossibility(prodId);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
 const productState = {
     product: "",
     isLoading: false,
@@ -118,10 +129,26 @@ export const productSlice = createSlice({
                 state.rating = action.payload;
                 state.message = action.payload.message;
                 if (state.isSuccess) {
-                    toast.success("Rating added successfully");
+                    toast.success("Đã gửi bình luận");
                 }
             })
             .addCase(addRating.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(checkProductRatingPossibility.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(checkProductRatingPossibility.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.message = action.payload.message;
+                state.canReview = action.payload.canReview;
+            })
+            .addCase(checkProductRatingPossibility.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

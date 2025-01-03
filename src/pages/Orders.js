@@ -4,6 +4,7 @@ import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../features/user/userSlice";
 import Meta from "../components/Meta";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
     const dispatch = useDispatch();
@@ -19,83 +20,68 @@ const Orders = () => {
 
     return (
         <>
-            <Meta title={"Electronics | Đơn hàng của tôi"} />
-            <BreadCrumb title="Đơn hàng của tôi" />
-            <Container class1="cart-wrapper home-wrapper-2 py-5">
+            <Meta title={"Electronics | Lịch sử đặt hàng"} />
+            <BreadCrumb title="Lịch sử đặt hàng" />
+            <Container class1="cart-wrapper home-wrapper-2 py-3">
                 <div className="row">
                     <div className="col-12">
-                        <div className="row">
-                            <div className="col-3">
-                                <h5>Mã đơn hàng</h5>
-                            </div>
-                            <div className="col-3">
-                                <h5>Tổng tiền</h5>
-                            </div>
-                            <div className="col-3">
-                                <h5>Tổng tiền sau khi giảm giá</h5>
-                            </div>
-                            <div className="col-3">
-                                <h5>Trạng thái</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-12 mt-3">
                         {orderState &&
                             orderState?.map((order, index) => (
-                                <div
-                                    style={{ backgroundColor: "#febd69" }}
-                                    className="row pt-3 my-3"
-                                    key={index}
-                                >
-                                    <div className="col-3">
-                                        <p>{order?.order_code}</p>
+                                <div className="order-history-item row my-5" key={index}>
+                                    <div className="d-flex align-items-start justify-content-between">
+                                        <div className="col-8 d-flex gap-2 mb-1">
+                                            <p><strong>Mã đơn hàng:</strong></p>
+                                            <p>{order?.order_code}</p>
+                                        </div>
+                                        <Link to=''>Chi tiết đơn hàng</Link>
                                     </div>
-                                    <div className="col-3">
-                                        <p>{order?.checkoutInfo?.totalPrice}</p>
+                                    <div className="col-12 d-flex gap-2 mb-1">
+                                        <p><strong>Tổng giá đơn hàng:</strong></p>
+                                        <p>{order?.checkoutInfo?.totalPrice.toLocaleString()}₫</p>
                                     </div>
-                                    <div className="col-3">
-                                        <p>{order?.checkoutInfo?.totalPriceAfterDiscount}</p>
+                                    <div className="col-12 d-flex gap-2 mb-1">
+                                        <p><strong>Tổng giá sau khi áp dụng discount:</strong></p>
+                                        <p>{order?.checkoutInfo?.totalPriceAfterDiscount.toLocaleString()}₫</p>
                                     </div>
-                                    <div className="col-3">
+                                    <div className="col-12 d-flex gap-2 mb-1">
+                                        <p><strong>Ngày đặt hàng:</strong></p>
+                                        <p>{new Date(order?.createdAt).toLocaleDateString('vi-VN')}</p>
+                                    </div>
+                                    <div className="col-12 d-flex gap-2 mb-1">
+                                        <p><strong>Trạng thái đơn hàng:</strong></p>
                                         <p>{order?.order_status}</p>
                                     </div>
                                     <div className="col-12">
-                                        <div
-                                            className="row py-3"
-                                            style={{ backgroundColor: "#232f3e" }}
-                                        >
-                                            <div className="col-3">
-                                                <h6 className="text-white">Tên sản phẩm</h6>
+                                        <div className="order-prod-item-list-header row p-3">
+                                            <div className="col-3 mb-2">
+                                                <span className="fw-bold">Tên sản phẩm</span>
                                             </div>
-                                            <div className="col-3">
-                                                <h6 className="text-white">Số lượng</h6>
+                                            <div className="col-3 mb-2">
+                                                <span className="fw-bold">Số lượng</span>
                                             </div>
-                                            <div className="col-3">
-                                                <h6 className="text-white">Giá</h6>
+                                            <div className="col-3 mb-2">
+                                                <span className="fw-bold">Đơn giá</span>
                                             </div>
-                                            <div className="col-3">
-                                                <h6 className="text-white">Màu</h6>
+                                            <div className="col-3 mb-2">
+                                                <span className="fw-bold">Màu</span>
                                             </div>
                                             {order?.order_items?.map((item, index) => (
-                                                <div className="col-12" key={index}>
-                                                    <div className="row bg-secondary p-3">
-                                                        <div className="col-3">
-                                                            <p className="text-white">
+                                                <div className="order-prod-item col-12 pb-2" key={index}>
+                                                    <div className="row pt-3">
+                                                        <div className="col-3 d-flex align-items-center">
+                                                            <span className="">
                                                                 {item?.productId?.product_name}
-                                                            </p>
+                                                            </span>
                                                         </div>
-                                                        <div className="col-3">
-                                                            <p className="text-white">{item?.quantity}</p>
+                                                        <div className="col-3 d-flex align-items-center">
+                                                            <span className="">{item?.quantity}</span>
                                                         </div>
-                                                        <div className="col-3">
-                                                            <p className="text-white">{item.price}</p>
+                                                        <div className="col-3 d-flex align-items-center">
+                                                            <span className="">{item.price.toLocaleString()}₫</span>
                                                         </div>
-                                                        <div className="col-3">
+                                                        <div className="col-3 d-flex align-items-center">
                                                             <ul className="colors ps-0">
-                                                                <li
-                                                                    style={{
-                                                                        backgroundColor: item?.product_colors[0]?.code,
-                                                                    }}
+                                                                <li style={{ backgroundColor: item?.product_colors[0]?.code, border: "1px solid #ccc" }}
                                                                 ></li>
                                                             </ul>
                                                         </div>

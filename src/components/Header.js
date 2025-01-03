@@ -100,21 +100,17 @@ const Header = () => {
         }
     };
 
-    const handleOpenChat = () => {
-        window.open("/chat", "_blank");
-    }
-
     return (
         <>
             <header className="header-upper py-3">
                 <div className="container-xxl">
                     <div className="row align-items-center">
-                        <div className="col-2">
-                            <h2>
-                                <Link to="/" className="text-white">
+                        <div className="col-2 d-flex align-items-end">
+                            <span>
+                                <Link to="/" className="text-white fs-3">
                                     Electronics
                                 </Link>
-                            </h2>
+                            </span>
                         </div>
                         <div className="col-6">
                             <div className="input-group">
@@ -232,26 +228,30 @@ const Header = () => {
                                         >
                                             <img src={menu} alt="menu" />
                                             <span className="me-5 d-inline-block">
-                                                Danh mục sản phẩm
+                                                Danh mục
                                             </span>
                                         </button>
                                         <ul
                                             className="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                         >
+                                            {(authState?.user !== null || isAuthenticated) && (
+                                                <>
+                                                    <Link className="dropdown-item text-white" to="/my-orders">
+                                                        Đơn hàng của tôi
+                                                    </Link>
+                                                </>
+                                            )}
+                                            {(authState?.user !== null || isAuthenticated) && (
+                                                <>
+                                                    <Link className="dropdown-item text-white" to="/chat">
+                                                        Chat với chúng tôi
+                                                    </Link>
+                                                </>
+                                            )}
                                             <li>
-                                                <Link className="dropdown-item text-white" to="">
-                                                    Action
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link className="dropdown-item text-white" to="">
-                                                    Another action
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link className="dropdown-item text-white" to="">
-                                                    Something else here
+                                                <Link className="dropdown-item text-white" to="/blogs">
+                                                    Blogs
                                                 </Link>
                                             </li>
                                         </ul>
@@ -267,34 +267,10 @@ const Header = () => {
                                             <NavLink className="header-navlinks" to="/product">
                                                 Cửa hàng
                                             </NavLink>
-                                            {(authState?.user !== null || isAuthenticated) && (
-                                                <>
-                                                    |
-                                                    <NavLink className="header-navlinks" to="/my-orders">
-                                                        Đơn hàng
-                                                    </NavLink>
-                                                </>
-                                            )}
                                             |
                                             <NavLink className="header-navlinks" to="/blogs">
-                                                Blog
+                                                Blogs
                                             </NavLink>
-                                            {(authState?.user !== null || isAuthenticated) && (
-                                                <>
-                                                    |
-                                                    <NavLink className="header-chat" onClick={() => handleOpenChat()}>
-                                                        Chat với chúng tôi
-                                                    </NavLink>
-                                                    |
-                                                    <button
-                                                        onClick={handleLogout}
-                                                        className="border border-0 bg-transparent text-white text-uppercase"
-                                                        type="button"
-                                                    >
-                                                        Đăng xuất
-                                                    </button>
-                                                </>
-                                            )}
                                         </div>
                                     </div>
                                     <div className="menu-links">

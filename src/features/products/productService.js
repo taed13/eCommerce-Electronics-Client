@@ -69,9 +69,17 @@ const rateProduct = async (data) => {
     }
 };
 
+const checkProductRatingPossibility = async (id) => {
+    const response = await axios.get(`${base_url}order/check-product-in-order/${id}`, getConfig());
+    if (response.data) {
+        return response.data;
+    }
+};
+
 export const productService = {
     getProducts,
     addToWishlist,
     getSingleProduct,
     rateProduct,
+    checkProductRatingPossibility,
 };
