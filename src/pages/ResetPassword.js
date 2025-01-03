@@ -29,20 +29,26 @@ const ResetPassword = () => {
             confpassword: "",
         },
         validationSchema: resetPasswordSchema,
-        onSubmit: (values) => {
-            dispatch(resetPassword({ token: getToken, password: values.password }));
-            // navigate("/");
+        onSubmit: async (values) => {
+            try {
+                await dispatch(resetPassword({ token: getToken, password: values.password })).unwrap();
+                navigate("/login", { replace: true });
+            } catch (error) {
+                console.error("Đặt lại mật khẩu thất bại:", error);
+                alert("Đặt lại mật khẩu thất bại. Vui lòng kiểm tra lại.");
+            }
         },
     });
+    
     return (
         <>
-            <Meta title={"Reset Password"} />
-            <BreadCrumb title="Reset Password" />
+            <Meta title={"Đặt lại mật khẩu"} />
+            <BreadCrumb title="Đặt lại mật khẩu" />
             <Container class1="login-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">
-                            <h3 className="text-center mb-3">Reset Password</h3>
+                            <h3 className="text-center mb-3">Đặt lại mật khẩu</h3>
                             <form
                                 action=""
                                 onSubmit={formik.handleSubmit}
@@ -73,7 +79,7 @@ const ResetPassword = () => {
                                 </div>
 
                                 <div className="mt-3 d-flex justify-content-center flex-column align-items-center gap-15">
-                                    <button className="button border-0">Reset password</button>
+                                    <button className="button border-0">Đặt lại mật khẩu</button>
                                 </div>
                             </form>
                         </div>

@@ -63,7 +63,7 @@ const Home = () => {
     }, [productState]);
 
     const handleCategoryClick = (categoryQuery) => {
-        dispatch(getAllProducts({ product_category: categoryQuery, sort: "manual" }));
+        dispatch(getAllProducts({ category: categoryQuery, sort: "manual" }));
         navigate(`/product?product_category=${categoryQuery}&sort=manual`);
     };
 
@@ -176,22 +176,20 @@ const Home = () => {
                             {
                                 prodCategoryCount.slice(0, 8).map((category, index) => {
                                     return (
-                                        <>
-                                            <div className="d-flex align-items-center pointer-cursor"
-                                                onClick={() => {
-                                                    handleCategoryClick(category.category);
-                                                    window.scrollTo(0, 0);
-                                                }}
-                                                key={index}>
-                                                <div className="">
-                                                    <h6 className="fw-bold">{category.category}</h6>
-                                                    <p>{category.count} items</p>
-                                                </div>
-                                                <div className="" style={{ width: "100px", height: "100px" }}>
-                                                    <img src={`images/${category.category.toLowerCase()}.png`} className="img-fluid" alt={category.category.toLowerCase()} />
-                                                </div>
+                                        <div className="d-flex align-items-center pointer-cursor"
+                                            onClick={() => {
+                                                handleCategoryClick(category.category);
+                                                window.scrollTo(0, 0);
+                                            }}
+                                            key={index}>
+                                            <div className="">
+                                                <h6 className="fw-bold">{category.category}</h6>
+                                                <p>{category.count} items</p>
                                             </div>
-                                        </>
+                                            <div className="" style={{ width: "100px", height: "100px" }}>
+                                                <img src={`images/${category.category.toLowerCase()}.png`} className="img-fluid" alt={category.category.toLowerCase()} />
+                                            </div>
+                                        </div>
                                     );
                                 })
                             }

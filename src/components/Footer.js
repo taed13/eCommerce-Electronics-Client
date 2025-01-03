@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsFacebook, BsGithub, BsTwitterX, BsInstagram } from "react-icons/bs";
 import newsletter from "../images/newsletter.png";
 import { FaChevronUp } from "react-icons/fa";
+import { getAllProducts } from "../features/products/productSlice";
+import { useDispatch } from "react-redux";
 
 const Footer = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const scrollToTop = (e) => {
         e.preventDefault();
@@ -26,6 +30,11 @@ const Footer = () => {
             window.removeEventListener('scroll', toggleVisibility);
         };
     }, []);
+
+    const handleCategoryClick = (categoryQuery) => {
+        dispatch(getAllProducts({ category: categoryQuery, sort: "manual" }));
+        navigate(`/product?product_category=${categoryQuery}&sort=manual`);
+    };
 
     return (
         <>
@@ -62,8 +71,8 @@ const Footer = () => {
                             <h4 className="text-white mb-4">Liên hệ chúng tôi</h4>
                             <div className="">
                                 <address className="text-white fs-6">
-                                    12 Hàm Nghi, <br /> Đà Nẵng, Việt Nam <br />
-                                    PinCode: 120302
+                                    390 Hoàng Diệu,  <br /> Bình Thuận, Hải Châu, Đà Nẵng <br />
+                                    Pin code: 550000
                                 </address>
                                 <a
                                     href="tel: +84 989 112 223"
@@ -116,18 +125,50 @@ const Footer = () => {
                         <div className="col-3">
                             <h4 className="text-white mb-4">Tài khoản</h4>
                             <div className="footer-link d-flex flex-column ">
-                                <Link className="text-white py-2 mb-1">Về chúng tôi</Link>
+                                <Link to="/contact" className="text-white py-2 mb-1">Về chúng tôi</Link>
                                 <Link className="text-white py-2 mb-1">FAQ</Link>
                                 <Link className="text-white py-2 mb-1" to="/contact" onClick={() => window.scrollTo(0, 0)}>Liên hệ</Link>
                             </div>
                         </div>
                         <div className="col-2">
                             <h4 className="text-white mb-4">Đường dẫn</h4>
-                            <div className="footer-link d-flex flex-column ">
-                                <Link className="text-white py-2 mb-1">Laptops</Link>
-                                <Link className="text-white py-2 mb-1">Tai nghe</Link>
-                                <Link className="text-white py-2 mb-1">Máy tính bảng</Link>
-                                <Link className="text-white py-2 mb-1">Đồng hồ</Link>
+                            <div className="footer-link d-flex flex-column">
+                                <div
+                                    className="text-white py-2 mb-1 pointer-cursor"
+                                    onClick={() => {
+                                        handleCategoryClick("Laptops");
+                                        window.scrollTo(0, 0);
+                                    }}
+                                >
+                                    Laptops
+                                </div>
+                                <div
+                                    className="text-white py-2 mb-1 pointer-cursor"
+                                    onClick={() => {
+                                        handleCategoryClick("Headphones");
+                                        window.scrollTo(0, 0);
+                                    }}
+                                >
+                                    Tai nghe
+                                </div>
+                                <div
+                                    className="text-white py-2 mb-1 pointer-cursor"
+                                    onClick={() => {
+                                        handleCategoryClick("Tablets");
+                                        window.scrollTo(0, 0);
+                                    }}
+                                >
+                                    Máy tính bảng
+                                </div>
+                                <div
+                                    className="text-white py-2 mb-1 pointer-cursor"
+                                    onClick={() => {
+                                        handleCategoryClick("Smartwatches");
+                                        window.scrollTo(0, 0);
+                                    }}
+                                >
+                                    Đồng hồ
+                                </div>
                             </div>
                         </div>
                         {isVisible && (

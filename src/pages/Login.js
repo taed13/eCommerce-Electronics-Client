@@ -21,7 +21,7 @@ const loginSchema = yup.object({
 const getOauthGoogleUrl = () => {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
-        redirect_uri: "https://e-commerce-electronics-server-ruddy.vercel.app/api/oauth2/google",
+        redirect_uri: "http://localhost:5001/api/oauth2/google",
         client_id:
             "538110948524-guvdofrlikf607jsmh53vjaiibrlvvr5.apps.googleusercontent.com",
         access_type: "offline",

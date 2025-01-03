@@ -100,12 +100,12 @@ const Contact = () => {
                     </div>
                     <div className="contact-inner-wrapper d-flex flex-column justify-content-center col-6">
                         <h3 className="contact-title mb-4">Về chúng tôi</h3>
-                        <div>
+                        <div className="w-100">
                             <ul className="ps-0">
                                 <li className="mb-3 d-flex align-items-center gap-15">
                                     <AiOutlineHome className="fs-5" />
                                     <address className="mb-0">
-                                        12 Hàm Nghi, Hải Châu, Đà Nẵng
+                                        390 Hoàng Diệu, Bình Thuận, Hải Châu, Đà Nẵng
                                     </address>
                                 </li>
                                 <li className="mb-3 d-flex gap-15 align-items-center">
