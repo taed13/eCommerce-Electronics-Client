@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, getInfoByEmailAddress } from "../features/user/userSlice";
 import { loginRoute } from "../utils/APIRoutes";
+import { base_url } from "../utils/axiosConfig";
 
 const loginSchema = yup.object({
     email: yup
@@ -21,7 +22,7 @@ const loginSchema = yup.object({
 const getOauthGoogleUrl = () => {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
-        redirect_uri: "http://localhost:5001/api/oauth2/google",
+        redirect_uri: `${base_url}oauth2/google`,
         client_id:
             "538110948524-guvdofrlikf607jsmh53vjaiibrlvvr5.apps.googleusercontent.com",
         access_type: "offline",

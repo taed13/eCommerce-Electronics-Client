@@ -13,7 +13,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./style.css";
 import axios from "axios";
-import { config } from "../../utils/axiosConfig";
+import { getConfig, base_url } from "../../utils/axiosConfig";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { resetCart } from "../../features/user/userSlice";
@@ -38,9 +38,9 @@ const OrderSuccess = () => {
 
             try {
                 const response = await axios.post(
-                    `http://localhost:5001/api/order/stripe-webhook/${sessionId}`,
+                    `${base_url}order/stripe-webhook/${sessionId}`,
                     {},
-                    config
+                    getConfig()
                 );
                 setOrderData(response.data);
             } catch (err) {

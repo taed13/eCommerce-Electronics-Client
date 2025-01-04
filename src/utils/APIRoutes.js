@@ -1,5 +1,6 @@
 // export const host = "http://localhost:1337";
-export const host = "http://localhost:5001";
+import { host } from "./axiosConfig";
+
 export const registerRoute = `${host}/api/user/register`;
 export const loginRoute = `${host}/api/user/login`;
 export const setAvatarRoute = `${host}/api/user/setAvatar`;

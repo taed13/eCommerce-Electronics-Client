@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { config, getConfig } from "../utils/axiosConfig";
+import { base_url, getConfig } from "../utils/axiosConfig";
 import { createOrderAndCheckOrderBefore } from "../features/user/userSlice";
 import {
     applyDiscount,
@@ -203,7 +203,7 @@ const Checkout = () => {
         }
         try {
             const response = await axios.post(
-                "http://localhost:5001/api/user/order/purchase",
+                `${base_url}user/order/purchase`,
                 {
                     items: userCartState,
                     shippingInfo: formik.values.order_shipping,
