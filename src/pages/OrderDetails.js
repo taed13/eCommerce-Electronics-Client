@@ -1,230 +1,153 @@
-// import React, { useEffect, useState } from "react";
-// import {
-//     MDBCard,
-//     MDBCardBody,
-//     MDBCardFooter,
-//     MDBCardHeader,
-//     MDBCardImage,
-//     MDBCol,
-//     MDBContainer,
-//     MDBIcon,
-//     MDBRow,
-//     MDBTypography,
-// } from "mdb-react-ui-kit";
-// import axios from "axios";
-// import { config } from "../../utils/axiosConfig";
-// import { toast } from "react-toastify";
-// import { useSelector, useDispatch } from "react-redux";
-// import { resetCart } from "../../features/user/userSlice";
+import React, { useEffect, useState } from "react";
+import {
+    MDBCard,
+    MDBCardBody,
+    MDBCardFooter,
+    MDBCardHeader,
+    MDBCardImage,
+    MDBCol,
+    MDBContainer,
+    MDBIcon,
+    MDBRow,
+    MDBTypography,
+} from "mdb-react-ui-kit";
+import axios from "axios";
+import { config } from "../utils/axiosConfig";
+import { useSelector, useDispatch } from "react-redux";
+import { getAnOrder, resetCart } from "../features/user/userSlice";
+import { Link, useLocation } from "react-router-dom";
+import Meta from "../components/Meta";
+import BreadCrumb from "../components/BreadCrumb";
 
-// const OrderDetails = () => {
-//     const dispatch = useDispatch();
-//     const [orderData, setOrderData] = useState(null);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
+const OrderSuccess = () => {
+    const location = useLocation();
+    const id = location.pathname.split("/")[2];
+    console.log(id);
+    const dispatch = useDispatch();
+    const orderState = useSelector((state) => state?.auth?.getAnOrder);
 
+    console.log(123123, orderState);
 
-//     useEffect(() => {
-//         const fetchSessionDetails = async () => {
-//             const params = new URLSearchParams(window.location.search);
-//             const sessionId = params.get("session_id");
+    useEffect(() => {
+        dispatch(getAnOrder(id));
+    }, [dispatch, id])
 
-//             if (!sessionId) {
-//                 setError("Missing session ID");
-//                 setLoading(false);
-//                 return;
-//             }
+    return (
+        <>
+            <Meta title={"Electronics | Chi tiết đơn hàng"} />
+            <BreadCrumb title={"Chi tiết đơn hàng"} />
+            <section className="vh-50 gradient-custom-2">
+                <MDBContainer className="py-4 h-100">
+                    <MDBRow className="justify-content-center align-items-center h-100">
+                        <MDBCol  className="d-flex justify-content-center gap-1">
+                            <MDBCard className="card-stepper w-75" style={{ borderRadius: "16px" }}>
+                                <MDBCardHeader className="p-3">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p className="text-muted mb-2">
+                                                Mã đơn hàng:{" "}
+                                                <span className="fw-bold text-body">
+                                                    {orderState?.order_code}
+                                                </span>
+                                            </p>
+                                            <p className="text-muted mb-0">
+                                                Ngày đặt hàng:{" "}
+                                                <span className="fw-bold text-body">
+                                                    {new Date(orderState?.createdAt)?.toLocaleDateString()}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </MDBCardHeader>
+                                <MDBCardBody className="p-3 d-flex flex-column justify-content-between">
+                                    <div>
+                                        {orderState?.order_items?.map((product, index) => (
+                                            <div className="order-item d-flex align-items-center py-2" key={index}>
+                                                <div>
+                                                    <MDBCardImage
+                                                        fluid
+                                                        className="align-self-center"
+                                                        src={product.productId.product_images[0].url}
+                                                        width="100"
+                                                    />
+                                                </div>
+                                                <div className="flex-fill ms-3">
+                                                    <MDBTypography tag="h6" className="bold">
+                                                        <Link to={`/product/${product.productId._id}`}>{product.productId.product_name}</Link>
+                                                    </MDBTypography>
+                                                    <div className="d-flex flex-column gap-1">
+                                                        <div className="row">
+                                                            <span className="col-4 text-muted">
+                                                                <small>Hãng: {product.productId.product_brand[0].title}</small>
+                                                            </span>
+                                                            <span className="col-6 text-muted">
+                                                                <small>Đơn giá: {product.price.toLocaleString()}₫</small>
+                                                            </span>
+                                                        </div>
+                                                        <div className="row">
+                                                            <span className="col-4 text-muted">
+                                                                <small>Số lượng: {product.quantity}</small>
+                                                            </span>
+                                                            <span className="col-6 text-muted d-flex align-items-center gap-1">
+                                                                <small>Màu: {product?.product_colors[0]?.name}</small>
+                                                                <div className="color-container" style={{ background: product?.product_colors[0]?.code }}></div>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </MDBCardBody>
+                            </MDBCard>
+                            <div className="d-flex flex-column gap-1 flex-grow-1 w-25">
+                                <MDBCard className="card-stepper" style={{ borderRadius: "16px" }}>
+                                    <MDBCardBody className="p-3">
+                                        <div className="d-flex flex-column gap-1">
+                                            <MDBTypography tag="h6" className="fw-normal mb-0">
+                                                Địa chỉ nhận hàng
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-normal mb-0">
+                                                {orderState?.order_userId?.name}
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-normal mb-0">
+                                                {orderState?.order_userId?.email}
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-normal mb-0">
+                                                {orderState?.order_shipping?.mobileNo}
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-normal mb-0">
+                                                {orderState?.order_shipping?.street}, {orderState?.order_shipping?.ward.full_name},{" "}
+                                                {orderState?.order_shipping?.district.full_name}, {orderState?.order_shipping?.province.name}
+                                            </MDBTypography>
+                                        </div>
+                                        <hr />
+                                        <div className="d-flex flex-column gap-1">
+                                            <MDBTypography tag="h6" className="fw-normal mb-0">
+                                                Thông tin thanh toán
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-normal mb-0">
+                                                Phương thức thanh toán:{" "}
+                                                {orderState?.paymentInfo.paymentMethod.toUpperCase()}
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-normal mb-0">
+                                                Trạng thái thanh toán:{" "}
+                                                {orderState?.paymentInfo.paymentStatus.charAt(0).toUpperCase() + orderState?.paymentInfo.paymentStatus.slice(1)}
+                                            </MDBTypography>
+                                            <MDBTypography tag="span" className="text-muted fw-bold mb-0">
+                                                Tiền đã thanh toán:{" "}
+                                                {(orderState?.checkoutInfo.totalPrice)?.toLocaleString()}₫
+                                            </MDBTypography>
+                                        </div>
+                                    </MDBCardBody>
+                                </MDBCard>
+                            </div>
+                        </MDBCol>
+                    </MDBRow>
+                </MDBContainer>
+            </section>
+        </>
+    );
+};
 
-//             try {
-//                 const response = await axios.post(
-//                     `https://e-commerce-electronics-server-ruddy.vercel.app/api/order/stripe-webhook/${sessionId}`,
-//                     {},
-//                     config
-//                 );
-//                 setOrderData(response.data);
-//             } catch (err) {
-//                 setError("Failed to fetch order details");
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchSessionDetails();
-//     }, []);
-
-//     useEffect(() => {
-//         if (orderData?.session?.payment_status === "paid") {
-//             toast.success("Payment successful");
-//             dispatch(resetCart());
-//         }
-//     }, [orderData]);
-
-//     if (loading) return <p className="text-center py-5">Loading...</p>;
-//     if (error) return <p className="text-center text-danger py-5">{error}</p>;
-
-//     return (
-//         <section className="vh-50 gradient-custom-2">
-//             <MDBContainer className="py-4 h-100">
-//                 <MDBRow className="justify-content-center align-items-center h-100">
-//                     <MDBCol className="d-flex justify-content-center gap-1">
-//                         <div className="d-flex flex-column gap-1 flex-grow-1 w-50">
-//                             <MDBCard
-//                                 className="card-stepper"
-//                                 style={{ borderRadius: "16px" }}
-//                             >
-//                                 <MDBCardBody className="p-3">
-//                                     <div className="d-flex flex-column gap-1">
-//                                         <MDBTypography tag="h5" className="fw-normal mb-0">
-//                                             Địa chỉ nhận hàng
-//                                         </MDBTypography>
-//                                         <MDBTypography
-//                                             tag="h6"
-//                                             className="text-muted fw-normal mb-0"
-//                                         >
-//                                             {orderData.session.customer_details.name}
-//                                         </MDBTypography>
-//                                         <MDBTypography
-//                                             tag="h6"
-//                                             className="text-muted fw-normal mb-0"
-//                                         >
-//                                             {orderData.session.customer_details.email}
-//                                         </MDBTypography>
-//                                         {orderData.session.metadata &&
-//                                             orderData.session.metadata.shippingInfo &&
-//                                             (() => {
-//                                                 const shippingInfo = JSON.parse(
-//                                                     orderData.session.metadata.shippingInfo
-//                                                 );
-//                                                 return (
-//                                                     <>
-//                                                         <MDBTypography
-//                                                             tag="h6"
-//                                                             className="text-muted fw-normal mb-0"
-//                                                         >
-//                                                             {shippingInfo.mobileNo}
-//                                                         </MDBTypography>
-//                                                         <MDBTypography
-//                                                             tag="h6"
-//                                                             className="text-muted fw-normal mb-0"
-//                                                         >
-//                                                             {shippingInfo.street}, {shippingInfo.ward},{" "}
-//                                                             {shippingInfo.district}, {shippingInfo.province}
-//                                                         </MDBTypography>
-//                                                     </>
-//                                                 );
-//                                             })()}
-//                                     </div>
-//                                     <hr />
-//                                     <div className="d-flex flex-column gap-1">
-//                                         <MDBTypography tag="h5" className="fw-normal mb-0">
-//                                             Thông tin thanh toán
-//                                         </MDBTypography>
-//                                         <MDBTypography
-//                                             tag="h6"
-//                                             className="text-muted fw-normal mb-0"
-//                                         >
-//                                             Phương thức thanh toán{" "}
-//                                             {orderData.session.payment_method_types[0].toUpperCase()}
-//                                         </MDBTypography>
-//                                         <MDBTypography
-//                                             tag="h6"
-//                                             className="text-muted fw-normal mb-0"
-//                                         >
-//                                             Trạng thái thanh toán{" "}
-//                                             {orderData.session.payment_status
-//                                                 .charAt(0)
-//                                                 .toUpperCase() +
-//                                                 orderData.session.payment_status.slice(1)}
-//                                         </MDBTypography>
-//                                         <MDBTypography
-//                                             tag="h6"
-//                                             className="text-muted fw-normal mb-0"
-//                                         >
-//                                             Tiền đã thanh toán{" "}
-//                                             {(orderData.session.amount_total).toLocaleString()}{" "}
-//                                             {orderData.session.currency.toUpperCase()}
-//                                         </MDBTypography>
-//                                     </div>
-//                                 </MDBCardBody>
-//                             </MDBCard>
-//                         </div>
-
-//                         <MDBCard
-//                             className="card-stepper w-75"
-//                             style={{ borderRadius: "16px" }}
-//                         >
-//                             <MDBCardHeader className="p-3">
-//                                 <div className="d-flex justify-content-between align-items-center">
-//                                     <div>
-//                                         <p className="text-muted mb-2">
-//                                             Mã đơn hàng{" "}
-//                                             <span className="fw-bold text-body">
-//                                                 {orderData.order.order_code}
-//                                             </span>
-//                                         </p>
-//                                         <p className="text-muted mb-0">
-//                                             Ngày đặt hàng{" "}
-//                                             <span className="fw-bold text-body">
-//                                                 {new Date(
-//                                                     orderData.session.created * 1000
-//                                                 ).toLocaleDateString()}
-//                                             </span>
-//                                         </p>
-//                                     </div>
-//                                     <div>
-//                                         <MDBTypography tag="h6" className="mb-0">
-//                                             {" "}
-//                                             <a href="/my-orders">Chi tiết đơn hàng</a>
-//                                         </MDBTypography>
-//                                     </div>
-//                                 </div>
-//                             </MDBCardHeader>
-//                             <MDBCardBody className="p-3 d-flex flex-column justify-content-between">
-//                                 <div>
-//                                     {orderData.products.map((product, index) => (
-//                                         <div className="d-flex flex-row mb-2" key={index}>
-//                                             <div>
-//                                                 <MDBCardImage
-//                                                     fluid
-//                                                     className="align-self-center"
-//                                                     src={product.image}
-//                                                     width="100"
-//                                                 />
-//                                             </div>
-//                                             <div className="flex-fill ms-3">
-//                                                 <MDBTypography tag="h5" className="bold">
-//                                                     {product.name}
-//                                                 </MDBTypography>
-//                                                 <p className="text-muted">Qty: {product.quantity}</p>
-//                                             </div>
-//                                         </div>
-//                                     ))}
-//                                 </div>
-//                                 <div>
-//                                     <ul
-//                                         id="progressbar-1"
-//                                         className="mx-0 mt-0 px-0 pt-0 pb-4"
-//                                     >
-//                                         <li className="step0 active" id="step1">
-//                                             <span style={{ marginLeft: "22px", marginTop: "12px" }}>
-//                                                 PLACED
-//                                             </span>
-//                                         </li>
-//                                         <li className="step0 active text-center" id="step2">
-//                                             <span>SHIPPED</span>
-//                                         </li>
-//                                         <li className="step0 text-muted text-end" id="step3">
-//                                             <span style={{ marginRight: "22px" }}>DELIVERED</span>
-//                                         </li>
-//                                     </ul>
-//                                 </div>
-//                             </MDBCardBody>
-//                         </MDBCard>
-//                     </MDBCol>
-//                 </MDBRow>
-//             </MDBContainer>
-//         </section>
-//     );
-// };
-
-// export default OrderDetails;
+export default OrderSuccess;

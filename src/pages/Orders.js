@@ -33,7 +33,7 @@ const Orders = () => {
                                             <p><strong>Mã đơn hàng:</strong></p>
                                             <p>{order?.order_code}</p>
                                         </div>
-                                        <Link to=''>Chi tiết đơn hàng</Link>
+                                        <Link to={`/order/${order._id}`}>Chi tiết đơn hàng</Link>
                                     </div>
                                     <div className="col-12 d-flex gap-2 mb-1">
                                         <p><strong>Tổng giá đơn hàng:</strong></p>

@@ -100,6 +100,13 @@ const getUserOrders = async () => {
     }
 };
 
+const getAnOrder = async (orderId) => {
+    const response = await axios.get(`${base_url}order/${orderId}`, getConfig());
+    if (response.data) {
+        return response.data;
+    }
+}
+
 const updateUser = async (userData) => {
     const response = await axios.put(
         `${base_url}user/edit-user`,
@@ -173,6 +180,7 @@ export const authService = {
     updateProductFromCart,
     createOrder,
     getUserOrders,
+    getAnOrder,
     updateUser,
     forgotPassToken,
     resetPass,

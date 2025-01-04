@@ -26,6 +26,7 @@ const Header = () => {
     const [productOtp, setProductOtp] = useState([]);
     const [total, setTotal] = useState(0);
     const [paginate, setPaginate] = useState(true);
+    const [isFixed, setIsFixed] = useState(false);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
@@ -84,6 +85,21 @@ const Header = () => {
         setProductOtp(data);
     }, [productState]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.pageYOffset > 90) {
+                setIsFixed(true);
+            } else {
+                setIsFixed(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
     const handleLogout = () => {
         localStorage.clear();
         navigate("/");
@@ -102,7 +118,7 @@ const Header = () => {
 
     return (
         <>
-            <header className="header-upper py-3">
+            <header className={`header-upper py-3 ${isFixed ? "fixed" : ""}`}>
                 <div className="container-xxl">
                     <div className="row align-items-center">
                         <div className="col-2 d-flex align-items-end">
@@ -136,28 +152,7 @@ const Header = () => {
                         </div>
                         <div className="col-4">
                             <div className="header-upper-links d-flex align-items-center justify-content-between">
-                                <div>
-                                    {/* <Link
-                                        to="/compare-product"
-                                        className="d-flex align-items-center gap-10 text-white"
-                                    >
-                                        <img src={compare} alt="compare" />
-                                        <p className="mb-0">
-                                            Compare <br /> Products
-                                        </p>
-                                    </Link> */}
-                                </div>
-                                {/* <div>
-                                    <Link
-                                        to="/wishlist"
-                                        className="d-flex align-items-center gap-10 text-white"
-                                    >
-                                        <img src={wishlist} alt="wishlist" />
-                                        <p className="mb-0">
-                                            Danh sách <br /> yêu thích
-                                        </p>
-                                    </Link>
-                                </div> */}
+                                <div></div>
                                 <div>
                                     <Link
                                         to={(authState?.user !== null || authState?.userInfo !== null) ? "/my-profile" : "/login"}
@@ -193,11 +188,7 @@ const Header = () => {
                                     </Link>
                                 </div>
                                 <div>
-                                    <a
-                                        href="#"
-                                        onClick={handleCartClick}
-                                        className="d-flex align-items-center gap-10 text-white"
-                                    >
+                                    <a href="#" onClick={handleCartClick} className="d-flex align-items-center gap-10 text-white">
                                         <img src={cart} alt="cart" />
                                         <div className="d-flex flex-column">
                                             <span className="badge bg-white text-dark">
@@ -212,7 +203,7 @@ const Header = () => {
                     </div>
                 </div>
             </header>
-            <header className="header-bottom py-3">
+            <header className={`header-bottom py-3 ${isFixed ? "fixed" : ""}`}>
                 <div className="container-xxl">
                     <div className="row">
                         <div className="col-12">

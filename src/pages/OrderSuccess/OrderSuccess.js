@@ -74,26 +74,26 @@ const OrderSuccess = () => {
                                 style={{ borderRadius: "16px" }}
                             >
                                 <MDBCardBody className="p-3">
-                                    <MDBTypography tag="h5" className="fw-normal mb-1">
+                                    <MDBTypography tag="h6" className="fw-normal mb-1">
                                         Cảm ơn bạn đã mua hàng!
                                     </MDBTypography>
-                                    <MDBTypography tag="h6" className="text-muted fw-normal mb-0">
+                                    <MDBTypography tag="span" className="text-muted fw-normal mb-0">
                                         Bạn cũng nhận email chi tiết về đơn hàng này và chúng tôi sẽ
                                         thông báo cho bạn khi hàng đã được giao.
                                     </MDBTypography>
                                     <hr />
                                     <div className="d-flex flex-column gap-1">
-                                        <MDBTypography tag="h5" className="fw-normal mb-0">
+                                        <MDBTypography tag="h6" className="fw-normal mb-0">
                                             Địa chỉ nhận hàng
                                         </MDBTypography>
                                         <MDBTypography
-                                            tag="h6"
+                                            tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
                                             {orderData.session.customer_details.name}
                                         </MDBTypography>
                                         <MDBTypography
-                                            tag="h6"
+                                            tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
                                             {orderData.session.customer_details.email}
@@ -107,13 +107,13 @@ const OrderSuccess = () => {
                                                 return (
                                                     <>
                                                         <MDBTypography
-                                                            tag="h6"
+                                                            tag="span"
                                                             className="text-muted fw-normal mb-0"
                                                         >
                                                             {shippingInfo.mobileNo}
                                                         </MDBTypography>
                                                         <MDBTypography
-                                                            tag="h6"
+                                                            tag="span"
                                                             className="text-muted fw-normal mb-0"
                                                         >
                                                             {shippingInfo.street}, {shippingInfo.ward},{" "}
@@ -125,18 +125,18 @@ const OrderSuccess = () => {
                                     </div>
                                     <hr />
                                     <div className="d-flex flex-column gap-1">
-                                        <MDBTypography tag="h5" className="fw-normal mb-0">
+                                        <MDBTypography tag="h6" className="fw-normal mb-0">
                                             Thông tin thanh toán
                                         </MDBTypography>
                                         <MDBTypography
-                                            tag="h6"
+                                            tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
                                             Phương thức thanh toán{" "}
                                             {orderData.session.payment_method_types[0].toUpperCase()}
                                         </MDBTypography>
                                         <MDBTypography
-                                            tag="h6"
+                                            tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
                                             Trạng thái thanh toán{" "}
@@ -146,7 +146,7 @@ const OrderSuccess = () => {
                                                 orderData.session.payment_status.slice(1)}
                                         </MDBTypography>
                                         <MDBTypography
-                                            tag="h6"
+                                            tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
                                             Tiền đã thanh toán{" "}
@@ -166,13 +166,13 @@ const OrderSuccess = () => {
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
                                         <p className="text-muted mb-2">
-                                            Mã đơn hàng{" "}
+                                            Mã đơn hàng:{" "}
                                             <span className="fw-bold text-body">
                                                 {orderData.order.order_code}
                                             </span>
                                         </p>
                                         <p className="text-muted mb-0">
-                                            Ngày đặt hàng{" "}
+                                            Ngày đặt hàng:{" "}
                                             <span className="fw-bold text-body">
                                                 {new Date(
                                                     orderData.session.created * 1000
@@ -180,18 +180,12 @@ const OrderSuccess = () => {
                                             </span>
                                         </p>
                                     </div>
-                                    <div>
-                                        <MDBTypography tag="h6" className="mb-0">
-                                            {" "}
-                                            <a href="/my-orders">Chi tiết đơn hàng</a>
-                                        </MDBTypography>
-                                    </div>
                                 </div>
                             </MDBCardHeader>
                             <MDBCardBody className="p-3 d-flex flex-column justify-content-between">
                                 <div>
                                     {orderData.products.map((product, index) => (
-                                        <div className="d-flex flex-row mb-2" key={index}>
+                                        <div className="d-flex align-items-center mb-2" key={index}>
                                             <div>
                                                 <MDBCardImage
                                                     fluid
@@ -201,10 +195,14 @@ const OrderSuccess = () => {
                                                 />
                                             </div>
                                             <div className="flex-fill ms-3">
-                                                <MDBTypography tag="h5" className="bold">
+                                                <MDBTypography tag="h6" className="bold">
                                                     {product.name}
                                                 </MDBTypography>
-                                                <p className="text-muted">Qty: {product.quantity}</p>
+                                                <span className="text-muted">
+                                                    <small>
+                                                        Số lượng: {product.quantity}
+                                                    </small>
+                                                </span>
                                             </div>
                                         </div>
                                     ))}

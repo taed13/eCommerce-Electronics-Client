@@ -60,6 +60,7 @@ const SingleProduct = () => {
         dispatch(getAllProducts());
         dispatch(getOrders());
         dispatch(checkProductRatingPossibility(getProductId));
+        window.scrollTo(0, 0);
     }, [dispatch, getProductId]);
 
     useEffect(() => {

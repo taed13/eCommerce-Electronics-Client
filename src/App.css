@@ -1117,4 +1117,25 @@ footer .input-group-text {
     border-top: 1px dashed #bbb;
 }
 
+.color-container {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
+
+.order-item:not(:first-child) {
+    border-top: 1px dashed #ccc;
+}
+
+.header-upper.fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.header-bottom.fixed {
+    margin-top: 60px;
+}
+
 /* Order History Ends Here */

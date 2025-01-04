@@ -8,6 +8,8 @@ import Contacts from "../../components/Contacts";
 import Welcome from "../../components/Welcome";
 import ChatContainer from "../../components/ChatContainer";
 import { io } from "socket.io-client";
+import Meta from "../../components/Meta";
+import BreadCrumb from "../../components/BreadCrumb";
 
 const Chat = () => {
     const socket = useRef();
@@ -62,25 +64,29 @@ const Chat = () => {
     console.log('createUser:::', currentUser?.isAvatarImageSet);
 
     return (
-        <Container>
-            <div className="container">
-                <Contacts
-                    contacts={contacts}
-                    currentUser={currentUser}
-                    changeChat={handleChatChange}
-                    socket={socket}
-                />
-                {isLoaded && currentChat === undefined ? (
-                    <Welcome currentUser={currentUser} />
-                ) : (
-                    <ChatContainer
-                        currentChat={currentChat}
+        <>
+            <Meta title={"Electronics | Chat với chúng tôi "} />
+            <BreadCrumb title="Electronics Talks" />
+            <Container>
+                <div className="container">
+                    <Contacts
+                        contacts={contacts}
                         currentUser={currentUser}
+                        changeChat={handleChatChange}
                         socket={socket}
                     />
-                )}
-            </div>
-        </Container>
+                    {isLoaded && currentChat === undefined ? (
+                        <Welcome currentUser={currentUser} />
+                    ) : (
+                        <ChatContainer
+                            currentChat={currentChat}
+                            currentUser={currentUser}
+                            socket={socket}
+                        />
+                    )}
+                </div>
+            </Container>
+        </>
     );
 }
 
@@ -95,8 +101,8 @@ const Container = styled.div`
     background-color: white;
     .container {
         padding: 0px;
-        height: 85vh;
-        width: 85vw;
+        height: 95vh;
+        width: 100vw;
         background-color: white;
         display: grid;
         gap: 15px;
