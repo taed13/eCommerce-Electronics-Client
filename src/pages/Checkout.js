@@ -143,6 +143,9 @@ const Checkout = () => {
             _id: item._id,
         })) || [];
 
+    const estimatedDeliveryDate = new Date();
+    estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + 7);
+
     const prepareOrderData = {
         discountCode: discountCode.trim() || null,
         cartTotal: subTotal,
@@ -169,7 +172,7 @@ const Checkout = () => {
             feeShip: shippingFee ?? 0,
             discountApplied: appliedDiscount?.discount_id || null,
         },
-        estimatedDeliveryDate: new Date(),
+        estimatedDeliveryDate: estimatedDeliveryDate,
         // order_status: "Ordered",
         trackingNumber: `TRK${Math.floor(Math.random() * 1000000)}`,
     };
@@ -213,7 +216,7 @@ const Checkout = () => {
             );
 
             console.log('---->>>', response.data);
-            
+
             if (response.data.url) {
                 window.location = response.data.url;
             }

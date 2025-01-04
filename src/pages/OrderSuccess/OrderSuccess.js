@@ -180,6 +180,14 @@ const OrderSuccess = () => {
                                             </span>
                                         </p>
                                     </div>
+                                    <div>
+                                        <MDBTypography tag="h6" className="mb-0">
+                                            {" "}
+                                            <a href={`/order/${orderData.order.id}`}>
+                                                Chi tiết đơn hàng
+                                            </a>
+                                        </MDBTypography>
+                                    </div>
                                 </div>
                             </MDBCardHeader>
                             <MDBCardBody className="p-3 d-flex flex-column justify-content-between">
