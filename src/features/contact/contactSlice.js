@@ -47,7 +47,6 @@ export const contactSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                console.log(action.payload);
                 state.contact = action.payload;
                 if (state.isSuccess === true) {
                     toast.success("Đơn yêu cầu của bạn đã được gửi đi");

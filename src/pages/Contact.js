@@ -57,7 +57,6 @@ const Contact = () => {
                 queryData.productId = productIdForSubmitting;
             }
             dispatch(createQuery(queryData));
-            dispatch(resetState());
             formik.resetForm();
             navigate("/");
             window.scrollTo(0, 0);
