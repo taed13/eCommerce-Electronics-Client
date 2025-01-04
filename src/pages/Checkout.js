@@ -212,6 +212,8 @@ const Checkout = () => {
                 getConfig()
             );
 
+            console.log('---->>>', response.data);
+            
             if (response.data.url) {
                 window.location = response.data.url;
             }
