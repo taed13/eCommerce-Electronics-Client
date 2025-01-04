@@ -170,7 +170,7 @@ const Checkout = () => {
             discountApplied: appliedDiscount?.discount_id || null,
         },
         estimatedDeliveryDate: new Date(),
-        order_status: "Ordered",
+        // order_status: "Ordered",
         trackingNumber: `TRK${Math.floor(Math.random() * 1000000)}`,
     };
 

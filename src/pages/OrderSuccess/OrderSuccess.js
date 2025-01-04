@@ -55,7 +55,7 @@ const OrderSuccess = () => {
 
     useEffect(() => {
         if (orderData?.session?.payment_status === "paid") {
-            toast.success("Payment successful");
+            toast.success("Thanh toán thành công");
             dispatch(resetCart());
         }
     }, [orderData]);
