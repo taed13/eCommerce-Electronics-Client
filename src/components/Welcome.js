@@ -9,7 +9,7 @@ export default function Welcome({ currentUser }) {
       <Container>
         <IoChatbubblesOutline className="logo-chat" />
         {
-          currentUser?.username ? <h1>Xin chào, <span>{currentUser?.username}!</span></h1> : <h1>Xin chào!</h1>
+          currentUser?.name ? <h1>Xin chào, <span>{currentUser?.name}!</span></h1> : <h1>Xin chào!</h1>
         }
       </Container>
     </>

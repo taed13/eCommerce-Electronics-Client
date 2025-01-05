@@ -322,6 +322,11 @@ const SingleProduct = () => {
                                                     style={{ width: "70px" }}
                                                     id=""
                                                     onChange={(e) => {
+                                                        if (e.target.value === "") {
+                                                            setQuantity("");
+                                                            return;
+                                                        }
+
                                                         let value = parseInt(e.target.value, 10);
                                                         if (isNaN(value)) value = 1;
                                                         if (value < 1) value = 1;

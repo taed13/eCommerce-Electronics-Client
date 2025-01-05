@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { base_url, host } from "../../utils/axiosConfig";
+import { base_url, getConfig, host } from "../../utils/axiosConfig";
 import { allAdminsRoute } from "../../utils/APIRoutes";
 import Contacts from "../../components/Contacts";
 import Welcome from "../../components/Welcome";
