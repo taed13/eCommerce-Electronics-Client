@@ -23,7 +23,7 @@ const OrderSuccess = () => {
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const checkoutInfo = JSON.parse(orderData?.session.metadata?.checkoutInfo || "{}");
 
     useEffect(() => {
         const fetchSessionDetails = async () => {
@@ -60,6 +60,8 @@ const OrderSuccess = () => {
         }
     }, [orderData]);
 
+    console.log('aaaaa', orderData?.session);
+
     if (loading) return <p className="text-center py-5">Loading...</p>;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
@@ -90,19 +92,19 @@ const OrderSuccess = () => {
                                             tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
-                                            {orderData.session.customer_details.name}
+                                            {orderData?.session.customer_details.name}
                                         </MDBTypography>
                                         <MDBTypography
                                             tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
-                                            {orderData.session.customer_details.email}
+                                            {orderData?.session.customer_details.email}
                                         </MDBTypography>
-                                        {orderData.session.metadata &&
-                                            orderData.session.metadata.shippingInfo &&
+                                        {orderData?.session.metadata &&
+                                            orderData?.session.metadata.shippingInfo &&
                                             (() => {
                                                 const shippingInfo = JSON.parse(
-                                                    orderData.session.metadata.shippingInfo
+                                                    orderData?.session.metadata.shippingInfo
                                                 );
                                                 return (
                                                     <>
@@ -133,25 +135,29 @@ const OrderSuccess = () => {
                                             className="text-muted fw-normal mb-0"
                                         >
                                             Phương thức thanh toán{" "}
-                                            {orderData.session.payment_method_types[0].toUpperCase()}
+                                            {orderData?.session.payment_method_types[0].toUpperCase()}
                                         </MDBTypography>
                                         <MDBTypography
                                             tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
                                             Trạng thái thanh toán{" "}
-                                            {orderData.session.payment_status
+                                            {orderData?.session.payment_status
                                                 .charAt(0)
                                                 .toUpperCase() +
-                                                orderData.session.payment_status.slice(1)}
+                                                orderData?.session.payment_status.slice(1)}
                                         </MDBTypography>
                                         <MDBTypography
                                             tag="span"
                                             className="text-muted fw-normal mb-0"
                                         >
-                                            Tiền đã thanh toán{" "}
-                                            {(orderData.session.amount_total).toLocaleString()}{" "}
-                                            {orderData.session.currency.toUpperCase()}
+                                            Tổng giá: {checkoutInfo?.totalPrice ? `${Number(checkoutInfo?.totalPrice).toLocaleString("vi-VN")} đ` : "Không có thông tin"}
+                                        </MDBTypography>
+                                        <MDBTypography
+                                            tag="span"
+                                            className="text-muted fw-normal mb-0"
+                                        >
+                                            Tổng giá sau giảm giá: {checkoutInfo?.totalPriceAfterDiscount ? `${Number(checkoutInfo?.totalPriceAfterDiscount).toLocaleString("vi-VN")} đ` : "Không có thông tin"}
                                         </MDBTypography>
                                     </div>
                                 </MDBCardBody>
@@ -168,14 +174,14 @@ const OrderSuccess = () => {
                                         <p className="text-muted mb-2">
                                             Mã đơn hàng:{" "}
                                             <span className="fw-bold text-body">
-                                                {orderData.order.order_code}
+                                                {orderData?.order.order_code}
                                             </span>
                                         </p>
                                         <p className="text-muted mb-0">
                                             Ngày đặt hàng:{" "}
                                             <span className="fw-bold text-body">
                                                 {new Date(
-                                                    orderData.session.created * 1000
+                                                    orderData?.session.created * 1000
                                                 ).toLocaleDateString()}
                                             </span>
                                         </p>
@@ -183,7 +189,7 @@ const OrderSuccess = () => {
                                     <div>
                                         <MDBTypography tag="h6" className="mb-0">
                                             {" "}
-                                            <a href={`/order/${orderData.order.id}`}>
+                                            <a href={`/order/${orderData?.order.id}`}>
                                                 Chi tiết đơn hàng
                                             </a>
                                         </MDBTypography>
@@ -192,7 +198,7 @@ const OrderSuccess = () => {
                             </MDBCardHeader>
                             <MDBCardBody className="p-3 d-flex flex-column justify-content-between">
                                 <div>
-                                    {orderData.products.map((product, index) => (
+                                    {orderData?.products.map((product, index) => (
                                         <div className="d-flex align-items-center mb-2" key={index}>
                                             <div>
                                                 <MDBCardImage

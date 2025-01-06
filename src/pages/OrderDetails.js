@@ -39,7 +39,7 @@ const OrderSuccess = () => {
             <section className="vh-50 gradient-custom-2">
                 <MDBContainer className="py-4 h-100">
                     <MDBRow className="justify-content-center align-items-center h-100">
-                        <MDBCol  className="d-flex justify-content-center gap-1">
+                        <MDBCol className="d-flex justify-content-center gap-1">
                             <MDBCard className="card-stepper w-75" style={{ borderRadius: "16px" }}>
                                 <MDBCardHeader className="p-3">
                                     <div className="d-flex justify-content-between align-items-center">
@@ -136,7 +136,7 @@ const OrderSuccess = () => {
                                             </MDBTypography>
                                             <MDBTypography tag="span" className="text-muted fw-bold mb-0">
                                                 Tiền đã thanh toán:{" "}
-                                                {(orderState?.checkoutInfo.totalPrice)?.toLocaleString()}₫
+                                                {((orderState?.checkoutInfo?.totalPriceAfterDiscount || 0) + (orderState?.checkoutInfo?.feeShip || 0)).toLocaleString("vi-VN")}₫
                                             </MDBTypography>
                                         </div>
                                     </MDBCardBody>

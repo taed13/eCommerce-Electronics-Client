@@ -208,8 +208,6 @@ const Checkout = () => {
             const response = await axios.post(
                 `${base_url}user/order/purchase`,
                 {
-                    items: userCartState,
-                    shippingInfo: formik.values.order_shipping,
                     orderId: order._id,
                 },
                 getConfig()
