@@ -182,7 +182,18 @@ export const getUserInfoById = createAsyncThunk(
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }
-)
+);
+
+export const changePassword = createAsyncThunk(
+    "user/password/change",
+    async (passwordData, thunkAPI) => {
+        try {
+            return await authService.changeUserPassword(passwordData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response?.data || "Có lỗi xảy ra.");
+        }
+    }
+);
 
 const initialState = {
     user: getCustomerFromLocalStorage,
@@ -516,6 +527,25 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
+            })
+            .addCase(changePassword.pending, (state) => {
+                state.isLoading = true;
+                state.isSuccess = false;
+                state.isError = false;
+                state.message = "";
+            })
+            .addCase(changePassword.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                toast.success(action.payload.message || "Đổi mật khẩu thành công!");
+            })
+            .addCase(changePassword.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload?.message || "Lỗi đổi mật khẩu!";
+                toast.error(state.message);
             });
     },
 });

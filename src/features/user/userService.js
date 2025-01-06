@@ -170,6 +170,17 @@ const getUserInfoById = async (id) => {
     }
 }
 
+const changeUserPassword = async (passwordData) => {
+    const response = await axios.put(
+        `${base_url}user/password`,
+        passwordData,
+        getConfig()
+    );
+    if (response.data) {
+        return response.data;
+    }
+};
+
 export const authService = {
     register,
     login,
@@ -187,5 +198,6 @@ export const authService = {
     logout,
     getUserInfoByEmail,
     createOrderAndCheckOrderBefore,
-    getUserInfoById
+    getUserInfoById,
+    changeUserPassword,
 };
