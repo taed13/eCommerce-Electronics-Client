@@ -66,7 +66,6 @@ const Chat = () => {
     return (
         <>
             <Meta title={"Electronics | Chat với chúng tôi "} />
-            <BreadCrumb title="Electronics Talks" />
             <Container>
                 <div className="container">
                     <Contacts

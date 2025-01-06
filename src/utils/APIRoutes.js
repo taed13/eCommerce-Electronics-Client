@@ -1,4 +1,3 @@
-// export const host = "http://localhost:1337";
 import { host } from "./axiosConfig";
 
 export const registerRoute = `${host}/api/user/register`;

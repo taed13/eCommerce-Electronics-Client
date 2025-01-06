@@ -82,13 +82,14 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
           <div className="chat-header">
             <div className="user-details">
               <div className="avatar">
-                {
-                  currentChat.avatarImage ?
-                    <img
-                      src={`data:image/svg+xml;base64,${currentChat.avatarImage}`}
-                      alt="avatar"
-                    /> : <></>
-                }
+                <div className="avatar-placeholder">
+                  <span>
+                    {currentChat?.name
+                      ?.trim()
+                      ?.split(" ")
+                      ?.reduce((prev, current) => `${prev}${current[0].toUpperCase()}`, "") || "?"}
+                  </span>
+                </div>
               </div>
               <div className="username">
                 <span className="fs-5 text-white">{currentChat?.name} - {currentChat?.email}</span>
@@ -193,5 +194,30 @@ const Container = styled.div`
         background-color: #ededed;
       }
     }
+  }
+  .avatar-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FEBD68;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .avatar-not-found {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 `;

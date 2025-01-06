@@ -4,9 +4,6 @@ import Logo from "../assets/logo.svg";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
 const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
-  console.log("contacts:::", contacts);
-  console.log("currentUser:::", currentUser);
-  console.log("changeChat:::", changeChat);
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -58,12 +55,11 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
         });
       });
 
-      // Cleanup to remove event listener on component unmount
       return () => {
         socket.current.off("contact-updated");
       };
     }
-  }, [socket]); // Không cần phụ thuộc vào `contacts`, chỉ cần lắng nghe socket 
+  }, [socket]);
 
 
   const formatTimeAgo = (lastUpdated) => {
@@ -119,13 +115,14 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
                   }}
                 >
                   <div className="avatar">
-                    {
-                      contact.avatarImage ?
-                        <img
-                          src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                          alt="avatar"
-                        /> : <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' className="avatar-not-found" alt="avatar" />
-                    }
+                    <div className="avatar-placeholder">
+                      <span>
+                        {contact?.name
+                          ?.trim()
+                          ?.split(" ")
+                          ?.reduce((prev, current) => `${prev}${current[0].toUpperCase()}`, "") || "?"}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="username">
@@ -144,10 +141,17 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
 
           <div className="current-user">
             <div className="avatar">
-              <img
-                src={`data:image/svg+xml;base64,${currentUserImage}`}
-                alt="avatar"
-              />
+              <div className="avatar-placeholder">
+                <span>
+                  {currentUserName
+                    ? currentUserName
+                      .trim()
+                      .split(/\s+/)
+                      .map((word) => word[0].toUpperCase())
+                      .join("")
+                    : "?"}
+                </span>
+              </div>
             </div>
             <div className="username">
               <span className="fs-5 text-white">{currentUserName}</span>
@@ -271,5 +275,30 @@ const Container = styled.div`
         }
       }
     }
+  }
+  .avatar-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FEBD68;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .avatar-not-found {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 `;
