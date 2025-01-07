@@ -27,7 +27,6 @@ import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import OrderSuccess from "./pages/OrderSuccess/OrderSuccess";
 import Chat from "./pages/Chat/Chat";
-import SetAvatar from "./pages/SetAvatar";
 import OrderDetails from "./pages/OrderDetails";
 import AddAddress from "./pages/AddAddress";
 import EditAddress from "./pages/EditAddress";
@@ -122,14 +121,6 @@ function App() {
                         element={
                             <PrivateRoutes>
                                 <Chat />
-                            </PrivateRoutes>
-                        }
-                    />
-                    <Route
-                        path="setAvatar"
-                        element={
-                            <PrivateRoutes>
-                                <SetAvatar />
                             </PrivateRoutes>
                         }
                     />

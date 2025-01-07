@@ -41,16 +41,11 @@ const Chat = () => {
     useEffect(() => {
         const fetchContacts = async () => {
             if (currentUser) {
-                if (currentUser.isAvatarImageSet) {
-                    try {
-                        const data = await axios.get(`${allAdminsRoute}/${currentUser._id}`);
-                        console.log('data:::', data.data);
-                        setContacts(data.data);
-                    } catch (error) {
-                        console.error("Error fetching contacts:", error);
-                    }
-                } else {
-                    navigate("/setAvatar");
+                try {
+                    const data = await axios.get(`${allAdminsRoute}/${currentUser._id}`);
+                    setContacts(data.data);
+                } catch (error) {
+                    console.error("Error fetching contacts:", error);
                 }
             }
         };
