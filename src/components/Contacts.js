@@ -4,7 +4,6 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 
 const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
-  const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
   const [currentTime, setCurrentTime] = useState(Date.now());
   const [updatedContacts, setUpdatedContacts] = useState(contacts);
@@ -20,7 +19,6 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
   useEffect(() => {
     if (currentUser) {
       setCurrentUserName(currentUser?.name);
-      setCurrentUserImage(currentUser?.avatarImage);
     }
   }, [currentUser]);
 
@@ -92,7 +90,7 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
   console.log('contacts:::', contacts);
   return (
     <>
-      {currentUserImage && currentUserName && (
+      {currentUserName && (
         <Container>
           <div className="brand">
             <span>
@@ -103,7 +101,6 @@ const Contacts = ({ contacts, currentUser, changeChat, socket }) => {
 
           <div className="contacts">
             {updatedContacts.map((contact, index) => {
-
               return (
                 <div
                   className={`contact ${index === currentSelected ? "selected" : ""

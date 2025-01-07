@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { base_url, getConfig, host } from "../../utils/axiosConfig";
+import { host } from "../../utils/axiosConfig";
 import { allAdminsRoute } from "../../utils/APIRoutes";
 import Contacts from "../../components/Contacts";
 import Welcome from "../../components/Welcome";
 import ChatContainer from "../../components/ChatContainer";
 import { io } from "socket.io-client";
 import Meta from "../../components/Meta";
-import BreadCrumb from "../../components/BreadCrumb";
 
 const Chat = () => {
     const socket = useRef();
@@ -17,13 +16,14 @@ const Chat = () => {
     const [contacts, setContacts] = useState([]);
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentChat, setCurrentChat] = useState(undefined);
+
     const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
-            if (!localStorage.getItem("chat-app-user")) {
+            if (!localStorage.getItem("customer")) {
                 navigate("/login");
             } else {
-                setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+                setCurrentUser(await JSON.parse(localStorage.getItem("customer")));
                 setIsLoaded(true);
             }
         };
@@ -55,8 +55,6 @@ const Chat = () => {
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
     };
-
-    console.log('createUser:::', currentUser?.isAvatarImageSet);
 
     return (
         <>
