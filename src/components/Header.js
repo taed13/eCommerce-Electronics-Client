@@ -12,6 +12,8 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
 import { getInfoByEmailAddress, getUserCart, getUserInfoById } from "../features/user/userSlice";
 import { toast } from "react-toastify";
+import { IoLocationOutline } from "react-icons/io5";
+import ChangeAddressModal from "./HeaderSetDefaultAddress";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -27,6 +29,7 @@ const Header = () => {
     const [total, setTotal] = useState(0);
     const [paginate, setPaginate] = useState(true);
     const [isFixed, setIsFixed] = useState(false);
+    const [showAddressModal, setShowAddressModal] = useState(false); // State to manage modal visibility
     const token = localStorage.getItem("token");
 
     useEffect(() => {
@@ -100,35 +103,54 @@ const Header = () => {
         };
     }, []);
 
-    const handleLogout = () => {
-        localStorage.clear();
-        navigate("/");
-        window.location.reload();
-    };
-
     const handleCartClick = (e) => {
-        // Nếu giỏ hàng trống, hiển thị thông báo và ngăn chuyển trang
         if (!cartState?.data?.cart_count_product || cartState?.data?.cart_count_product === 0) {
-            e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+            e.preventDefault();
             toast.error("Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước!");
         } else {
-            navigate("/cart"); // Chuyển hướng đến trang giỏ hàng nếu có sản phẩm
+            navigate("/cart");
         }
     };
+
+    let defaultAddress = null;
+    if (authState && authState?.userInfo?.addresses) {
+        defaultAddress = authState?.updatedUser
+            ? authState?.updatedUser?.updatedUser?.addresses.find(address => address.default === true)
+            : authState?.userInfo?.addresses.find(address => address.default === true);
+    }
 
     return (
         <>
             <header className={`header-upper py-3 ${isFixed ? "fixed" : ""}`}>
                 <div className="container-xxl">
                     <div className="row align-items-center">
-                        <div className="col-2 d-flex align-items-end">
+                        <div className="col-1 d-flex align-items-end">
                             <span>
-                                <Link to="/" className="text-white fs-3">
+                                <Link to="/" className="text-white fs-4" onClick={() => { navigate("/"); window.scrollTo(0, 0); }}>
                                     Electronics
                                 </Link>
                             </span>
                         </div>
-                        <div className="col-6">
+                        <div className="col-2">
+                            {
+                                defaultAddress && (
+                                    <div
+                                        className="text-white d-flex align-items-center justify-content-center pointer-cursor"
+                                        style={{ marginLeft: '30px' }}
+                                        onClick={() => setShowAddressModal(true)} // Open modal on click
+                                    >
+                                        <span>
+                                            <IoLocationOutline className="fs-3" />
+                                        </span>
+                                        <div className="d-flex flex-column">
+                                            <small className="lh-1" style={{ fontSize: '12px' }}>Giao hàng tại</small>
+                                            <span className="text-truncate" style={{ maxWidth: '140px', fontSize: '15px' }}>{defaultAddress.province.name}</span>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+                        <div className="col-5">
                             <div className="input-group">
                                 <Typeahead
                                     id="pagination-typeahead"
@@ -152,7 +174,6 @@ const Header = () => {
                         </div>
                         <div className="col-4">
                             <div className="header-upper-links d-flex align-items-center justify-content-between">
-                                <div></div>
                                 <div>
                                     <Link
                                         to={(authState?.user !== null || authState?.userInfo !== null) ? "/my-profile" : "/login"}
@@ -276,6 +297,7 @@ const Header = () => {
                     </div>
                 </div>
             </header>
+            <ChangeAddressModal show={showAddressModal} handleClose={() => setShowAddressModal(false)} /> {/* Render the modal */}
         </>
     );
 };

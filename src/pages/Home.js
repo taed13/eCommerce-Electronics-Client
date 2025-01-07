@@ -208,7 +208,7 @@ const Home = () => {
                             .slice(0, 4)
                             .map((item, index) => (
                                 <div key={index} className={"col-3"}>
-                                    <div className="product-card position-relative pointer-cursor" onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
+                                    <div className="product-card position-relative pointer-cursor" onClick={() => { navigate("/product/" + item?._id); window.scrollTo({ top: 0, behavior: "auto" }); }}>
                                         <div className="product-image d-flex">
                                             <img
                                                 src={item?.product_images[0]?.url}

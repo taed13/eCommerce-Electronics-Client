@@ -49,9 +49,9 @@ export const deleteAddressService = async (addressId) => {
  * @param {object} address - The address to be saved.
  * @returns {Promise<{data: any} | {error: string}>}
  */
-export const saveAddressService = async (address) => {
+export const saveAddressService = async (addressData) => {
     try {
-        const response = await axios.post(`${base_url}user/save-address`, address, getConfig());
+        const response = await axios.put(`${base_url}user/save-address`, { address: addressData }, getConfig());
         return { data: response.data };
     } catch (error) {
         return handleError(error, "Failed to save address");

@@ -29,6 +29,8 @@ import OrderSuccess from "./pages/OrderSuccess/OrderSuccess";
 import Chat from "./pages/Chat/Chat";
 import SetAvatar from "./pages/SetAvatar";
 import OrderDetails from "./pages/OrderDetails";
+import AddAddress from "./pages/AddAddress";
+import EditAddress from "./pages/EditAddress";
 
 function App() {
     return (
@@ -128,6 +130,22 @@ function App() {
                         element={
                             <PrivateRoutes>
                                 <SetAvatar />
+                            </PrivateRoutes>
+                        }
+                    />
+                    <Route
+                        path="addAddress"
+                        element={
+                            <PrivateRoutes>
+                                <AddAddress />
+                            </PrivateRoutes>
+                        }
+                    />
+                    <Route
+                        path="editAddress/:id"
+                        element={
+                            <PrivateRoutes>
+                                <EditAddress />
                             </PrivateRoutes>
                         }
                     />

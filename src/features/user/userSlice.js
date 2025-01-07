@@ -120,6 +120,7 @@ export const resetPassword = createAsyncThunk(
     "user/password/reset",
     async (data, thunkAPI) => {
         try {
+            console.log("data:::::::::", data);
             return await authService.resetPass(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);
@@ -538,6 +539,7 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
+                console.log("action.payload:::::::::", action.payload.message);
                 toast.success(action.payload.message || "Đổi mật khẩu thành công!");
             })
             .addCase(changePassword.rejected, (state, action) => {
