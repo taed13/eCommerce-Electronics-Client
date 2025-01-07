@@ -205,12 +205,17 @@ const initialState = {
     message: "",
     createdOrder: {},
     deletedCartProduct: {},
+    selectedAddress: null,
 };
 
 export const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
-    reducers: [],
+    reducers: {
+        setSelectedAddress: (state, action) => {
+            state.selectedAddress = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             // REGISTER USER
@@ -551,5 +556,7 @@ export const authSlice = createSlice({
             });
     },
 });
+
+export const { setSelectedAddress } = authSlice.actions;
 
 export default authSlice.reducer;

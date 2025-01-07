@@ -41,6 +41,7 @@ const shippingSchema = yup.object({
 const Checkout = () => {
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth?.cartProducts);
+    const selectedAddress = useSelector((state) => state.auth?.selectedAddress);
     const cartProducts = userCartState?.data?.cart_products || [];
     const userState = useSelector((state) => state.auth);
     const userInfoState = useSelector((state) => state.auth?.userInfo);
@@ -95,6 +96,33 @@ const Checkout = () => {
         enableReinitialize: true,
         onSubmit: (values) => handleSubmit(values),
     });
+
+    useEffect(() => {
+        if (selectedAddress) {
+            console.log("Đã cập nhật địa chỉ mới:", selectedAddress);
+            setInitialValues((prev) => ({
+                ...prev,
+                order_shipping: {
+                    firstname: selectedAddress.firstname || "",
+                    lastname: selectedAddress.lastname || "",
+                    mobileNo: selectedAddress.mobileNo || "",
+                    province: {
+                        id: selectedAddress.province?.id || "",
+                        name: selectedAddress.province?.name || "",
+                    },
+                    district: {
+                        id: selectedAddress.district?.id || "",
+                        full_name: selectedAddress.district?.full_name || "",
+                    },
+                    ward: {
+                        id: selectedAddress.ward?.id || "",
+                        full_name: selectedAddress.ward?.full_name || "",
+                    },
+                    street: selectedAddress.street || "",
+                },
+            }));
+        }
+    }, [selectedAddress]);    
 
     useEffect(() => {
         const FREE_SHIPPING_THRESHOLD = 9990000;

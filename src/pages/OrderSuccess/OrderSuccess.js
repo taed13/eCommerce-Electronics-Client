@@ -228,14 +228,16 @@ const OrderSuccess = () => {
                                     >
                                         <li className="step0 active" id="step1">
                                             <span style={{ marginLeft: "22px", marginTop: "12px" }}>
-                                                PLACED
+                                                Đã đặt hàng
                                             </span>
                                         </li>
                                         <li className="step0 active text-center" id="step2">
-                                            <span>SHIPPED</span>
+                                            <span>Đã vận chuyển</span>
                                         </li>
                                         <li className="step0 text-muted text-end" id="step3">
-                                            <span style={{ marginRight: "22px" }}>DELIVERED</span>
+                                            <span style={{ marginRight: "22px" }}>
+                                                Đã giao hàng
+                                            </span>
                                         </li>
                                     </ul>
                                 </div>

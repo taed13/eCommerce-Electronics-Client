@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setDefaultAddressService } from "../api/user.api";
 import { toast } from "react-toastify";
-import { getUserInfoById } from "../features/user/userSlice";
+import { getUserInfoById, setSelectedAddress } from "../features/user/userSlice";
 
 const ChangeAddressModal = ({ show, handleClose }) => {
     const dispatch = useDispatch();
@@ -13,7 +13,8 @@ const ChangeAddressModal = ({ show, handleClose }) => {
     const onSetDefaultAddress = async (addressId) => {
         const { data, error } = await setDefaultAddressService(addressId);
         if (data) {
-            console.log("Default address updated successfully!");
+            const updatedAddress = addresses.find((address) => address._id === addressId);
+            dispatch(setSelectedAddress(updatedAddress));
             toast.success("Đã đặt địa chỉ mặc định thành công!");
             dispatch(getUserInfoById(userInfoState?._id));
             handleClose();

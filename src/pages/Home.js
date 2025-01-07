@@ -80,7 +80,7 @@ const Home = () => {
                                 alt="main-banner"
                             />
                             <div className="main-banner-content position-absolute">
-                                <h4>SUPERCHARGED CHO PROS.</h4>
+                                <h4>SẠC SIÊU NHANH, DÙNG SIÊU LÂU.</h4>
                                 <h5>iPad Pro M4</h5>
                                 <h5>13 inch - 256GB</h5>
                                 <p>Thỏa sức sáng tạo<br />Chỉ với giá 36,790,000₫</p>
