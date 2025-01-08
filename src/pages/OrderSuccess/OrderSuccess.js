@@ -24,6 +24,7 @@ const OrderSuccess = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const checkoutInfo = JSON.parse(orderData?.session.metadata?.checkoutInfo || "{}");
+    console.log('orderData', orderData);
 
     useEffect(() => {
         const fetchSessionDetails = async () => {
@@ -60,7 +61,7 @@ const OrderSuccess = () => {
         }
     }, [orderData]);
 
-    console.log('aaaaa', orderData?.session);
+    console.log('aaaaa', orderData);
 
     if (loading) return <p className="text-center py-5">Loading...</p>;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;

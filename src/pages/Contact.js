@@ -53,14 +53,21 @@ const Contact = () => {
         }),
         onSubmit: (values) => {
             const queryData = { ...values };
-            if (productIdForSubmitting) {
-                queryData.productId = productIdForSubmitting;
+
+            if (product) {
+                queryData.productDetails = {
+                    name: product.product_name,
+                    brand: product.product_brand[0].title,
+                    price: product.product_price.toLocaleString(),
+                    imageUrl: product.product_images[0]?.url,
+                };
             }
+
             dispatch(createQuery(queryData));
             formik.resetForm();
-            navigate("/");
+            // navigate("/");
             window.scrollTo(0, 0);
-        },
+        }
     });
 
     const handleApplyProductLink = async (productLink) => {

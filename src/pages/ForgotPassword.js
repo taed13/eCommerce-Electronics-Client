@@ -26,8 +26,14 @@ const ForgotPassword = () => {
         },
         validationSchema: emailSchema,
         onSubmit: (values) => {
+            // Clear localStorage or sessionStorage
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // Dispatch forgotPasswordToken action
             dispatch(forgotPasswordToken(values));
 
+            // Redirect to homepage
             navigate("/");
         },
     });
@@ -42,7 +48,7 @@ const ForgotPassword = () => {
                         <div className="auth-card">
                             <h2 className="text-center fw-bold mb-3">Quên mật khẩu</h2>
                             <p className="text-center my-2 mb-4">
-                            Nhập email của bạn để nhận đường dẫn khôi phục mật khẩu
+                                Nhập email của bạn để nhận đường dẫn khôi phục mật khẩu
                             </p>
                             <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-2">
                                 <CustomInput

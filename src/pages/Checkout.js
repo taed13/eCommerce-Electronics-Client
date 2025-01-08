@@ -16,6 +16,7 @@ import $ from "jquery";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Meta from "../components/Meta";
+import { cancelOrderService } from "../api/order.api";
 
 const shippingSchema = yup.object({
     order_shipping: yup.object({
@@ -39,6 +40,9 @@ const shippingSchema = yup.object({
 });
 
 const Checkout = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const orderId = urlParams.get('orderId');
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth?.cartProducts);
     const selectedAddress = useSelector((state) => state.auth?.selectedAddress);
@@ -53,6 +57,7 @@ const Checkout = () => {
     const [subTotal, setSubTotal] = useState(0);
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
+    const [isOrderCanceled, setIsOrderCanceled] = useState(false);
     const [wards, setWards] = useState([]);
     const [discountCode, setDiscountCode] = useState("");
     const [couponMessage, setCouponMessage] = useState("");
@@ -98,31 +103,36 @@ const Checkout = () => {
     });
 
     useEffect(() => {
+        const cancelOrder = async () => {
+            if (orderId && status === "canceled" && !isOrderCanceled) {
+                const response = await cancelOrderService(orderId);
+                if (response.data) {
+                    toast.success("Order has been canceled successfully!");
+                } else {
+                    toast.error(`Failed to cancel order: ${response.error}`);
+                }
+                setIsOrderCanceled(true);
+            }
+        };
+        cancelOrder();
+    }, [orderId, status, isOrderCanceled]);
+
+    useEffect(() => {
         if (selectedAddress) {
-            console.log("Đã cập nhật địa chỉ mới:", selectedAddress);
-            setInitialValues((prev) => ({
-                ...prev,
+            console.log("Sử dụng địa chỉ được chọn:", selectedAddress);
+            formik.setValues({
                 order_shipping: {
                     firstname: selectedAddress.firstname || "",
                     lastname: selectedAddress.lastname || "",
                     mobileNo: selectedAddress.mobileNo || "",
-                    province: {
-                        id: selectedAddress.province?.id || "",
-                        name: selectedAddress.province?.name || "",
-                    },
-                    district: {
-                        id: selectedAddress.district?.id || "",
-                        full_name: selectedAddress.district?.full_name || "",
-                    },
-                    ward: {
-                        id: selectedAddress.ward?.id || "",
-                        full_name: selectedAddress.ward?.full_name || "",
-                    },
+                    province: selectedAddress.province || { id: "", name: "" },
+                    district: selectedAddress.district || { id: "", full_name: "" },
+                    ward: selectedAddress.ward || { id: "", full_name: "" },
                     street: selectedAddress.street || "",
                 },
-            }));
+            });
         }
-    }, [selectedAddress]);    
+    }, [selectedAddress]);
 
     useEffect(() => {
         const FREE_SHIPPING_THRESHOLD = 9990000;
@@ -237,6 +247,7 @@ const Checkout = () => {
                 `${base_url}user/order/purchase`,
                 {
                     orderId: order._id,
+                    type: "website",
                 },
                 getConfig()
             );
@@ -269,7 +280,6 @@ const Checkout = () => {
                 (response) => {
                     if (response.error === 0) {
                         setDistricts(response.data);
-                        // Nếu đã có district trong `initialValues`, thiết lập lại
                         const defaultDistrict = response.data.find(
                             (district) =>
                                 district.full_name ===
@@ -318,7 +328,6 @@ const Checkout = () => {
                 (response) => {
                     if (response.error === 0) {
                         setWards(response.data);
-                        // Nếu đã có ward trong `initialValues`, thiết lập lại
                         const defaultWard = response.data.find(
                             (ward) =>
                                 ward.full_name === initialValues.order_shipping.ward.full_name
@@ -351,7 +360,6 @@ const Checkout = () => {
             );
             const defaultWard = wards.find((ward) => ward.full_name === address.ward);
 
-            // Đặt giá trị mặc định cho Formik
             if (defaultProvince) {
                 formik.setFieldValue("order_shipping.province", {
                     id: defaultProvince.id,
@@ -376,7 +384,6 @@ const Checkout = () => {
                 setSelectedWard(defaultWard.id);
             }
 
-            // Đặt giá trị cho các trường khác
             formik.setFieldValue("order_shipping.street", address.street || "");
             formik.setFieldValue("order_shipping.mobileNo", address.mobileNo || "");
             formik.setFieldValue("order_shipping.firstname", address.firstname || "");
@@ -484,14 +491,6 @@ const Checkout = () => {
                                         </Link>
                                     </li>
                                     &nbsp; /
-                                    {/* <li className="breadcrumb-item partial-price active">
-                                        Thông tin
-                                    </li>
-                                    &nbsp; /
-                                    <li className="breadcrumb-item partial-price active">
-                                        Giao hàng
-                                    </li>
-                                    &nbsp; / */}
                                     <li
                                         className="breadcrumb-item partial-price active"
                                         aria-current="page"
@@ -823,9 +822,6 @@ const Checkout = () => {
                                                     <h5 className="total">
                                                         {item?.productId?.product_name}
                                                     </h5>
-                                                    {/* <p className="partial mb-0">
-                                                        {item?.product_color[0]?.name}
-                                                    </p> */}
                                                     <div className="d-flex align-items-start gap-1">
                                                         <ul className="colors ps-0">
                                                             <li

@@ -59,6 +59,20 @@ export const saveAddressService = async (addressData) => {
 };
 
 /**
+ * Service to verify email by token.
+ * @param {string} token - The verification token.
+ * @returns {Promise<{data: any} | {error: string}>}
+ */
+export const verifyEmailService = async (token) => {
+    try {
+        const response = await axios.get(`${base_url}user/verify/${token}`);
+        return { data: response.data };
+    } catch (error) {
+        return handleError(error, "Failed to verify email");
+    }
+};
+
+/**
  * Common error handler for all API requests.
  * @param {object} error - The error object.
  * @param {string} defaultMessage - The default error message.

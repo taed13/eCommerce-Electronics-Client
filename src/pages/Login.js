@@ -7,7 +7,7 @@ import CustomInput from "../components/CustomInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, getInfoByEmailAddress } from "../features/user/userSlice";
+import { loginUser, getInfoByEmailAddress, resetState } from "../features/user/userSlice";
 import { loginRoute } from "../utils/APIRoutes";
 import { base_url } from "../utils/axiosConfig";
 
@@ -63,6 +63,16 @@ const Login = () => {
             // navigate("/");
         },
     });
+
+    useEffect(() => {
+        dispatch(resetState());
+
+        if (authState?.isSuccess) {
+            // navigate("/");
+            window.scrollTo(0, 0);
+        }
+    }, [authState, navigate, dispatch]);
+
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

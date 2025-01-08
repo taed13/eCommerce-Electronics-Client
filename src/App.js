@@ -30,6 +30,7 @@ import Chat from "./pages/Chat/Chat";
 import OrderDetails from "./pages/OrderDetails";
 import AddAddress from "./pages/AddAddress";
 import EditAddress from "./pages/EditAddress";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
     return (
@@ -105,6 +106,14 @@ function App() {
                         element={
                             <OpenRoutes>
                                 <Login />
+                            </OpenRoutes>
+                        }
+                    />
+                    <Route
+                        path="/login/:token"
+                        element={
+                            <OpenRoutes>
+                                <VerifyEmail />
                             </OpenRoutes>
                         }
                     />

@@ -215,6 +215,11 @@ export const authSlice = createSlice({
         setSelectedAddress: (state, action) => {
             state.selectedAddress = action.payload;
         },
+        resetState: (state) => {
+            state.isSuccess = false;
+            state.isError = false;
+            state.message = "";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -229,6 +234,7 @@ export const authSlice = createSlice({
                 state.createdUser = action.payload;
                 if (state.isSuccess === true) {
                     toast.info(action.payload.message);
+                    window.open("https://mail.google.com/", "_blank");
                 }
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -262,8 +268,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error.message;
                 if (state.isError === true) {
-                    // toast.error(action.payload.message); // TODO: Needs to be fixed
-                    toast.error("Sai email hoặc mật khẩu!");
+                    toast.error(action.payload.message);
                 }
             })
             // LOGOUT USER
@@ -557,6 +562,6 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setSelectedAddress } = authSlice.actions;
+export const { setSelectedAddress, resetState } = authSlice.actions;
 
 export default authSlice.reducer;

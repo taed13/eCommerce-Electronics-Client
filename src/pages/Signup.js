@@ -35,13 +35,12 @@ const Signup = () => {
         },
     });
 
-    // useEffect(() => {
-    //     if (authState.createdUser !== null && authState.isError === false) {
-    //         navigate("/login");
-    //         // window.location.reload();
-    //     }
-    // }, [authState]);
-
+    useEffect(() => {
+        if (authState.isSuccess && authState.createdUser) {
+            formik.resetForm(); // Reset form sau khi thành công
+        }
+    }, [authState.isSuccess]);
+    
     return (
         <>
             <Meta title={"Electronics | Đăng ký tài khoản"} />
