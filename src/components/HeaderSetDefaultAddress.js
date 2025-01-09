@@ -31,18 +31,20 @@ const ChangeAddressModal = ({ show, handleClose }) => {
             <Modal.Body>
                 <div className="d-flex flex-column">
                     <span className="header-address-caution-span">Tùy chọn giao hàng và tốc độ giao hàng có thể khác nhau tùy theo địa điểm</span>
-                    {addresses?.slice(0, 4)?.map((address) => (
-                        <div key={address._id} onClick={() => onSetDefaultAddress(address._id)} className={`header-address-item ${address.default ? "header-default-address" : ""}`}>
-                            <div className="p-2 d-flex flex-column ">
-                                <div className="d-flex align-items-baseline gap-2">
-                                    <span className="header-address-item-bold-span">{address.lastname} {address.firstname}</span>
-                                    <span className="header-address-item-span">{address.street}</span>
+                    <div className="header-address-list">
+                        {addresses?.map((address) => (
+                            <div key={address._id} onClick={() => !address.default && onSetDefaultAddress(address._id)} className={`header-address-item pointer-cursor ${address.default ? "header-default-address" : ""}`}>
+                                <div className="p-2 d-flex flex-column">
+                                    <div className="d-flex align-items-baseline gap-2">
+                                        <span className="header-address-item-bold-span">{address.lastname} {address.firstname}</span>
+                                        <span className="header-address-item-span">{address.street}</span>
+                                    </div>
+                                    <span className="header-address-item-span">{address.ward.full_name}, {address.district.full_name}, {address.province.name}</span>
+                                    <span className="header-address-item-span">{address.mobileNo}</span>
                                 </div>
-                                <span className="header-address-item-span">{address.ward.full_name}, {address.district.full_name}, {address.province.name}</span>
-                                <span className="header-address-item-span">{address.mobileNo}</span>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </Modal.Body>
         </Modal>

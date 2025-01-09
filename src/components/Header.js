@@ -14,6 +14,7 @@ import { getInfoByEmailAddress, getUserCart, getUserInfoById } from "../features
 import { toast } from "react-toastify";
 import { IoLocationOutline } from "react-icons/io5";
 import ChangeAddressModal from "./HeaderSetDefaultAddress";
+import EaLogo from "../images/EA_logo_Electronic_Arts.png";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -124,33 +125,33 @@ const Header = () => {
             <header className={`header-upper py-3 ${isFixed ? "fixed" : ""}`}>
                 <div className="container-xxl">
                     <div className="row align-items-center">
-                        <div className="col-1 d-flex align-items-end">
-                            <span>
-                                <Link to="/" className="text-white fs-4" onClick={() => { navigate("/"); window.scrollTo(0, 0); }}>
+                        <div className="col-2 d-flex align-items-end">
+                            <span className="">
+                                <Link to="/" className="text-white d-flex align-items-center gap-2 fs-4" onClick={() => { navigate("/"); window.scrollTo(0, 0); }}>
+                                <img src={EaLogo} width={30} height={30} alt="" />
                                     Electronics
                                 </Link>
                             </span>
                         </div>
-                        <div className="col-2">
+                        <div className="col-1" style={{ paddingLeft: '0px' }}>
                             {
                                 defaultAddress && (
                                     <div
-                                        className="text-white d-flex align-items-center justify-content-center pointer-cursor"
-                                        style={{ marginLeft: '30px' }}
+                                        className="text-white d-flex align-items-center justify-content-start pointer-cursor"
                                         onClick={() => setShowAddressModal(true)} // Open modal on click
                                     >
                                         <span>
                                             <IoLocationOutline className="fs-3" />
                                         </span>
                                         <div className="d-flex flex-column">
-                                            <small className="lh-1" style={{ fontSize: '12px' }}>Giao hàng tại</small>
-                                            <span className="text-truncate" style={{ maxWidth: '140px', fontSize: '15px' }}>{defaultAddress.province.name}</span>
+                                            <small className="lh-1" style={{ fontSize: '11px' }}>Giao hàng tại</small>
+                                            <span className="text-truncate" style={{ maxWidth: '90px', fontSize: '15px' }}>{defaultAddress.province.name}</span>
                                         </div>
                                     </div>
                                 )
                             }
                         </div>
-                        <div className="col-5">
+                        <div className="col-6 d-flex align-items-start justify-content-start">
                             <div className="input-group">
                                 <Typeahead
                                     id="pagination-typeahead"
@@ -172,12 +173,12 @@ const Header = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="col-4">
+                        <div className="col-3">
                             <div className="header-upper-links d-flex align-items-center justify-content-between">
                                 <div>
                                     <Link
                                         to={(authState?.user !== null || authState?.userInfo !== null) ? "/my-profile" : "/login"}
-                                        className="d-flex align-items-center gap-10 text-white"
+                                        className="d-flex align-items-center gap-1 text-white"
                                     >
                                         <img src={user} alt="user" />
                                         {
@@ -257,7 +258,7 @@ const Header = () => {
                                             {(authState?.user !== null || isAuthenticated) && (
                                                 <>
                                                     <Link className="dropdown-item text-white" to="/chat">
-                                                        Chat với chúng tôi
+                                                        Electronics Talks
                                                     </Link>
                                                 </>
                                             )}

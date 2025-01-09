@@ -13,6 +13,10 @@ const emailSchema = yup.object({
     email: yup
         .string()
         .email("Địa chỉ email không hợp lệ")
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Địa chỉ email không hợp lệ"
+        )
         .required("Chưa nhập địa chỉ email"),
 });
 

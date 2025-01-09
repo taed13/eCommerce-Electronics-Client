@@ -10,10 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "../features/user/userSlice";
 
 const resetPasswordSchema = yup.object({
-    password: yup.string().required("Password is required"),
+    password: yup.string().required("Vui lòng nhập mật khẩu").min(8, "Mật khẩu phải có ít nhất 8 ký tự"),
     confpassword: yup
         .string()
-        .oneOf([yup.ref("password"), null], "Passwords must match"),
+        .oneOf([yup.ref("password"), null], "Mật khẩu không khớp"),
 });
 
 const ResetPassword = () => {
@@ -39,7 +39,7 @@ const ResetPassword = () => {
             }
         },
     });
-    
+
     return (
         <>
             <Meta title={"Đặt lại mật khẩu"} />

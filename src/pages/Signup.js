@@ -11,8 +11,13 @@ import { registerUser } from "../features/user/userSlice";
 
 const signupSchema = yup.object({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
-    email: yup.string().email("Địa chỉ email không hợp lệ").required("Vui lòng nhập địa chỉ email"),
-    password: yup.string().required("Vui lòng nhập mật khẩu"),
+    email: yup.string().email("Địa chỉ email không hợp lệ")
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Địa chỉ email không hợp lệ"
+        )
+        .required("Vui lòng nhập địa chỉ email"),
+    password: yup.string().min(8, "Mật khẩu phải có ít nhất 8 ký tự").required("Vui lòng nhập mật khẩu"),
     confirmPassword: yup.string()
         .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
         .required('Vui lòng xác nhận mật khẩu'),
@@ -40,7 +45,7 @@ const Signup = () => {
             formik.resetForm(); // Reset form sau khi thành công
         }
     }, [authState.isSuccess]);
-    
+
     return (
         <>
             <Meta title={"Electronics | Đăng ký tài khoản"} />

@@ -15,8 +15,12 @@ const loginSchema = yup.object({
     email: yup
         .string()
         .email("Địa chỉ email không hợp lệ")
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Địa chỉ email không hợp lệ"
+        )
         .required("Vui lòng nhập địa chỉ email"),
-    password: yup.string().required("Vui lòng nhập mật khẩu"),
+    password: yup.string().required("Vui lòng nhập mật khẩu").min(8, "Mật khẩu phải có ít nhất 8 ký tự"),
 });
 
 const getOauthGoogleUrl = () => {

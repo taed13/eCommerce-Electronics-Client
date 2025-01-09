@@ -16,7 +16,12 @@ import { toast } from "react-toastify";
 
 const profileSchema = yup.object({
     name: yup.string().required("Không được để trống tên tài khoản"),
-    email: yup.string().email("Địa chỉ email không hợp lệ").required("Không được để trống địa chỉ email"),
+    email: yup.string().email("Địa chỉ email không hợp lệ")
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Địa chỉ email không hợp lệ"
+        )
+        .required("Không được để trống địa chỉ email"),
 });
 
 const Profile = () => {
@@ -35,8 +40,6 @@ const Profile = () => {
     useEffect(() => {
         dispatch(getUserInfoById(userInfoState?._id));
     }, []);
-
-    console.log("Addresses:", addresses);
 
     const formik = useFormik({
         enableReinitialize: true,
