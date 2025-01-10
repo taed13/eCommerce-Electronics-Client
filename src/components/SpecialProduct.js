@@ -2,15 +2,37 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Rating from 'react-rating';
 import { FaStar, FaRegStar } from "react-icons/fa";
+import "../styles/special-product.css";
 
 const SpecialProduct = (props) => {
-    const { id, title, img, brand, totalRating, price, sold, quantity } = props;
+    const { id, title, img, brand, totalRating, price, sold, quantity, discount } = props;
+
+    // Tính toán giá hiển thị và văn bản giảm giá
+    let displayPrice = price;
+    let discountText = "";
+
+    if (discount) {
+        if (discount.discount_type === "percentage") {
+            displayPrice = price - (price * discount.discount_value / 100);
+            discountText = `-${discount.discount_value}%`;
+        } else if (discount.discount_type === "fixed_amount") {
+            displayPrice = price - discount.discount_value;
+            discountText = `-${discount.discount_value.toLocaleString()}₫`;
+        }
+    }
+
     return (
         <div className="col-6 mb-3">
-            <div className="special-product-card">
+            <div className="special-product-card position-relative">
+                {/* Hiển thị badge giảm giá nếu có */}
+                {discountText && (
+                    <div className="discount-badge position-absolute top-0 start-0 bg-danger text-white p-1 rounded">
+                        {discountText}
+                    </div>
+                )}
                 <div className="d-flex justify-content-between">
                     <div className="d-flex align-items-center justify-content-center">
-                        <img src={img} className="img-fluid" width={250} height={250} alt="watch" />
+                        <img src={img} className="img-fluid" width={250} height={250} alt="product" />
                     </div>
                     <div className="special-product-content w-75">
                         <h5 className="brand">{brand}</h5>
@@ -23,31 +45,11 @@ const SpecialProduct = (props) => {
                             fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
                         />
                         <p className="price">
-                            <span className="red-p">{price.toLocaleString()}₫</span> &nbsp;{" "}
-                            <strike>{(price * 2).toLocaleString()}₫</strike>
+                            <span className="red-p">{displayPrice.toLocaleString()}₫</span> &nbsp;
+                            {discount && <strike>{price.toLocaleString()}₫</strike>}
                         </p>
-                        {/* <div className="discount-till d-flex align-items-center gap-10">
-                            <p className="mb-0">
-                                <b>5</b> days
-                            </p>
-                            <div className="d-flex gap-10 align-items-center">
-                                <span className="time-stamp badge rounded-circle bg-danger">
-                                    1
-                                </span>
-                                :
-                                <span className="time-stamp badge rounded-circle bg-danger">
-                                    1
-                                </span>
-                                :
-                                <span className="time-stamp badge rounded-circle bg-danger">
-                                    1
-                                </span>
-                            </div>
-                        </div> */}
                         <div className="prod-count my-3">
-                            <p>
-                                Chỉ còn <b>{quantity - sold}</b> sản phẩm
-                            </p>
+                            <p>Chỉ còn <b>{quantity}</b> sản phẩm</p>
                             <div className="progress">
                                 <div
                                     className="progress-bar"
@@ -61,7 +63,7 @@ const SpecialProduct = (props) => {
                                 ></div>
                             </div>
                         </div>
-                        <Link className="button" to={"/product/" + id} onClick={() => (window.scrollTo(0, 0))}>
+                        <Link className="button" to={"/product/" + id} onClick={() => window.scrollTo(0, 0)}>
                             Chi tiết
                         </Link>
                     </div>

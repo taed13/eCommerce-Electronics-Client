@@ -1,0 +1,22 @@
+.discount-badge {
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #ff4d4d, #ff3333);
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 8px 0 8px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    position: absolute;
+}
+.product-card {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.product-image img {
+    max-height: 250px;
+    object-fit: cover;
+}

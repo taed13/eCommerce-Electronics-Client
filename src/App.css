@@ -1136,6 +1136,7 @@ footer .input-group-text {
     width: 100%;
     z-index: 1000;
 }
+
 .header-bottom.fixed {
     margin-top: 60px;
 }
@@ -1261,4 +1262,54 @@ footer .input-group-text {
     overflow-y: auto;
 }
 
-/* Order History Ends Here */
+.product-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.sold-out-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.sold-out-image {
+    max-width: 80%;
+    height: auto;
+    opacity: 0.8;
+}
+
+.sold-out .rating {
+    filter: brightness(0.4);
+    /* Làm tối đi các ngôi sao */
+    opacity: 0.6;
+    /* Giảm độ trong suốt */
+    pointer-events: none;
+    /* Không cho phép tương tác */
+}
+
+.rating {
+    transition: all 0.3s ease;
+}
+
+.product-card.sold-out .product-details {
+    opacity: 0.8;
+}
+
+/* Animation for fade in effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.5;
+    }
+}

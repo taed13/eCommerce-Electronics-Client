@@ -181,6 +181,16 @@ const changeUserPassword = async (passwordData) => {
     }
 };
 
+const cancelOrder = async (orderId) => {
+    const response = await axios.put(
+        `${base_url}orders/${orderId}/cancel`,
+        getConfig()
+    );
+    if (response.data) {
+        return response.data;
+    }
+}
+
 export const authService = {
     register,
     login,
@@ -200,4 +210,5 @@ export const authService = {
     createOrderAndCheckOrderBefore,
     getUserInfoById,
     changeUserPassword,
+    cancelOrder,
 };

@@ -18,6 +18,8 @@ import Splide from "@splidejs/splide";
 import "@splidejs/splide/dist/css/splide.min.css";
 import Rating from 'react-rating';
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { getPopularProductsService } from "../api/product.api";
+import "../styles/single-product.css";
 
 const SingleProduct = () => {
     const textAreaRef = useRef(null);
@@ -53,6 +55,10 @@ const SingleProduct = () => {
         zoomWidth: 600,
         img: mainImage,
     };
+
+    useEffect(() => {
+        fetchPopularProducts();
+    }, []);
 
     useEffect(() => {
         dispatch(getAProduct(getProductId));
@@ -103,17 +109,6 @@ const SingleProduct = () => {
         document.execCommand("copy");
         textField.remove();
     };
-
-    useEffect(() => {
-        const data =
-            productsState &&
-            productsState?.filter((product) =>
-                product.product_tags?.some(
-                    (tag) => tag.name.toLowerCase() === "popular"
-                )
-            );
-        setPopularProducts(data);
-    }, [productsState]);
 
     useEffect(() => {
         setMainImage(productState?.product_images?.[0]?.url ||
@@ -170,6 +165,15 @@ const SingleProduct = () => {
         }
     }, [productState]);
 
+    const fetchPopularProducts = async () => {
+        const { data, error } = await getPopularProductsService();
+        if (error) {
+            console.error("Error fetching popular products:", error);
+        } else {
+            setPopularProducts(data?.popularProducts);
+        }
+    };
+
     return (
         <>
             <Meta title={"Electronics | " + productState?.product_name} />
@@ -207,25 +211,40 @@ const SingleProduct = () => {
                                 <h3 className="title" style={{ fontSize: '24px' }}>{productState ? productState.product_name : 'No product found'}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price my-3 fw-light" style={{ fontSize: '28px' }}>{productState ? '₫' + productState?.product_price.toLocaleString() : 'N/A'}</p>
-                                <div className="d-flex align-items-end gap-1">
-                                    <p className="mb-0 t-review fs-6" style={{ lineHeight: '20px' }}>{productState?.product_totalRating || 0}</p>
+                                <div className="price-wrapper">
+                                    <h4 className="price fw-bold text-danger">
+                                        {productState?.discount
+                                            ? `₫${productState?.product_after_price.toLocaleString()}`
+                                            : `₫${productState?.product_price.toLocaleString()}`}
+                                    </h4>
+                                    {productState?.discount && (
+                                        <div className="d-flex align-items-center gap-2 mt-1">
+                                            <span className="original-price text-muted text-decoration-line-through">
+                                                {`₫${productState?.product_price.toLocaleString()}`}
+                                            </span>
+                                            <span className="badge bg-success fw-bold py-1 px-2">
+                                                {`Tiết kiệm ${Math.round(((productState?.product_price - productState?.product_after_price) / productState?.product_price) * 100)}%`}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="rating-wrapper d-flex align-items-center gap-2 mt-3">
+                                    {/* <span className="fs-5">{productState?.product_totalRating || 0} ★</span> */}
                                     <Rating
                                         initialRating={+productState?.product_totalRating || 0}
                                         readonly
                                         emptySymbol={<FaRegStar className="fs-6" style={{ color: '#f59e0b' }} />}
                                         fullSymbol={<FaStar className="fs-6" style={{ color: '#f59e0b' }} />}
                                     />
-                                    <p className="mb-0 t-review text-primary">
-                                        ({productState?.product_ratings?.length} đánh giá)
-                                    </p>
+                                    <span className="text-primary fw-semibold">({productState?.product_ratings?.length} đánh giá)</span>
                                 </div>
-                                {
-                                    checkRated && !isRated &&
-                                    <a className="review-btn mt-2 hover-underline" href="#review">
+
+                                {checkRated && !isRated && (
+                                    <a className="review-btn d-block mt-3 text-decoration-underline text-primary cursor-pointer" href="#review">
                                         Viết đánh giá
                                     </a>
-                                }
+                                )}
                             </div>
                             <div className="border-bottom py-3">
                                 <div className="d-flex gap-10 align-items-center my-2">

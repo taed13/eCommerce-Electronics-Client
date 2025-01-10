@@ -1,0 +1,49 @@
+/* .special-product-card {
+    position: relative;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+} */
+
+.discount-badge {
+    position: absolute;
+    top: 12px;
+    /* Giữ khoảng cách nhỏ từ cạnh trên */
+    left: 12px;
+    /* Giữ khoảng cách nhỏ từ cạnh trái */
+    background: linear-gradient(135deg, #ff4d4d, #ff3333);
+    /* Hiệu ứng gradient */
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 12px;
+    /* Tăng kích thước padding cho thoáng hơn */
+    border-radius: 12px 0 12px 0;
+    /* Tạo hiệu ứng bo góc tam giác mềm mại */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    /* Tạo shadow để badge nổi bật */
+    z-index: 10;
+    text-transform: uppercase;
+    /* Viết hoa toàn bộ text */
+    transition: all 0.3s ease;
+}
+
+.discount-badge:hover {
+    transform: scale(1.1);
+    /* Phóng to nhẹ khi hover */
+    background: linear-gradient(135deg, #ff6666, #ff4d4d);
+}
+
+.special-product-card img {
+    border-radius: 10px 0 0 10px;
+    object-fit: cover;
+    width: 100%;
+    max-height: 250px;
+    position: relative;
+}
+
+.special-product-card {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}

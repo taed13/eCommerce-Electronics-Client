@@ -1,0 +1,36 @@
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+}
+
+.hover-glow:hover {
+    box-shadow: 0px 4px 15px rgba(255, 0, 0, 0.6);
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.mdb-modal.show {
+    z-index: 1050 !important;
+}
+
+.cancel-button {
+    transition: all 0.3s ease;
+    padding: 12px 16px;
+}
+
+.cancel-button:hover {
+    background-color: #ff4d4f !important;
+    transform: translateY(-2px);
+}
+
+.text-center {
+    margin-top: 10px;
+}
+
+.mdb-card-footer {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}

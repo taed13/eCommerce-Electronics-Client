@@ -7,14 +7,14 @@ import { services } from "../utils/Data";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../features/blogs/blogSlice";
-import { getAllProducts, addToWishlist } from "../features/products/productSlice";
+import { getAllProducts } from "../features/products/productSlice";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import wish from "../images/wish.svg";
-import prodcompare from "../images/prodcompare.svg";
 import { IoCartOutline, IoEyeOutline } from "react-icons/io5";
 import Meta from "../components/Meta";
 import Rating from 'react-rating';
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { getLatestProductsService, getPopularProductsService, getSpecialProductsService } from "../api/product.api";
+import "../styles/home.css";
 
 const Home = () => {
     const blogState = useSelector((state) => state?.blog?.blog);
@@ -22,20 +22,25 @@ const Home = () => {
     const navigate = useNavigate();
     let location = useLocation();
 
+    const [popularProducts, setPopularProducts] = useState([]);
+    const [specialProducts, setSpecialProducts] = useState([]);
+    const [latestProducts, setLatestProducts] = useState([]);
+
+    console.log('specialProducts', specialProducts);
+
     const dispatch = useDispatch();
     useEffect(() => {
         getBlogs();
         getProducts();
+        fetchPopularProducts();
+        fetchSpecialProducts();
+        fetchLatestProducts();
     }, []);
     const getBlogs = () => {
         dispatch(getAllBlogs({}));
     };
     const getProducts = () => {
         dispatch(getAllProducts());
-    };
-
-    const addToWish = (prodId) => {
-        dispatch(addToWishlist(prodId));
     };
 
     console.log(blogState);
@@ -65,6 +70,33 @@ const Home = () => {
     const handleCategoryClick = (categoryQuery) => {
         dispatch(getAllProducts({ category: categoryQuery, sort: "manual" }));
         navigate(`/product?product_category=${categoryQuery}&sort=manual`);
+    };
+
+    const fetchPopularProducts = async () => {
+        const { data, error } = await getPopularProductsService();
+        if (error) {
+            console.error("Error fetching popular products:", error);
+        } else {
+            setPopularProducts(data?.popularProducts);
+        }
+    };
+
+    const fetchSpecialProducts = async () => {
+        const result = await getSpecialProductsService();
+        if (result.error) {
+            console.error("Error fetching special products:", result.error);
+        } else {
+            setSpecialProducts(result.data);
+        }
+    };
+
+    const fetchLatestProducts = async () => {
+        const { data, error } = await getLatestProductsService();
+        if (error) {
+            console.error("Error fetching lastest products:", error);
+        } else {
+            setLatestProducts(data.products);
+        }
     };
 
     return (
@@ -200,51 +232,95 @@ const Home = () => {
             <Container class1="featured-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <h3 className="section-heading">Từ các bộ sưu tập</h3>
+                        <h3 className="section-heading">Hàng mới về</h3>
                     </div>
-                    {productState &&
-                        productState
-                            .filter((item) => item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "featured"))
+                    {latestProducts &&
+                        latestProducts
                             .slice(0, 4)
-                            .map((item, index) => (
-                                <div key={index} className={"col-3"}>
-                                    <div className="product-card position-relative pointer-cursor" onClick={() => { navigate("/product/" + item?._id); window.scrollTo({ top: 0, behavior: "auto" }); }}>
-                                        <div className="product-image d-flex">
-                                            <img
-                                                src={item?.product_images[0]?.url}
-                                                className="img-fluid mx-auto w-auto"
-                                                alt="product"
-                                            />
-                                            <img
-                                                src={item?.product_images[1]?.url}
-                                                className="img-fluid mx-auto w-auto"
-                                                alt="product"
-                                            />
-                                        </div>
-                                        <div className="product-details">
-                                            <h6 className="brand">{item?.product_brand?.map((brand, index) => (
-                                                <span key={brand._id}>
-                                                    {brand.title}
-                                                    {index < item.product_brand.length - 1 && " | "}
-                                                </span>
-                                            ))}</h6>
-                                            <h5 className="product-title text-truncate">{item?.product_name}</h5>
-                                            <div className="d-flex align-items-center justify-content-between gap-10">
-                                                <Rating
-                                                    className="mb-2"
-                                                    initialRating={+item?.product_totalRating}
-                                                    readonly
-                                                    emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
-                                                    fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
-                                                />
-                                                {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
-                                            </div>
+                            .map((item, index) => {
+                                let displayPrice = item?.product_price;
+                                let discountText = "";
 
-                                            <p className="price">{item?.product_price.toLocaleString()}₫</p>
+                                if (item?.discount) {
+                                    if (item.discount.discount_type === "percentage") {
+                                        displayPrice = item.product_price - (item.product_price * item.discount.discount_value / 100);
+                                        discountText = `-${item.discount.discount_value}%`;
+                                    } else if (item.discount.discount_type === "fixed_amount") {
+                                        displayPrice = item.product_price - item.discount.discount_value;
+                                        discountText = `-${item.discount.discount_value.toLocaleString()}₫`;
+                                    }
+                                }
+
+                                return (
+                                    <div key={index} className={"col-3"}>
+                                        <div
+                                            className="product-card position-relative pointer-cursor"
+                                            onClick={() => {
+                                                navigate("/product/" + item?._id);
+                                                window.scrollTo({ top: 0, behavior: "auto" });
+                                            }}
+                                        >
+                                            {/* Hiển thị badge giảm giá nếu có */}
+                                            {discountText && (
+                                                <div className="discount-badge position-absolute">
+                                                    {discountText}
+                                                </div>
+                                            )}
+                                            <div className="product-image d-flex">
+                                                <img
+                                                    src={item?.product_images[0]?.url}
+                                                    className="img-fluid mx-auto w-auto"
+                                                    alt="product"
+                                                />
+                                                <img
+                                                    src={item?.product_images[1]?.url || item?.product_images[0]?.url}
+                                                    className="img-fluid mx-auto w-auto"
+                                                    alt="product"
+                                                />
+                                            </div>
+                                            <div className="product-details">
+                                                <h6 className="brand">
+                                                    {item?.product_brand?.map((brand, index) => (
+                                                        <span key={brand._id}>
+                                                            {brand.title}
+                                                            {index < item.product_brand.length - 1 && " | "}
+                                                        </span>
+                                                    ))}
+                                                </h6>
+                                                <h5 className="product-title text-truncate">
+                                                    {item?.product_name}
+                                                </h5>
+                                                <div className="d-flex align-items-center justify-content-between gap-10">
+                                                    <Rating
+                                                        className="mb-2"
+                                                        initialRating={+item?.product_totalRating}
+                                                        readonly
+                                                        emptySymbol={
+                                                            <FaRegStar className="fs-5" style={{ color: "#f59e0b" }} />
+                                                        }
+                                                        fullSymbol={
+                                                            <FaStar className="fs-5" style={{ color: "#f59e0b" }} />
+                                                        }
+                                                    />
+                                                    {item?.product_sold !== 0 && (
+                                                        <span className="sold">Đã bán {item?.product_sold}</span>
+                                                    )}
+                                                </div>
+                                                <div className="d-flex align-items-center gap-10">
+                                                    <p className="price text-danger fw-bold">
+                                                        {displayPrice.toLocaleString()}₫
+                                                    </p>
+                                                    {item?.discount && (
+                                                        <p className="original-price text-muted text-decoration-line-through">
+                                                            {item?.product_price?.toLocaleString()}₫
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                 </div>
             </Container>
 
@@ -317,23 +393,21 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    {productState &&
-                        productState
-                            .filter((item) => item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "special"))
-                            .slice(0, 4)
-                            .map((item, index) => (
-                                <SpecialProduct
-                                    key={index}
-                                    id={item?._id}
-                                    title={item?.product_name}
-                                    img={item?.product_images[0]?.url}
-                                    brand={item?.brand}
-                                    totalRating={item?.product_totalRating.toString()}
-                                    price={item?.product_price}
-                                    sold={item?.product_sold}
-                                    quantity={item?.product_quantity}
-                                />
-                            ))}
+                    {specialProducts &&
+                        specialProducts.slice(0, 4).map((item, index) => (
+                            <SpecialProduct
+                                key={index}
+                                id={item?._id}
+                                title={item?.product_name}
+                                img={item?.product_images[0]?.url}
+                                brand={item?.product_brand[0]?.title}
+                                totalRating={item?.product_totalRating?.toString()}
+                                price={item?.product_price}
+                                sold={item?.product_sold}
+                                quantity={item?.product_quantity}
+                                discount={item?.discount}
+                            />
+                        ))}
                 </div>
             </Container>
             <Container class1="popular-wrapper py-5 home-wrapper-2">
@@ -343,24 +417,43 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    {productState &&
-                        productState
-                            .filter((item) => item?.product_tags?.some((tag) => tag?.name.toLowerCase() === "popular"))
-                            .slice(0, 4)
-                            .map((item, index) => (
+                    {popularProducts && popularProducts.length > 0 ? (
+                        popularProducts.slice(0, 4).map((item, index) => {
+                            let displayPrice = item?.product_price;
+                            let discountText = "";
+
+                            if (item?.discount) {
+                                if (item.discount.discount_type === "percentage") {
+                                    displayPrice = item.product_price - (item.product_price * item.discount.discount_value / 100);
+                                    discountText = `-${item.discount.discount_value}%`;
+                                } else if (item.discount.discount_type === "fixed_amount") {
+                                    displayPrice = item.product_price - item.discount.discount_value;
+                                    discountText = `-${item.discount.discount_value.toLocaleString()}₫`;
+                                }
+                            }
+
+                            return (
                                 <div key={index} className={"col-3 pointer-cursor"} onClick={() => { navigate("/product/" + item?._id); window.scrollTo(0, 0); }}>
                                     <div className="product-card position-relative">
+                                        {/* Badge giảm giá */}
+                                        {discountText && (
+                                            <div className="discount-badge position-absolute">
+                                                {discountText}
+                                            </div>
+                                        )}
                                         <div className="product-image d-flex">
                                             <img
                                                 src={item?.product_images[0]?.url}
                                                 className="img-fluid mx-auto w-auto"
                                                 alt="product"
                                             />
-                                            <img
-                                                src={item?.product_images[1]?.url}
-                                                className="img-fluid mx-auto w-auto"
-                                                alt="product"
-                                            />
+                                            {item?.product_images[1] && (
+                                                <img
+                                                    src={item?.product_images[1]?.url}
+                                                    className="img-fluid mx-auto w-auto"
+                                                    alt="product"
+                                                />
+                                            )}
                                         </div>
                                         <div className="product-details">
                                             <h6 className="brand">{item?.product_brand?.map((brand, index) => (
@@ -380,16 +473,29 @@ const Home = () => {
                                                 />
                                                 {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                             </div>
-                                            <p className="price">{item?.product_price.toLocaleString()}₫</p>
+                                            <div className="d-flex align-items-center gap-10">
+                                                <p className="price text-danger fw-bold">
+                                                    {displayPrice.toLocaleString()}₫
+                                                </p>
+                                                {item?.discount && (
+                                                    <p className="original-price text-muted text-decoration-line-through">
+                                                        {item?.product_price?.toLocaleString()}₫
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="action-bar position-absolute">
-                                            <div className="d-flex flex-column gap-15">
-                                            </div>
+                                            <div className="d-flex flex-column gap-15"></div>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            );
+                        })
+                    ) : (
+                        <p>Không có sản phẩm phổ biến để hiển thị.</p>
+                    )}
                 </div>
+
             </Container>
             <Container class1="marque-wrapper home-wrapper-2 py-5">
                 <div className="row">

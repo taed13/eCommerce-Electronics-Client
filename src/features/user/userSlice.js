@@ -196,6 +196,14 @@ export const changePassword = createAsyncThunk(
     }
 );
 
+export const cancelOrder = createAsyncThunk("user/cancelOrder", async (orderId, thunkAPI) => {
+    try {
+        return await authService.cancelOrder(orderId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data);
+    }
+});
+
 const initialState = {
     user: getCustomerFromLocalStorage,
     userInfo: null,

@@ -7,16 +7,11 @@ import { base_url, getConfig } from "../utils/axiosConfig";
  * @returns {Promise<{data: any} | {error: string}>}
  */
 export const cancelOrderService = async (orderId) => {
-    try {
-        const response = await axios.post(
-            `${base_url}order/cancel`,
-            { orderId },
-            getConfig()
-        );
-        return { data: response.data };
-    } catch (error) {
-        return handleError(error, "Failed to cancel order");
-    }
+    return await axios.post(
+        `${base_url}order/cancel`,
+        { orderId },
+        getConfig()
+    );
 };
 
 /**
