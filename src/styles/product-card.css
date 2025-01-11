@@ -37,3 +37,14 @@
 .original-price {
     font-size: 16px;
 }
+
+.product-card.sold-out .discount-badge,
+.product-card.sold-out .price {
+    opacity: 0.5;
+    /* Làm mờ badge và giá */
+}
+
+.product-card.sold-out .original-price {
+    opacity: 0.3;
+    /* Làm mờ giá gốc */
+}

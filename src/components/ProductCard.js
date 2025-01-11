@@ -52,74 +52,74 @@ const ProductCard = (props) => {
                         }}
                     >
                         <div className={`product-card position-relative ${item?.product_quantity === 0 ? "sold-out" : ""}`}>
-                            {/* Lớp phủ khi sản phẩm hết hàng */}
-                            {item?.product_quantity === 0 && (
-                                <div className="sold-out-overlay">
-                                    <img
-                                        src={SoldOut}
-                                        alt="Sold Out"
-                                        className="sold-out-image"
-                                    />
-                                </div>
-                            )}
-                            {/* Hiển thị discount */}
-                            {discountText && (
-                                <div className="discount-badge">
-                                    {discountText}
-                                </div>
-                            )}
-                            <div className="wishlist-icon position-absolute">
-                                <button className="border-0 bg-transparent" onClick={() => addToWish(item?._id)}>
-                                    <img src={wish} alt="wishlist" />
-                                </button>
-                            </div>
-                            <div className={`product-image d-flex ${grid === 12 && "w-25"}`} style={{ height: "200px" }}>
-                                <img
-                                    src={item?.product_images[0]?.url}
-                                    className="img-fluid mx-auto"
-                                    alt="product image"
-                                    width={160}
-                                />
-                                <img
-                                    src={item?.product_images[1]?.url}
-                                    className="img-fluid mx-auto"
-                                    alt="product image"
-                                    width={160}
-                                />
-                            </div>
-                            <div className={`product-details ${grid === 12 && "w-75"}`}>
-                                <h6 className="brand">{item?.product_brand[0]?.title}</h6>
-                                <h5 className="product-title text-truncate">{item?.product_name}</h5>
-                                <div className="d-flex align-items-center justify-content-between gap-10 rating">
-                                    <Rating
-                                        initialRating={+item?.product_totalRating}
-                                        readonly
-                                        emptySymbol={<FaRegStar className="fs-6" style={{ color: '#f59e0b' }} />}
-                                        fullSymbol={<FaStar className="fs-6" style={{ color: '#f59e0b' }} />}
-                                    />
-                                    {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
-                                </div>
-                                <div className={`description ${grid === 12 ? "d-block" : "d-none"}`}>
-                                    {truncatedDescription}
-                                </div>
-                                <div className="d-flex align-items-baseline gap-10">
-                                    {item?.discount ? (
-                                        <>
-                                            <p className="price text-danger fw-bold">
-                                                {item?.product_after_price?.toLocaleString()}₫
-                                            </p>
-                                            <p className="original-price text-muted text-decoration-line-through">
-                                                {item?.product_price?.toLocaleString()}₫
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <p className="price text-dark fw-bold">
-                                            {item?.product_price?.toLocaleString()}₫
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+    {/* Lớp phủ khi sản phẩm hết hàng */}
+    {item?.product_quantity === 0 && (
+        <div className="sold-out-overlay">
+            <img
+                src={SoldOut}
+                alt="Sold Out"
+                className="sold-out-image"
+            />
+        </div>
+    )}
+    {/* Hiển thị discount */}
+    {discountText && (
+        <div className="discount-badge">
+            {discountText}
+        </div>
+    )}
+    <div className="wishlist-icon position-absolute">
+        <button className="border-0 bg-transparent" onClick={() => addToWish(item?._id)}>
+            <img src={wish} alt="wishlist" />
+        </button>
+    </div>
+    <div className={`product-image d-flex ${grid === 12 && "w-25"}`} style={{ height: "200px" }}>
+        <img
+            src={item?.product_images[0]?.url}
+            className="img-fluid mx-auto"
+            alt="product image"
+            width={160}
+        />
+        <img
+            src={item?.product_images[1]?.url}
+            className="img-fluid mx-auto"
+            alt="product image"
+            width={160}
+        />
+    </div>
+    <div className={`product-details ${grid === 12 && "w-75"}`}>
+        <h6 className="brand">{item?.product_brand[0]?.title}</h6>
+        <h5 className="product-title text-truncate">{item?.product_name}</h5>
+        <div className="d-flex align-items-center justify-content-between gap-10 rating">
+            <Rating
+                initialRating={+item?.product_totalRating}
+                readonly
+                emptySymbol={<FaRegStar className="fs-6" style={{ color: '#f59e0b' }} />}
+                fullSymbol={<FaStar className="fs-6" style={{ color: '#f59e0b' }} />}
+            />
+            {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
+        </div>
+        <div className={`description ${grid === 12 ? "d-block" : "d-none"}`}>
+            {truncatedDescription}
+        </div>
+        <div className="d-flex align-items-baseline gap-10">
+            {item?.discount ? (
+                <>
+                    <p className="price text-danger fw-bold">
+                        {item?.product_after_price?.toLocaleString()}₫
+                    </p>
+                    <p className="original-price text-muted text-decoration-line-through">
+                        {item?.product_price?.toLocaleString()}₫
+                    </p>
+                </>
+            ) : (
+                <p className="price text-dark fw-bold">
+                    {item?.product_price?.toLocaleString()}₫
+                </p>
+            )}
+        </div>
+    </div>
+</div>
                     </div>
                 );
             })}

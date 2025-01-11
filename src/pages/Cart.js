@@ -74,6 +74,8 @@ const Cart = () => {
         setSubTotal(sum);
     }, [userCartState]);
 
+    console.log('userCartState?.data?.cart_products', userCartState?.data?.cart_products);
+
     return (
         <>
             <Meta title={"Electronics | Giỏ hàng của tôi"} />

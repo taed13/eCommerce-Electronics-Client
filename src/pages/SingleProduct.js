@@ -91,7 +91,7 @@ const SingleProduct = () => {
                     },
                 ],
                 quantity: quantity,
-                price: productState?.product_price,
+                price: productState?.product_after_price > 0 ? productState?.product_after_price : productState?.product_price,
                 name: productState?.product_name,
             };
             dispatch(addProdToCart(data));
