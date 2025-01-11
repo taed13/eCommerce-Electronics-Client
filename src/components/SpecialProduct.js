@@ -7,7 +7,6 @@ import "../styles/special-product.css";
 const SpecialProduct = (props) => {
     const { id, title, img, brand, totalRating, price, sold, quantity, discount } = props;
 
-    // Tính toán giá hiển thị và văn bản giảm giá
     let displayPrice = price;
     let discountText = "";
 
@@ -24,7 +23,6 @@ const SpecialProduct = (props) => {
     return (
         <div className="col-6 mb-3">
             <div className="special-product-card position-relative">
-                {/* Hiển thị badge giảm giá nếu có */}
                 {discountText && (
                     <div className="discount-badge position-absolute top-0 start-0 bg-danger text-white p-1 rounded">
                         {discountText}
@@ -44,10 +42,18 @@ const SpecialProduct = (props) => {
                             emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
                             fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
                         />
-                        <p className="price">
-                            <span className="red-p">{displayPrice.toLocaleString()}₫</span> &nbsp;
-                            {discount && <strike>{price.toLocaleString()}₫</strike>}
-                        </p>
+                        <div className="d-flex align-items-center justify-content-start gap-2">
+                            <p className="price">
+                                <span className="red-p text-danger fw-bold">{displayPrice.toLocaleString()}₫</span>
+                            </p>
+                            {discount &&
+                                (
+                                    <p className="strikethorugh-price text-muted">
+                                        <span className="red-p"><strike>{price.toLocaleString()}₫</strike></span>
+                                    </p>
+                                )
+                            }
+                        </div>
                         <div className="prod-count my-3">
                             <p>Chỉ còn <b>{quantity}</b> sản phẩm</p>
                             <div className="progress">

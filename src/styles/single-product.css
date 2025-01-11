@@ -4,10 +4,12 @@
     left: 20px;
     background-color: #ff4d4d;
     color: white;
-    font-size: 20px; /* Tăng kích thước font */
+    font-size: 20px;
+    /* Tăng kích thước font */
     font-weight: bold;
     padding: 8px 16px;
-    border-radius: 12px 0 12px 0; /* Bo góc độc đáo */
+    border-radius: 12px 0 12px 0;
+    /* Bo góc độc đáo */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
@@ -28,12 +30,17 @@
 }
 
 .price {
-    font-size: 32px; /* Font lớn để nổi bật giá */
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.strikethorugh-price {
+    font-size: 20px;
     margin-bottom: 8px;
 }
 
 .original-price {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .rating-wrapper span {
@@ -48,7 +55,8 @@
 }
 
 .review-btn:hover {
-    color: #f59e0b; /* Đổi màu khi hover */
+    color: #f59e0b;
+    /* Đổi màu khi hover */
 }
 
 .badge {
@@ -57,5 +65,6 @@
 }
 
 .text-danger {
-    color: #ff4d4d !important; /* Đảm bảo màu nổi bật */
+    color: #ff4d4d !important;
+    /* Đảm bảo màu nổi bật */
 }

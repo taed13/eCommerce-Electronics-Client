@@ -102,7 +102,7 @@ const ProductCard = (props) => {
                                 <div className={`description ${grid === 12 ? "d-block" : "d-none"}`}>
                                     {truncatedDescription}
                                 </div>
-                                <div className="d-flex align-items-center gap-10">
+                                <div className="d-flex align-items-baseline gap-10">
                                     {item?.discount ? (
                                         <>
                                             <p className="price text-danger fw-bold">

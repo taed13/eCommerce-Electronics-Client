@@ -6,22 +6,27 @@ import { HiOutlineArrowLeft } from "react-icons/hi";
 import blog from "../images/blog-1.jpg";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogById } from "../features/blogs/blogSlice";
+import { getAllBlogs, getBlogById } from "../features/blogs/blogSlice";
+import moment from "moment";
+import BlogCard from "../components/BlogCard";
 
 const SingleBlog = () => {
     const blogState = useSelector((state) => state?.blog?.singleBlog);
+    const blogsState = useSelector((state) => state?.blog?.blog);
     const location = useLocation();
     const blogId = location.pathname.split("/")[2];
     const dispatch = useDispatch();
     useEffect(() => {
+        getBlogs();
         getBlog();
     }, [blogId]);
 
+    const getBlogs = () => {
+        dispatch(getAllBlogs({}));
+    };
     const getBlog = () => {
         dispatch(getBlogById(blogId));
     };
-
-    console.log(blogState);
 
     return (
         <>
@@ -57,6 +62,34 @@ const SingleBlog = () => {
                                 <div className="w-75 fs-3" dangerouslySetInnerHTML={{ __html: blogState?.data?.blog_description, }}></div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </Container>
+            <Container class1="blog-wrapper py-5 home-wrapper-2">
+                <div className="row">
+                    <div className="col-12">
+                        <h3 className="section-heading">Các bài viết khác</h3>
+                    </div>
+                    <div className="row">
+                        {
+                            blogsState && blogsState?.map((item, index) => {
+                                if (index < 4) {
+                                    return (
+                                        <div className="col-3" key={index}>
+                                            <BlogCard
+                                                id={item?.id}
+                                                title={item?.blog_title}
+                                                description={item?.blog_description}
+                                                image={item?.blog_images[0]?.url}
+                                                date={moment(item?.createdAt).format(
+                                                    "DD/MM/YYYY, HH:mm"
+                                                )}
+                                            />
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            })}
                     </div>
                 </div>
             </Container>

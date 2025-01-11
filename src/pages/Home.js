@@ -43,8 +43,6 @@ const Home = () => {
         dispatch(getAllProducts());
     };
 
-    console.log(blogState);
-    console.log(productState);
     const [prodCategoryCount, setProdCategoryCount] = useState([]);
 
     useEffect(() => {
@@ -98,6 +96,8 @@ const Home = () => {
             setLatestProducts(data.products);
         }
     };
+
+    console.log('popularProducts', popularProducts ?? popularProducts[0]);
 
     return (
         <>
@@ -306,7 +306,7 @@ const Home = () => {
                                                         <span className="sold">Đã bán {item?.product_sold}</span>
                                                     )}
                                                 </div>
-                                                <div className="d-flex align-items-center gap-10">
+                                                <div className="d-flex align-items-baseline gap-10">
                                                     <p className="price text-danger fw-bold">
                                                         {displayPrice.toLocaleString()}₫
                                                     </p>
@@ -473,7 +473,7 @@ const Home = () => {
                                                 />
                                                 {item?.product_sold !== 0 && <span className="sold">Đã bán {item?.product_sold}</span>}
                                             </div>
-                                            <div className="d-flex align-items-center gap-10">
+                                            <div className="d-flex align-items-baseline gap-10">
                                                 <p className="price text-danger fw-bold">
                                                     {displayPrice.toLocaleString()}₫
                                                 </p>
