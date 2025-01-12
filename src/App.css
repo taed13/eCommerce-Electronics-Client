@@ -75,6 +75,18 @@ a {
     color: var(--color-131921);
 }
 
+.btn-disabled {
+    background-color: #aaa;
+    color: white;
+    cursor: not-allowed;
+}
+
+.btn-disabled:hover {
+    background-color: #aaa;
+    color: white;
+    cursor: not-allowed;
+}
+
 /* Header part */
 
 .header-top-strip {

@@ -308,9 +308,9 @@ const SingleProduct = () => {
                                                         className="color-box"
                                                         style={{
                                                             backgroundColor: colorItem.code,
-                                                            width: "20px",
-                                                            height: "20px",
-                                                            borderRadius: "50%",
+                                                            width: "30px",
+                                                            height: "30px",
+                                                            borderRadius: "5px",
                                                             cursor: "pointer",
                                                             border:
                                                                 color === colorItem._id
@@ -340,6 +340,7 @@ const SingleProduct = () => {
                                                     className="form-control"
                                                     style={{ width: "70px" }}
                                                     id=""
+                                                    disabled={productState?.product_quantity === 0}
                                                     onChange={(e) => {
                                                         if (e.target.value === "") {
                                                             setQuantity("");
@@ -360,14 +361,21 @@ const SingleProduct = () => {
                                     <div className={alreadyAdded ? "ms-0" : "ms-5"}>
                                         <button
                                             type="button"
-                                            className="button border-0"
+                                            className="button border-0 btn-disabled"
                                             onClick={() => {
                                                 alreadyAdded
                                                     ? navigate("/cart")
                                                     : uploadCart(productState?._id);
                                             }}
+                                            disabled={productState?.product_quantity === 0}
                                         >
-                                            {alreadyAdded ? "Đi đến giỏ hàng" : "Thêm vào giỏ hàng"}
+                                            {
+                                                productState?.product_quantity === 0
+                                                    ? "Đã hết hàng"
+                                                    : alreadyAdded
+                                                        ? "Đi đến giỏ hàng"
+                                                        : "Thêm vào giỏ hàng"
+                                            }
                                         </button>
                                     </div>
                                 </div>
