@@ -1,5 +1,5 @@
-// export const host = "http://localhost:5001";
-export const host = "https://e-commerce-electronics-server-ruddy.vercel.app";
+export const host = "http://localhost:5001";
+// export const host = "https://e-commerce-electronics-server-ruddy.vercel.app";
 export const base_url = `${host}/api/`;
 
 const getTokenFromLocalStorage = localStorage.getItem("customer")

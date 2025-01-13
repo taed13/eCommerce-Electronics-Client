@@ -189,7 +189,13 @@ const cancelOrder = async (orderId) => {
     if (response.data) {
         return response.data;
     }
-}
+};
+
+const disableUser = async (id) => {
+    const response = await axios.delete(`${base_url}user/${id}`, getConfig());
+
+    return response.data;
+};
 
 export const authService = {
     register,
@@ -211,4 +217,5 @@ export const authService = {
     getUserInfoById,
     changeUserPassword,
     cancelOrder,
+    disableUser,
 };

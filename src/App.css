@@ -858,6 +858,15 @@ footer .input-group-text {
     color: var(--color-777777);
 }
 
+.edit-review-span {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.edit-review-span:hover {
+    text-decoration: underline;
+}
+
 .main-product-image {
     padding: 20px;
     background-color: white;

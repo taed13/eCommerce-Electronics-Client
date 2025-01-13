@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import ReactImageZoom from "react-image-zoom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import {
     checkProductRatingPossibility,
     getAllProducts,
     getAProduct,
+    updateRating,
 } from "../features/products/productSlice";
 import { toast } from "react-toastify";
 import { addProdToCart, getOrders, getUserCart } from "../features/user/userSlice";
@@ -17,7 +18,7 @@ import Container from "../components/Container";
 import Splide from "@splidejs/splide";
 import "@splidejs/splide/dist/css/splide.min.css";
 import Rating from 'react-rating';
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar, FaRegCommentDots } from "react-icons/fa";
 import { getPopularProductsService } from "../api/product.api";
 import "../styles/single-product.css";
 
@@ -34,6 +35,9 @@ const SingleProduct = () => {
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState("");
     const [isRated, setIsRated] = useState(false);
+    const [editCommentId, setEditCommentId] = useState(null);
+    const [editRating, setEditRating] = useState(0);
+    const [editComment, setEditComment] = useState("");
 
     const getProductId = location.pathname.split("/")[2];
     const splideId = "splide-product-images";
@@ -172,6 +176,27 @@ const SingleProduct = () => {
         } else {
             setPopularProducts(data?.popularProducts);
         }
+    };
+
+    const updateComment = () => {
+        if (editComment.trim() === "") {
+            toast.error("Hãy viết bình luận");
+            return;
+        }
+
+        dispatch(
+            updateRating({
+                prodId: getProductId,
+                commentId: editCommentId,
+                star: editRating,
+                comment: editComment
+            })
+        ).then(() => {
+            setEditCommentId(null);
+            setEditComment("");
+            setEditRating(0);
+            dispatch(getAProduct(getProductId));
+        });
     };
 
     return (
@@ -361,7 +386,7 @@ const SingleProduct = () => {
                                     <div className={alreadyAdded ? "ms-0" : "ms-5"}>
                                         <button
                                             type="button"
-                                            className="button border-0 btn-disabled"
+                                            className={`button border-0 ${productState?.product_quantity === 0 && "btn-disabled"}`}
                                             onClick={() => {
                                                 alreadyAdded
                                                     ? navigate("/cart")
@@ -431,8 +456,8 @@ const SingleProduct = () => {
                         <div className="review-inner-wrapper">
                             <div className="review-head d-flex justify-content-between align-items-end">
                                 <div>
-                                    <h4 className="mb-2 fw-bold">Khách hàng đánh giá</h4>
-                                    <div className="d-flex flex-col align-items-end gap-10 mt-3">
+                                    <h4 className="mb-0 fw-bold">Khách hàng đánh giá</h4>
+                                    <div className="d-flex flex-col align-items-end gap-10 mt-2">
                                         <Rating
                                             initialRating={+productState?.product_totalRating || 0}
                                             readonly
@@ -442,10 +467,10 @@ const SingleProduct = () => {
                                         <span className="mb-0">
                                             {+productState?.product_totalRating || 0} trên 5
                                         </span>
+                                        <p className="mt-2 mb-0">
+                                            (Dựa trên {productState?.product_ratings?.length} đánh giá)
+                                        </p>
                                     </div>
-                                    <p className="mt-2 mb-0">
-                                        (Dựa trên {productState?.product_ratings?.length} đánh giá)
-                                    </p>
                                 </div>
                             </div>
                             {
@@ -492,24 +517,93 @@ const SingleProduct = () => {
                             <div className="reviews mt-4">
                                 {
                                     productState?.product_ratings?.map((item, index) => {
+                                        console.log(item);
                                         return (
                                             <div className="review mb-4" key={index}>
-                                                <div className="d-flex align-items-end gap-10">
-                                                    <span className="mb-0">{item?.postedBy.name}</span>
-                                                </div>
-                                                <Rating
-                                                    className="mt-0"
-                                                    initialRating={item?.star}
-                                                    readonly
-                                                    emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
-                                                    fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
-                                                />
-                                                <p className="mt-1 text-dark">
-                                                    <small>
-                                                        Đã viết vào {new Date(item?.postedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                                                    </small>
-                                                </p>
-                                                <p className="mt-3">{item?.comment}</p>
+                                                {
+                                                    item?.postedBy._id === userState?._id && editCommentId === item._id ? (
+                                                        <div className="review-form pb-2">
+                                                            <h4>Chỉnh sửa bình luận</h4>
+                                                            <span className="mb-0">{item?.postedBy.name}</span>
+                                                            <form action="" className="d-flex flex-column gap-10">
+                                                                <div>
+                                                                    <Rating
+                                                                        initialRating={editRating}
+                                                                        emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                                        fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                                        onChange={(newRating) => setEditRating(newRating)}
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <textarea
+                                                                        name=""
+                                                                        id=""
+                                                                        className="form-control w-100"
+                                                                        cols="30"
+                                                                        rows="4"
+                                                                        value={editComment}
+                                                                        onChange={(e) => setEditComment(e.target.value)}
+                                                                    ></textarea>
+                                                                </div>
+                                                                <div className="d-flex justify-content-end gap-2 mt-2">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="button signup border-0"
+                                                                        onClick={() => {
+                                                                            setEditCommentId(null);
+                                                                            setEditComment("");
+                                                                            setEditRating(0);
+                                                                        }}
+                                                                    >
+                                                                        Hủy
+                                                                    </button>
+                                                                    <button
+                                                                        className="button border-0"
+                                                                        type="button"
+                                                                        onClick={updateComment}
+                                                                    >
+                                                                        Cập nhật bình luận
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <span className="mb-0">{item?.postedBy.name}</span>
+                                                                {
+                                                                    item?.postedBy._id === userState?._id && (
+                                                                        <div className="d-flex align-items-center justify-content-between">
+                                                                            <span
+                                                                                className="edit-review-span text-primary"
+                                                                                onClick={() => {
+                                                                                    setEditCommentId(item._id);
+                                                                                    setEditComment(item.comment);
+                                                                                    setEditRating(item.star);
+                                                                                }}
+                                                                            >
+                                                                                Chỉnh sửa bình luận
+                                                                            </span>
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            </div>
+                                                            <Rating
+                                                                className="mt-0"
+                                                                initialRating={item?.star}
+                                                                readonly
+                                                                emptySymbol={<FaRegStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                                fullSymbol={<FaStar className="fs-5" style={{ color: '#f59e0b' }} />}
+                                                            />
+                                                            <p className="mt-1 text-dark">
+                                                                <small>
+                                                                    Đã viết vào {new Date(item?.postedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                                                </small>
+                                                            </p>
+                                                            <p className="mt-3">{item?.comment}</p>
+                                                        </>
+                                                    )
+                                                }
                                             </div>
                                         );
                                     })

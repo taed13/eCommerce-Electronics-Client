@@ -6,13 +6,15 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
-import { FaPlus, FaUserEdit } from "react-icons/fa";
-import { IoLogOut } from "react-icons/io5";
+import { FaPlus, FaSave, FaUserEdit } from "react-icons/fa";
+import { IoChevronBackOutline, IoLogOut } from "react-icons/io5";
 import { TbPasswordUser } from "react-icons/tb";
 import ChangePassword from "../components/ChangePassword";
-import { getUserInfoById, updateProfile } from "../features/user/userSlice"; // Import fetchUserInfo action
+import ConfirmDisableModal from "../components/ConfirmDisableModal";
+import { disableUser, getUserInfoById, updateProfile } from "../features/user/userSlice";
 import { deleteAddressService, setDefaultAddressService } from "../api/user.api";
 import { toast } from "react-toastify";
+import { TiUserDelete } from "react-icons/ti";
 
 const profileSchema = yup.object({
     name: yup.string().required("Không được để trống tên tài khoản"),
@@ -31,6 +33,7 @@ const Profile = () => {
     const userInfoState = useSelector((state) => state.auth?.userInfo);
     const [edit, setEdit] = useState(true);
     const [showChangePassword, setShowChangePassword] = useState(false);
+    const [showConfirmDisable, setShowConfirmDisable] = useState(false);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
@@ -91,6 +94,13 @@ const Profile = () => {
         } else {
             console.error(error);
         }
+    }
+
+    const handleDisabledUser = (userId) => {
+        dispatch(disableUser(userId)).then(() => {
+            localStorage.clear();
+            window.location.reload();
+        });
     }
 
     return (
@@ -170,15 +180,17 @@ const Profile = () => {
                                     </div>
                                 ) : (
                                     <div className="d-flex gap-2 mt-4">
-                                        <button type="submit" className="button border-0">
-                                            Xác nhận
-                                        </button>
                                         <button
                                             type="button"
-                                            className="button signup border-0"
+                                            className="button signup border-0 d-flex align-items-center gap-1"
                                             onClick={handleCancel}
                                         >
+                                            <IoChevronBackOutline className="fs-5" />
                                             Quay lại
+                                        </button>
+                                        <button type="submit" className="button border-0 d-flex align-items-center gap-1">
+                                            <FaSave />
+                                            Xác nhận
                                         </button>
                                     </div>
                                 )}
@@ -232,6 +244,28 @@ const Profile = () => {
                                 ))}
                             </div>
                         </div>
+                        <div className="col-12">
+                            <div className="d-flex justify-content-between align-items-start">
+                                <h3 className="mt-5 mb-0">Vô hiệu hóa tài khoản của tôi</h3>
+                            </div>
+                        </div>
+                        <div className="col-12">
+                            <div className="p-4 border border-1 rounded-3 bg-white" style={{ marginTop: "30px" }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmDisable(true)}
+                                    className="button border-0 mt-2 d-flex align-items-center gap-2 logout-button"
+                                >
+                                    <TiUserDelete className="fs-5" />
+                                    <span>Vô hiệu hóa tài khoản</span>
+                                </button>
+                            </div>
+                        </div>
+                        <ConfirmDisableModal
+                            show={showConfirmDisable}
+                            handleClose={() => setShowConfirmDisable(false)}
+                            handleConfirm={() => handleDisabledUser(userInfoState?._id)}
+                        />
                     </div>
                 </div>
             </Container >

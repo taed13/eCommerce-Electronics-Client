@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { createQuery, getAProduct, resetState } from "../features/contact/contactSlice";
 import { useNavigate } from "react-router-dom";
+import { IoIosSend } from "react-icons/io";
 
 const Contact = () => {
     const dispatch = useDispatch();
@@ -18,7 +19,6 @@ const Contact = () => {
     const [productLinkMessage, setProductLinkMessage] = useState("");
     const [productLinkMessageType, setProductLinkMessageType] = useState("");
     const product = useSelector((state) => state?.contact?.singleproduct);
-    const user = useSelector((state) => state?.auth?.user);
 
     useEffect(() => {
         dispatch(resetState());
@@ -131,150 +131,147 @@ const Contact = () => {
                             </ul>
                         </div>
                     </div>
-                    {
-                        user && (
-                            <div className="col-12 mt-5">
-                                <div className="contact-inner-wrapper d-flex justify-content-between">
+                    <div className="col-12 mt-5">
+                        <div className="contact-inner-wrapper d-flex justify-content-between">
+                            <div>
+                                <h3 className="contact-title mb-4">Liên hệ</h3>
+                                <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15" >
                                     <div>
-                                        <h3 className="contact-title mb-4">Liên hệ</h3>
-                                        <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15" >
-                                            <div>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Tên"
-                                                    name="name"
-                                                    onChange={formik.handleChange("name")}
-                                                    onBlur={formik.handleBlur("name")}
-                                                    value={formik.values.name}
-                                                />
-                                                <div className="error fail-message">
-                                                    {formik.touched.name && formik.errors.name}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Địa chỉ email"
-                                                    name="email"
-                                                    onChange={formik.handleChange("email")}
-                                                    onBlur={formik.handleBlur("email")}
-                                                    value={formik.values.email}
-                                                />
-                                                <div className="error fail-message">
-                                                    {formik.touched.email && formik.errors.email}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <input
-                                                    type="tel"
-                                                    className="form-control"
-                                                    placeholder="Số điện thoại"
-                                                    name="mobile"
-                                                    onChange={formik.handleChange("mobile")}
-                                                    onBlur={formik.handleBlur("mobile")}
-                                                    value={formik.values.mobile}
-                                                />
-                                                <div className="error fail-message">
-                                                    {formik.touched.mobile && formik.errors.mobile}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <textarea
-                                                    id=""
-                                                    className="form-control w-100"
-                                                    cols="30"
-                                                    rows="4"
-                                                    placeholder="Nội dung"
-                                                    name="comment"
-                                                    onChange={formik.handleChange("comment")}
-                                                    onBlur={formik.handleBlur("comment")}
-                                                    value={formik.values.comment}
-                                                ></textarea>
-                                                <div className="error fail-message">
-                                                    {formik.touched.comment && formik.errors.comment}
-                                                </div>
-                                            </div>
-                                            {productIdForSubmitting && (
-                                                <input
-                                                    type="hidden"
-                                                    name="productId"
-                                                    value={productIdForSubmitting}
-                                                />
-                                            )}
-                                            <div>
-                                                <button type="submit" className="button border-0">
-                                                    Gửi đơn
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Tên"
+                                            name="name"
+                                            onChange={formik.handleChange("name")}
+                                            onBlur={formik.handleBlur("name")}
+                                            value={formik.values.name}
+                                        />
+                                        <div className="error fail-message">
+                                            {formik.touched.name && formik.errors.name}
+                                        </div>
                                     </div>
                                     <div>
-                                        <h3 className="contact-title mb-4">Link sản phẩm (nếu có)</h3>
-                                        <form className="d-flex flex-column gap-2">
-                                            <div className="">
-                                                <label htmlFor="productLink" className="form-label fw-bold">
-                                                    Đường dẫn sản phẩm
-                                                </label>
-                                                <div className="input-group">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="productLink"
-                                                        placeholder="Nhập đường dẫn sản phẩm"
-                                                        value={productLink}
-                                                        onChange={(e) => {
-                                                            setProductLink(e.target.value);
-                                                            if (e.target.value.trim()) {
-                                                                setProductLinkMessage("");
-                                                            }
-                                                        }}
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        className="button"
-                                                        onClick={() => {
-                                                            if (!productLink.trim()) {
-                                                                setProductLinkMessage("Vui lòng nhập đường dẫn sản phẩm");
-                                                                setProductLinkMessageType("danger");
-                                                                return;
-                                                            }
-                                                            handleApplyProductLink(productLink);
-                                                        }}
-                                                    >
-                                                        Kiểm tra
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            {productLinkMessage && (
-                                                <p
-                                                    className={`text-${productLinkMessageType === "success" ? "success" : "danger"
-                                                        } fw-semibold`}
-                                                >
-                                                    {productLinkMessage}
-                                                </p>
-                                            )}
-                                        </form>
-                                        {
-                                            product && (
-                                                <div className="d-flex justify-content-start align-items-center gap-3">
-                                                    <div className="mt-3">
-                                                        <span className="form-label fw-bold">Thông tin sản phẩm</span>
-                                                        <p className=" mt-2 mb-2">{product.product_brand[0].title} - {product.product_name}</p>
-                                                        <p className="mb-0">Đơn giá: ₫{product.product_price.toLocaleString()}</p>
-                                                    </div>
-                                                    <div className="">
-                                                        <img src={product?.product_images[0].url} alt={product.product_name} style={{ width: 'auto', height: '200px' }} className="img-fluid" />
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Địa chỉ email"
+                                            name="email"
+                                            onChange={formik.handleChange("email")}
+                                            onBlur={formik.handleBlur("email")}
+                                            value={formik.values.email}
+                                        />
+                                        <div className="error fail-message">
+                                            {formik.touched.email && formik.errors.email}
+                                        </div>
                                     </div>
-                                </div>
+                                    <div>
+                                        <input
+                                            type="tel"
+                                            className="form-control"
+                                            placeholder="Số điện thoại"
+                                            name="mobile"
+                                            onChange={formik.handleChange("mobile")}
+                                            onBlur={formik.handleBlur("mobile")}
+                                            value={formik.values.mobile}
+                                        />
+                                        <div className="error fail-message">
+                                            {formik.touched.mobile && formik.errors.mobile}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <textarea
+                                            id=""
+                                            className="form-control w-100"
+                                            cols="30"
+                                            rows="4"
+                                            placeholder="Nội dung"
+                                            name="comment"
+                                            onChange={formik.handleChange("comment")}
+                                            onBlur={formik.handleBlur("comment")}
+                                            value={formik.values.comment}
+                                        ></textarea>
+                                        <div className="error fail-message">
+                                            {formik.touched.comment && formik.errors.comment}
+                                        </div>
+                                    </div>
+                                    {productIdForSubmitting && (
+                                        <input
+                                            type="hidden"
+                                            name="productId"
+                                            value={productIdForSubmitting}
+                                        />
+                                    )}
+                                    <div>
+                                        <button type="submit" className="button border-0 d-flex align-items-center">
+                                            <IoIosSend className="me-2 fs-6" />
+                                            Gửi đơn
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        )
-                    }
+                            <div>
+                                <h3 className="contact-title mb-4">Link sản phẩm (nếu có)</h3>
+                                <form className="d-flex flex-column gap-2">
+                                    <div className="">
+                                        <label htmlFor="productLink" className="form-label fw-bold">
+                                            Đường dẫn sản phẩm
+                                        </label>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="productLink"
+                                                placeholder="Nhập đường dẫn sản phẩm"
+                                                value={productLink}
+                                                onChange={(e) => {
+                                                    setProductLink(e.target.value);
+                                                    if (e.target.value.trim()) {
+                                                        setProductLinkMessage("");
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                className="button"
+                                                onClick={() => {
+                                                    if (!productLink.trim()) {
+                                                        setProductLinkMessage("Vui lòng nhập đường dẫn sản phẩm");
+                                                        setProductLinkMessageType("danger");
+                                                        return;
+                                                    }
+                                                    handleApplyProductLink(productLink);
+                                                }}
+                                            >
+                                                Kiểm tra
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {productLinkMessage && (
+                                        <p
+                                            className={`text-${productLinkMessageType === "success" ? "success" : "danger"
+                                                } fw-semibold`}
+                                        >
+                                            {productLinkMessage}
+                                        </p>
+                                    )}
+                                </form>
+                                {
+                                    product && (
+                                        <div className="d-flex justify-content-start align-items-center gap-3">
+                                            <div className="mt-3">
+                                                <span className="form-label fw-bold">Thông tin sản phẩm</span>
+                                                <p className=" mt-2 mb-2">{product.product_brand[0].title} - {product.product_name}</p>
+                                                <p className="mb-0">Đơn giá: ₫{product.product_price.toLocaleString()}</p>
+                                            </div>
+                                            <div className="">
+                                                <img src={product?.product_images[0].url} alt={product.product_name} style={{ width: 'auto', height: '200px' }} className="img-fluid" />
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </Container>
         </>

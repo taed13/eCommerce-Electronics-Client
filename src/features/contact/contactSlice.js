@@ -6,6 +6,7 @@ export const createQuery = createAsyncThunk(
     "contact/post",
     async (contactData, thunkAPI) => {
         try {
+            console.log(contactData);
             return await contactService.postQuery(contactData);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -57,7 +58,6 @@ export const contactSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                console.log(333, action.error);
                 if (state.isError === true) {
                     toast.error("Đơn yêu cầu của bạn không thể gửi đi");
                 }

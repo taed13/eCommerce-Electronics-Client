@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../features/user/userSlice";
+import { IoChevronBackOutline } from "react-icons/io5";
+import { FaSave } from "react-icons/fa";
 
 const passwordSchema = yup.object({
     oldPassword: yup.string().required("Không được để trống mật khẩu cũ"),
@@ -61,6 +63,11 @@ const ChangePassword = ({ show, handleClose }) => {
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={formik.handleSubmit}>
+                    <div className="mb-2">
+                        <span className="text-muted" style={{ fontSize: "14px" }}>
+                            Để thay đổi mật khẩu cho tài khoản Electronics của bạn, hãy sử dụng biểu mẫu này.
+                        </span>
+                    </div>
                     <div className="mb-3">
                         <label htmlFor="oldPassword" className="form-label">
                             Mật khẩu cũ
@@ -115,18 +122,20 @@ const ChangePassword = ({ show, handleClose }) => {
                             {formik.touched.confirmPassword && formik.errors.confirmPassword}
                         </div>
                     </div>
-                    <div className="d-flex gap-2 mt-4">
-                        <Button type="submit" className="button border-0">
-                            Xác nhận
-                        </Button>
+                    <Modal.Footer>
                         <Button
                             type="button"
-                            className="button signup border-0"
+                            className="button signup border-0 d-flex align-items-center gap-1"
                             onClick={handleCancel}
                         >
+                            <IoChevronBackOutline className="fs-5" />
                             Quay lại
                         </Button>
-                    </div>
+                        <Button type="submit" className="button border-0 d-flex align-items-center gap-1">
+                            <FaSave />
+                            Xác nhận
+                        </Button>
+                    </Modal.Footer>
                 </form>
             </Modal.Body>
         </Modal>

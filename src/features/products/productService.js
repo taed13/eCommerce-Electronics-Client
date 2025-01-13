@@ -69,6 +69,18 @@ const rateProduct = async (data) => {
     }
 };
 
+const editRateProduct = async ({ prodId, commentId, star, comment }) => {
+    const response = await axios.patch(
+        `${base_url}product/products/${prodId}/ratings/${commentId}`,
+        { star, comment },
+        getConfig()
+    );
+
+    if (response.data) {
+        return response.data;
+    }
+};
+
 const checkProductRatingPossibility = async (id) => {
     const response = await axios.get(`${base_url}order/check-product-in-order/${id}`, getConfig());
     if (response.data) {
@@ -81,5 +93,6 @@ export const productService = {
     addToWishlist,
     getSingleProduct,
     rateProduct,
+    editRateProduct,
     checkProductRatingPossibility,
 };

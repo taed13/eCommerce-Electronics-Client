@@ -204,6 +204,17 @@ export const cancelOrder = createAsyncThunk("user/cancelOrder", async (orderId, 
     }
 });
 
+export const disableUser = createAsyncThunk(
+    "user/disable-user",
+    async (userId, thunkAPI) => {
+        try {
+            return await authService.disableUser(userId);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
 const initialState = {
     user: getCustomerFromLocalStorage,
     userInfo: null,
@@ -566,6 +577,22 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.payload?.message || "Lỗi đổi mật khẩu!";
                 toast.error(state.message);
+            })
+            .addCase(disableUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(disableUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.disabledUser = action.payload;
+                toast.success("Đã vô hiệu hóa tài khoản!");
+            })
+            .addCase(disableUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
             });
     },
 });
