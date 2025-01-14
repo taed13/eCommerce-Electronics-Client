@@ -54,10 +54,11 @@ const SingleProduct = () => {
     );
 
     const props = {
-        width: 600,
+        width: 500,
         height: 500,
         zoomWidth: 600,
         img: mainImage,
+        offset: { vertical: 0, horizontal: 10 },
     };
 
     useEffect(() => {
@@ -521,10 +522,10 @@ const SingleProduct = () => {
                                         return (
                                             <div className="review mb-4" key={index}>
                                                 {
-                                                    item?.postedBy._id === userState?._id && editCommentId === item._id ? (
+                                                    item?.postedBy?._id === userState?._id && editCommentId === item?._id ? (
                                                         <div className="review-form pb-2">
                                                             <h4>Chỉnh sửa bình luận</h4>
-                                                            <span className="mb-0">{item?.postedBy.name}</span>
+                                                            <span className="mb-0">{item?.postedBy?.name}</span>
                                                             <form action="" className="d-flex flex-column gap-10">
                                                                 <div>
                                                                     <Rating
@@ -570,14 +571,14 @@ const SingleProduct = () => {
                                                     ) : (
                                                         <>
                                                             <div className="d-flex align-items-center justify-content-between">
-                                                                <span className="mb-0">{item?.postedBy.name}</span>
+                                                                <span className="mb-0">{item?.postedBy?.name}</span>
                                                                 {
-                                                                    item?.postedBy._id === userState?._id && (
+                                                                    item?.postedBy?._id === userState?._id && (
                                                                         <div className="d-flex align-items-center justify-content-between">
                                                                             <span
                                                                                 className="edit-review-span text-primary"
                                                                                 onClick={() => {
-                                                                                    setEditCommentId(item._id);
+                                                                                    setEditCommentId(item?._id);
                                                                                     setEditComment(item.comment);
                                                                                     setEditRating(item.star);
                                                                                 }}

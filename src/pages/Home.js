@@ -15,18 +15,49 @@ import Rating from 'react-rating';
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { getLatestProductsService, getPopularProductsService, getSpecialProductsService } from "../api/product.api";
 import "../styles/home.css";
+import { getAllBannersService } from "../api/banner.api";
 
 const Home = () => {
     const blogState = useSelector((state) => state?.blog?.blog);
     const productState = useSelector((state) => state?.product?.product);
+    const [banners, setBanners] = useState([]);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     let location = useLocation();
+
+    useEffect(() => {
+        fetchBanners();
+    }, []);
+
+    const fetchBanners = async () => {
+        setLoading(true);
+        const { data, error } = await getAllBannersService();
+        if (error) {
+            console.error(error);
+        } else {
+            setBanners(data);
+        }
+        setLoading(false);
+    };
+
+    const getBannerClass = (index) => {
+        switch (index) {
+            case 0:
+                return 'blue-bg';
+            case 1:
+                return 'green-bg';
+            case 2:
+                return 'beige-bg';
+            case 3:
+                return 'pink-bg';
+            default:
+                return '';
+        }
+    };
 
     const [popularProducts, setPopularProducts] = useState([]);
     const [specialProducts, setSpecialProducts] = useState([]);
     const [latestProducts, setLatestProducts] = useState([]);
-
-    console.log('specialProducts', specialProducts);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -102,82 +133,41 @@ const Home = () => {
     return (
         <>
             <Meta title={"Electronics | Trang chủ"} />
-            <Container class1="home-wrapper-1 py-5">
-                <div className="row">
-                    <div className="col-6">
-                        <div className="main-banner position-relative">
-                            <img
-                                src="images/main-banner-1.jpg"
-                                className="img-fluid rounded-3"
-                                alt="main-banner"
-                            />
-                            <div className="main-banner-content position-absolute">
-                                <h4>SẠC SIÊU NHANH, DÙNG SIÊU LÂU.</h4>
-                                <h5>iPad Pro M4</h5>
-                                <h5>13 inch - 256GB</h5>
-                                <p>Thỏa sức sáng tạo<br />Chỉ với giá 36,790,000₫</p>
-                                <Link to="/product/6768452d9e52a08d38d2f0aa" className="button">ĐẶT NGAY</Link>
+            <Container class1="home-wrapper-1 pt-5 pb-4">
+                <div className="row g-4">
+                    {banners[0] && (
+                        <div className="col-12 col-lg-6 banner-product-card-cover">
+                            <div className="banner-product-card banner-main-product position-relative">
+                                <div className="content-wrapper">
+                                    <p className="banner-highlight-text">CÁC SẢN PHẨM NỔI BẬT NHẤT</p>
+                                    <h2 className="banner-product-title">{banners[0].product.product_name}</h2>
+                                    <p className="banner-product-desc">Giảm giá siêu sâu</p>
+                                    <p className="banner-product-price">Nay chỉ còn <strong className='fs-5'>{banners[0].product.product_after_price.toLocaleString()}₫</strong></p>
+                                    <button className="order-btn" onClick={() => { navigate("/product/" + banners[0].product._id); window.scrollTo(0, 0); }}>
+                                        ĐẶT NGAY
+                                    </button>
+                                </div>
+                                <div className="banner-placeholder-box main-banner">
+                                    <img src={banners[0].product.product_images[0].url} height={300} width={300} className='img-fluid' alt="" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col-6">
-                        <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
-                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/676bee88f20dc5b91d7c2bad"); window.scrollTo(0, 0); }}>
-                                <img
-                                    src="images/catbanner-01.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="cat-banner-1"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>BEST SELLER</h4>
-                                    <h5>Apple MacBook Air</h5>
-                                    <p>
-                                        Làm việc mọi lúc<br />Chỉ từ 24,290,000₫
-                                    </p>
+                    )}
+                    <div className="col-12 col-lg-6">
+                        <div className="row g-4">
+                            {banners.slice(1, 5).map((banner, index) => (
+                                <div key={banner._id} className="col-12 col-md-6 pointer-cursor" onClick={() => { navigate("/product/" + banner.product._id); window.scrollTo(0, 0); }}>
+                                    <div className={`banner-product-card banner-secondary-product ${getBannerClass(index)} position-relative`}>
+                                        <span className="banner-tag">{banner.product.product_tags[0].name}</span>
+                                        <h4 className="banner-product-title fw-bold">{banner.product.product_name}</h4>
+                                        <p className="mb-0">Giá khuyến mãi còn</p>
+                                        <p className='fw-bold'>{banner.product.product_after_price.toLocaleString()}₫</p>
+                                        <div className="banner-placeholder-box small">
+                                            <img src={banner.product.product_images[0].url} className='img-fluid' alt="" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/676bed3ef20dc5b91d7c2b3f"); window.scrollTo(0, 0); }}>
-                                <img
-                                    src="images/catbanner-02.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="cat-banner-1"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVALS</h4>
-                                    <h5>Apple Watch SE 2</h5>
-                                    <p>
-                                        Phụ kiện lên trình<br />Giá chỉ từ 5,790,000₫
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/676befc5f20dc5b91d7c2be2"); window.scrollTo(0, 0); }}>
-                                <img
-                                    src="images/catbanner-03.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="cat-banner-1"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVALS</h4>
-                                    <h5>iPad Air 6 M2</h5>
-                                    <p>
-                                        Giá khuyến mãi còn <br /> 14,890,000₫
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="small-banner position-relative pointer-cursor" onClick={() => { navigate("/product/6747b698570ba79897eae89d"); window.scrollTo(0, 0); }}>
-                                <img
-                                    src="images/catbanner-04.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="cat-banner-1"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVALS</h4>
-                                    <h5>AirPods Max</h5>
-                                    <p>
-                                        Giá khuyến mãi còn <br /> 12,990,000₫
-                                    </p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -323,7 +313,6 @@ const Home = () => {
                             })}
                 </div>
             </Container>
-
             <Container class1="famous-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-3 pointer-cursor" onClick={() => { navigate("/product/676bcabc3a7e698cd33561c7"); window.scrollTo(0, 0); }}>

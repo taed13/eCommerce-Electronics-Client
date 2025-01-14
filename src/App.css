@@ -874,17 +874,19 @@ footer .input-group-text {
 }
 
 .main-product-image>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 .main-product-image img {
-    width: 100% !important;
     height: 500px !important;
     object-fit: cover;
 }
 
 .main-product-image .js-image-zoom__zoomed-image {
-    left: 45px !important;
+    left: 10px !important;
     padding: 10px;
     background-color: white;
     border-radius: 10px;
@@ -1333,4 +1335,151 @@ footer .input-group-text {
     to {
         opacity: 0.5;
     }
+}
+
+/* Banner Management */
+
+.banner-product-card {
+    padding: 2rem;
+    border-radius: 6px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-main-product {
+    background-color: #ebd2ca;
+    display: flex;
+    max-height: 430px;
+    align-items: center;
+    justify-content: start;
+}
+
+.content-wrapper {
+    flex: 1;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    text-align: start;
+}
+
+.banner-highlight-text {
+    color: #d35400;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.banner-product-title {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    width: 300px;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.banner-product-desc {
+    font-size: 1.2rem;
+    margin-bottom: 0px;
+}
+
+.banner-product-price {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.order-btn {
+    background-color: #1a2b3c;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 2rem;
+    font-weight: 600;
+}
+
+.banner-secondary-product {
+    padding: 1rem;
+    max-height: 200px;
+}
+
+.banner-secondary-product .banner-product-title {
+    font-weight: 500;
+    font-size: 22px;
+    width: 167px;
+}
+
+.blue-bg {
+    background-color: #baddf1;
+}
+
+.green-bg {
+    background-color: #c8e5e0;
+}
+
+.beige-bg {
+    background-color: #eee2d4;
+}
+
+.pink-bg {
+    background-color: #ebdbdb;
+}
+
+.banner-tag {
+    background-color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    color: #d35400;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.banner-placeholder-box {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 1rem;
+    right: -100px;
+}
+
+.banner-placeholder-box.main-banner {
+    bottom: 0px;
+}
+
+.banner-placeholder-box.small {
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    right: -50px;
+}
+
+@media (max-width: 768px) {
+    .banner-main-product {
+        flex-direction: column;
+    }
+
+    .banner-placeholder-box {
+        position: relative;
+        margin-top: 1rem;
+        right: auto;
+        bottom: auto;
+    }
+}
+
+.banner-product-card-cover {
+    margin-top: 10px;
+}
+
+.col-12.col-md-6 {
+    padding-left: 0px;
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
