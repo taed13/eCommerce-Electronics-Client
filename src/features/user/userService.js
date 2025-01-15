@@ -197,6 +197,16 @@ const disableUser = async (id) => {
     return response.data;
 };
 
+const reorder = async (orderId) => {
+    const response = await axios.post(
+        `${base_url}order/reorder/${orderId}`,
+        {},
+        getConfig()
+    )
+
+    return response.data;
+}
+
 export const authService = {
     register,
     login,
@@ -218,4 +228,5 @@ export const authService = {
     changeUserPassword,
     cancelOrder,
     disableUser,
+    reorder
 };

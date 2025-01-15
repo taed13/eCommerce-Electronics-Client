@@ -12,7 +12,7 @@ import {
     MDBBtn
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
-import { getAnOrder } from "../features/user/userSlice";
+import { getAnOrder, reorderCart } from "../features/user/userSlice";
 import { Link, useLocation } from "react-router-dom";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
@@ -30,6 +30,8 @@ const OrderSuccess = () => {
         orderState?.order_status?.toLowerCase() !== "cancelled" &&
         orderState?.order_status?.toLowerCase() !== "delivered";
 
+    const isReorderable = ["shipped", "delivered", "cancelled"].includes(orderState?.order_status?.toLowerCase());
+
     useEffect(() => {
         dispatch(getAnOrder(id));
     }, [dispatch, id]);
@@ -46,6 +48,17 @@ const OrderSuccess = () => {
             const message = error.response?.data?.message || "Có lỗi xảy ra khi hủy đơn hàng!";
             toast.error(message);
         }
+    };
+
+    const handleReorder = () => {
+        dispatch(reorderCart(id))
+            .unwrap()
+            .then(() => {
+                toast.success("Sản phẩm đã được thêm lại vào giỏ hàng!");
+            })
+            .catch((error) => {
+                toast.error(error || "Có lỗi xảy ra khi mua lại đơn hàng!");
+            });
     };
 
     return (
@@ -198,6 +211,17 @@ const OrderSuccess = () => {
                                                     ? "Đơn hàng đã được giao không thể hủy"
                                                     : "Đơn hàng đã bị hủy"}
                                             </p>
+                                        )}
+                                        {isReorderable && (
+                                            <MDBBtn
+                                                color="primary"
+                                                size="md"
+                                                className="fw-bold rounded-pill shadow-lg reorder-button mt-3"
+                                                style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}
+                                                onClick={handleReorder}
+                                            >
+                                                Mua lại đơn hàng
+                                            </MDBBtn>
                                         )}
                                     </MDBCardFooter>
                                 </MDBCard>

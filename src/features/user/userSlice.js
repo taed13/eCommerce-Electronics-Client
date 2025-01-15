@@ -213,7 +213,20 @@ export const disableUser = createAsyncThunk(
             return thunkAPI.rejectWithValue(error);
         }
     }
-)
+);
+
+export const reorderCart = createAsyncThunk(
+    "user/cart/reorder",
+    async (orderId, thunkAPI) => {
+        try {
+            const response = await authService.reorder(orderId);
+            thunkAPI.dispatch(getUserCart());
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response?.data || "Có lỗi xảy ra khi mua lại đơn hàng!");
+        }
+    }
+);
 
 const initialState = {
     user: getCustomerFromLocalStorage,
@@ -593,6 +606,22 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
+            })
+            .addCase(reorderCart.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(reorderCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                toast.success("Sản phẩm đã được thêm vào giỏ hàng!");
+            })
+            .addCase(reorderCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload || "Có lỗi xảy ra khi mua lại đơn hàng.";
+                toast.error(state.message);
             });
     },
 });
