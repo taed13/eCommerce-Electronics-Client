@@ -128,8 +128,6 @@ const Home = () => {
         }
     };
 
-    console.log('popularProducts', popularProducts ?? popularProducts[0]);
-
     return (
         <>
             <Meta title={"Electronics | Trang chủ"} />
@@ -536,9 +534,7 @@ const Home = () => {
                                                 title={item?.blog_title}
                                                 description={item?.blog_description}
                                                 image={item?.blog_images[0]?.url}
-                                                date={moment(item?.createdAt).format(
-                                                    "DD/MM/YYYY, HH:mm"
-                                                )}
+                                                date={new Date(item?.createdAt).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' })}
                                             />
                                         </div>
                                     );

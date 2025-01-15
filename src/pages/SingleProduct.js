@@ -598,7 +598,7 @@ const SingleProduct = () => {
                                                             />
                                                             <p className="mt-1 text-dark">
                                                                 <small>
-                                                                    Đã viết vào {new Date(item?.postedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                                                    Đã viết vào {new Date(item?.postedAt).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' })}
                                                                 </small>
                                                             </p>
                                                             <p className="mt-3">{item?.comment}</p>
