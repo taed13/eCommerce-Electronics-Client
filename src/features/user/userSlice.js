@@ -300,7 +300,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error.message;
                 if (state.isError === true) {
-                    toast.error(action.payload.message);
+                    toast.error('Tài khoản hoặc mật khẩu không đúng!');
                 }
             })
             // LOGOUT USER
