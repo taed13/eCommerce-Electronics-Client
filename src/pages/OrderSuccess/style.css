@@ -80,3 +80,7 @@
 .card-stepper {
     z-index: 0
 }
+
+.text-center {
+    margin-top: 0 !important;
+}

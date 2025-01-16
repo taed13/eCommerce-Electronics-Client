@@ -64,7 +64,13 @@ const OrderSuccess = () => {
     return (
         <>
             <Meta title={"Electronics | Chi tiết đơn hàng"} />
-            <BreadCrumb title={"Chi tiết đơn hàng"} />
+            <BreadCrumb
+                title={"Chi tiết đơn hàng"}
+                links={[
+                    { path: "/my-orders", label: "Lịch sử đặt hàng" },
+                ]}
+            />
+
             <section className="vh-50 gradient-custom-2">
                 <MDBContainer className="py-4 h-100">
                     <MDBRow className="justify-content-center align-items-center h-100">

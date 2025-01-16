@@ -17,6 +17,7 @@ import { FaEdit, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Meta from "../components/Meta";
 import { cancelOrderService } from "../api/order.api";
+import BreadCrumb from "../components/BreadCrumb";
 
 const shippingSchema = yup.object({
     order_shipping: yup.object({
@@ -475,30 +476,16 @@ const Checkout = () => {
     return (
         <>
             <Meta title={"Electronics | Thanh toán"} />
+            <BreadCrumb title="Thanh toán"
+                links={[
+                    { path: "/cart", label: "Giỏ hàng của tôi" },
+                ]}
+            />
             <Container class1="checkout-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-7">
                         <div className="checkout-left-data">
                             <h3 className="website-name">Electronics</h3>
-                            <nav
-                                style={{ "--bs-breadcrumb-divider": ">" }}
-                                aria-label="breadcrumb"
-                            >
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item">
-                                        <Link className="text-dark" to="/cart">
-                                            Giỏ hàng
-                                        </Link>
-                                    </li>
-                                    &nbsp; /
-                                    <li
-                                        className="breadcrumb-item partial-price active"
-                                        aria-current="page"
-                                    >
-                                        Thanh toán
-                                    </li>
-                                </ol>
-                            </nav>
                             <h4 className="title total">Thông tin liên hệ</h4>
                             <p className="user-details">
                                 {cart_userId?.name} - {cart_userId?.email}

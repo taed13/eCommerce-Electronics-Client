@@ -151,7 +151,7 @@ const Cart = () => {
                                     </div>
                                     <div className="cart-col-4 d-flex align-items-center">
                                         <h5 className="price">
-                                        {(item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)).toLocaleString()}₫
+                                            {(item?.price * (productUpdateDetails[item?._id]?.quantity || item?.quantity)).toLocaleString()}₫
                                         </h5>
                                     </div>
                                 </div>

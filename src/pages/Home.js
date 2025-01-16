@@ -311,6 +311,12 @@ const Home = () => {
                             })}
                 </div>
             </Container>
+
+            {/* HÀNG MỚI VỀ */}
+            {/* <Container class1="special-wrapper py-5 home-wrapper-2">
+
+            </Container> */}
+
             <Container class1="famous-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-3 pointer-cursor" onClick={() => { navigate("/product/676bcabc3a7e698cd33561c7"); window.scrollTo(0, 0); }}>

@@ -144,7 +144,7 @@ const Login = () => {
                                 </div>
 
                                 <div className="d-flex justify-content-center align-items-center gap-3">
-                                    <button type="submit" className={`button border-0 ${!email && !password ? "disabled" : ""}`}>
+                                    <button type="submit" className={`button mb-3 border-0 ${!email && !password ? "disabled" : ""}`}>
                                         Đăng nhập
                                     </button>
                                 </div>

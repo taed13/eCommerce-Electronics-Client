@@ -540,6 +540,7 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.createdOrder = action.payload;
+                console.log('action.payload', action.payload);
                 if (state.isSuccess) {
                     toast.success("Đơn hàng đã được tạo!");
                 }
@@ -548,11 +549,15 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
-                state.message = action.error;
-                if (state.isSuccess === false) {
-                    toast.error("Đơn hàng chưa được tạo!");
-                }
-            })
+            
+                // Bắt message từ API nếu tồn tại
+                state.message = action?.error?.response?.data?.message || "Có lỗi xảy ra. Vui lòng thử lại!";
+                
+                console.error("Lỗi khi tạo đơn hàng:", state.message);
+            
+                // Hiển thị thông báo lỗi
+                toast.error(state.message);
+            })            
             .addCase(resetCart, (state) => {
                 state.cartProducts = null;
             })

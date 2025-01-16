@@ -12,6 +12,7 @@ const register = async (userData) => {
 
 const login = async (userData) => {
     const response = await axios.post(`${base_url}user/login`, userData);
+    console.log('response', response);
 
     localStorage.setItem("customer", JSON.stringify(response.data?.findUser));
     localStorage.setItem("token", JSON.stringify(response.data?.findUser.token));
@@ -207,6 +208,13 @@ const reorder = async (orderId) => {
     return response.data;
 }
 
+const getDefaultAddress = async () => {
+    const response = await axios.get(`${base_url}user/default-address`, getConfig());
+    if (response.data) {
+        return response.data.defaultAddress;
+    }
+};
+
 export const authService = {
     register,
     login,
@@ -228,5 +236,6 @@ export const authService = {
     changeUserPassword,
     cancelOrder,
     disableUser,
-    reorder
+    reorder,
+    getDefaultAddress
 };
